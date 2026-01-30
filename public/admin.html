@@ -3,80 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Bonu Blog</title>
+    <title>CMS Admin - Bonu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={theme:{extend:{colors:{cream:'#FDF8F3',espresso:'#3D2314',terracotta:'#C4704A'}}}}</script>
+    <script>tailwind.config={theme:{extend:{colors:{cream:'#FDF8F3',espresso:'#3D2314',terracotta:'#C4704A',gold:'#D4A853'}}}}</script>
+    <style>
+        .tab-btn.active { background-color: #C4704A; color: white; }
+        .field-group { border-left: 3px solid #D4A853; padding-left: 1rem; margin-bottom: 1rem; }
+        .lang-field { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .lang-field input, .lang-field textarea { font-size: 0.875rem; }
+        .lang-label { font-size: 0.75rem; color: #666; margin-bottom: 0.25rem; }
+    </style>
 </head>
 <body class="bg-cream min-h-screen">
-    <nav class="bg-espresso text-white p-4">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold">Blog Admin</h1>
-            <a href="/" class="text-cream/80 hover:text-white">View Site</a>
+    <nav class="bg-espresso text-white p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Site CMS</h1>
+            <div class="flex items-center gap-4">
+                <span id="save-status" class="text-sm text-cream/70"></span>
+                <a href="/" class="text-cream/80 hover:text-white">View Site</a>
+            </div>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto p-6">
+    <div class="max-w-6xl mx-auto p-6">
         <!-- Auth -->
         <div id="auth-section" class="bg-white p-6 rounded-lg shadow mb-6">
             <h2 class="text-lg font-bold text-espresso mb-4">GitHub Authentication</h2>
             <p class="text-gray-600 mb-4 text-sm">Enter your GitHub Personal Access Token (needs repo scope)</p>
-            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx"
-                class="w-full border p-3 rounded mb-3">
+            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx" class="w-full border p-3 rounded mb-3">
             <button onclick="saveToken()" class="bg-terracotta text-white px-6 py-2 rounded">Save Token</button>
         </div>
 
-        <!-- Posts List -->
-        <div id="posts-section" class="hidden">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-espresso">Posts</h2>
-                <button onclick="showEditor()" class="bg-terracotta text-white px-6 py-2 rounded">+ New Post</button>
+        <!-- Main CMS -->
+        <div id="cms-section" class="hidden">
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6 bg-white p-3 rounded-lg shadow">
+                <button onclick="showTab('settings')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="settings">Settings</button>
+                <button onclick="showTab('hero')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="hero">Hero</button>
+                <button onclick="showTab('stats')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="stats">Stats</button>
+                <button onclick="showTab('mentor')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="mentor">Mentor</button>
+                <button onclick="showTab('dna')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="dna">DNA Steps</button>
+                <button onclick="showTab('roadmap')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="roadmap">Roadmap</button>
+                <button onclick="showTab('faq')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="faq">FAQ</button>
+                <button onclick="showTab('cta')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="cta">CTA</button>
+                <button onclick="showTab('blog')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="blog">Blog</button>
             </div>
-            <div id="posts-list" class="space-y-4"></div>
-        </div>
 
-        <!-- Editor -->
-        <div id="editor-section" class="hidden bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-bold text-espresso mb-4" id="editor-title">New Post</h2>
-            <input type="hidden" id="post-id">
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                    <input type="text" id="post-title" class="w-full border p-3 rounded">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-                    <input type="text" id="post-slug" class="w-full border p-3 rounded" placeholder="my-post-url">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
-                    <textarea id="post-excerpt" rows="2" class="w-full border p-3 rounded"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
-                    <div class="flex gap-3 mb-2">
-                        <input type="file" id="image-upload" accept="image/*" onchange="uploadImage()" class="flex-1 border p-2 rounded">
-                        <span id="upload-status" class="text-sm text-gray-500 self-center"></span>
+            <!-- Settings Tab -->
+            <div id="tab-settings" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">Site Settings</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Site Title</label>
+                        <input type="text" id="settings-siteTitle" class="w-full border p-3 rounded">
                     </div>
-                    <input type="text" id="post-image" class="w-full border p-3 rounded" placeholder="Image URL (auto-filled after upload)">
-                    <div id="image-preview" class="mt-2 hidden">
-                        <img id="preview-img" class="max-h-40 rounded border">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Site Description</label>
+                        <textarea id="settings-siteDescription" rows="2" class="w-full border p-3 rounded"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Favicon URL</label>
+                        <input type="text" id="settings-favicon" class="w-full border p-3 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
+                        <input type="text" id="settings-facebook" class="w-full border p-3 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+                        <input type="text" id="settings-instagram" class="w-full border p-3 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
+                        <input type="text" id="settings-footerText" class="w-full border p-3 rounded">
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                    <input type="date" id="post-date" class="w-full border p-3 rounded">
+                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Settings</button>
+            </div>
+
+            <!-- Hero Tab -->
+            <div id="tab-hero" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">Hero Section</h2>
+                <div class="space-y-4">
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="hero-tagline-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="hero-tagline-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Title (use &lt;br&gt; for line breaks)</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><textarea id="hero-title-vi" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                            <div><span class="lang-label">English</span><textarea id="hero-title-en" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Subtitle</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="hero-subtitle-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="hero-subtitle-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><textarea id="hero-description-vi" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                            <div><span class="lang-label">English</span><textarea id="hero-description-en" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Primary Button Text</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="hero-ctaPrimary-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="hero-ctaPrimary-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Secondary Button Text</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="hero-ctaSecondary-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="hero-ctaSecondary-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Background Video URL</label>
+                        <input type="text" id="hero-backgroundVideo" class="w-full border p-3 rounded">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select id="post-status" class="w-full border p-3 rounded">
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                    </select>
+                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Hero</button>
+            </div>
+
+            <!-- Stats Tab -->
+            <div id="tab-stats" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">Stats</h2>
+                <div id="stats-list" class="space-y-4"></div>
+                <button onclick="addStat()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add Stat</button>
+                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save Stats</button>
+            </div>
+
+            <!-- Mentor Tab -->
+            <div id="tab-mentor" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">Mentor Section</h2>
+                <div class="space-y-4">
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="mentor-tagline-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="mentor-tagline-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input type="text" id="mentor-name" class="w-full border p-3 rounded">
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Greeting (before name)</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="mentor-greeting-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="mentor-greeting-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bio Paragraph 1</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><textarea id="mentor-bio1-vi" rows="3" class="w-full border p-2 rounded"></textarea></div>
+                            <div><span class="lang-label">English</span><textarea id="mentor-bio1-en" rows="3" class="w-full border p-2 rounded"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bio Paragraph 2</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><textarea id="mentor-bio2-vi" rows="3" class="w-full border p-2 rounded"></textarea></div>
+                            <div><span class="lang-label">English</span><textarea id="mentor-bio2-en" rows="3" class="w-full border p-2 rounded"></textarea></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Profile Image URL</label>
+                        <input type="text" id="mentor-image" class="w-full border p-3 rounded">
+                        <div id="mentor-image-preview" class="mt-2"></div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Badges (comma separated)</label>
+                        <input type="text" id="mentor-badges" class="w-full border p-3 rounded" placeholder="Le Cordon Bleu, F&B Mentor">
+                    </div>
                 </div>
-                <div class="flex gap-3 pt-4">
-                    <button onclick="savePost()" class="bg-terracotta text-white px-6 py-2 rounded">Save</button>
-                    <button onclick="hideEditor()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded">Cancel</button>
-                    <button onclick="deletePost()" id="delete-btn" class="hidden bg-red-500 text-white px-6 py-2 rounded ml-auto">Delete</button>
+                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Mentor</button>
+            </div>
+
+            <!-- DNA Tab -->
+            <div id="tab-dna" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">DNA Steps</h2>
+                <div class="space-y-4 mb-6">
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Tagline</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="dna-tagline-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="dna-tagline-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+                        <input type="text" id="dna-title" class="w-full border p-3 rounded">
+                    </div>
+                </div>
+                <h3 class="font-bold text-espresso mb-4">Steps</h3>
+                <div id="dna-steps-list" class="space-y-4"></div>
+                <button onclick="addDnaStep()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add Step</button>
+                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save DNA</button>
+            </div>
+
+            <!-- Roadmap Tab -->
+            <div id="tab-roadmap" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">Roadmap</h2>
+                <div class="space-y-4 mb-6">
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Tagline</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="roadmap-tagline-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="roadmap-tagline-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+                        <input type="text" id="roadmap-title" class="w-full border p-3 rounded">
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Subtitle</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><textarea id="roadmap-subtitle-vi" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                            <div><span class="lang-label">English</span><textarea id="roadmap-subtitle-en" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">CTA Button Text</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="roadmap-ctaText-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="roadmap-ctaText-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="font-bold text-espresso mb-4">Phases</h3>
+                <div id="roadmap-phases-list" class="space-y-6"></div>
+                <button onclick="addRoadmapPhase()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add Phase</button>
+                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save Roadmap</button>
+            </div>
+
+            <!-- FAQ Tab -->
+            <div id="tab-faq" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">FAQ</h2>
+                <div class="space-y-4 mb-6">
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="faq-title-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="faq-title-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="font-bold text-espresso mb-4">Questions</h3>
+                <div id="faq-list" class="space-y-4"></div>
+                <button onclick="addFaq()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add FAQ</button>
+                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save FAQ</button>
+            </div>
+
+            <!-- CTA Tab -->
+            <div id="tab-cta" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-6">Call to Action</h2>
+                <div class="space-y-4">
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="cta-tagline-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="cta-tagline-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="cta-title-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="cta-title-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><textarea id="cta-description-vi" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                            <div><span class="lang-label">English</span><textarea id="cta-description-en" rows="2" class="w-full border p-2 rounded"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
+                        <div class="lang-field">
+                            <div><span class="lang-label">Vietnamese</span><input type="text" id="cta-buttonText-vi" class="w-full border p-2 rounded"></div>
+                            <div><span class="lang-label">English</span><input type="text" id="cta-buttonText-en" class="w-full border p-2 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save CTA</button>
+            </div>
+
+            <!-- Blog Tab -->
+            <div id="tab-blog" class="tab-content hidden bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-espresso">Blog Posts</h2>
+                    <button onclick="showPostEditor()" class="bg-terracotta text-white px-6 py-2 rounded">+ New Post</button>
+                </div>
+                <div id="posts-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Post Editor -->
+            <div id="post-editor" class="hidden bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-bold text-espresso mb-4" id="editor-title">New Post</h2>
+                <input type="hidden" id="post-id">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" id="post-title" class="w-full border p-3 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+                        <input type="text" id="post-slug" class="w-full border p-3 rounded" placeholder="my-post-url">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+                        <textarea id="post-excerpt" rows="2" class="w-full border p-3 rounded"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                        <textarea id="post-content" rows="10" class="w-full border p-3 rounded font-mono text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                        <div class="flex gap-3 mb-2">
+                            <input type="file" id="image-upload" accept="image/*" onchange="uploadImage()" class="flex-1 border p-2 rounded">
+                            <span id="upload-status" class="text-sm text-gray-500 self-center"></span>
+                        </div>
+                        <input type="text" id="post-image" class="w-full border p-3 rounded" placeholder="Image URL">
+                        <div id="image-preview" class="mt-2 hidden"><img id="preview-img" class="max-h-40 rounded border"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" id="post-date" class="w-full border p-3 rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select id="post-status" class="w-full border p-3 rounded">
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 pt-4">
+                        <button onclick="savePost()" class="bg-terracotta text-white px-6 py-2 rounded">Save</button>
+                        <button onclick="hidePostEditor()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded">Cancel</button>
+                        <button onclick="deletePost()" id="delete-btn" class="hidden bg-red-500 text-white px-6 py-2 rounded ml-auto">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,10 +370,16 @@
 
     <script>
         const REPO = 'dakthi/html-bonu';
-        const FILE_PATH = 'public/posts.json';
-        let posts = [];
-        let fileSha = '';
+        const CONTENT_PATH = 'public/content.json';
+        const POSTS_PATH = 'public/posts.json';
 
+        let content = {};
+        let posts = [];
+        let contentSha = '';
+        let postsSha = '';
+        let currentTab = 'settings';
+
+        // Auth
         function saveToken() {
             const token = document.getElementById('github-token').value;
             if (token) {
@@ -98,49 +388,420 @@
             }
         }
 
-        function getToken() {
-            return localStorage.getItem('github_token');
-        }
+        function getToken() { return localStorage.getItem('github_token'); }
 
         async function init() {
             const token = getToken();
             if (!token) {
                 document.getElementById('auth-section').classList.remove('hidden');
-                document.getElementById('posts-section').classList.add('hidden');
+                document.getElementById('cms-section').classList.add('hidden');
                 return;
             }
             document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('posts-section').classList.remove('hidden');
-            await loadPosts();
+            document.getElementById('cms-section').classList.remove('hidden');
+            await Promise.all([loadContent(), loadPosts()]);
+            showTab('settings');
         }
 
-        async function loadPosts() {
+        // Load content.json
+        async function loadContent() {
             try {
-                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONTENT_PATH}`, {
                     headers: { 'Authorization': `token ${getToken()}` }
                 });
                 const data = await res.json();
-                if (data.message) {
-                    showStatus('GitHub error: ' + data.message, 'error');
-                    return;
-                }
-                fileSha = data.sha;
+                if (data.message) { showStatus('Content error: ' + data.message, 'error'); return; }
+                contentSha = data.sha;
                 const binary = atob(data.content.replace(/\n/g, ''));
                 const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-                const text = new TextDecoder('utf-8').decode(bytes);
-                posts = JSON.parse(text);
-                renderPosts();
-            } catch (e) {
-                showStatus('Error loading posts: ' + e.message, 'error');
-            }
+                content = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+                populateAllForms();
+            } catch (e) { showStatus('Error loading content: ' + e.message, 'error'); }
         }
 
+        // Load posts.json
+        async function loadPosts() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${POSTS_PATH}`, {
+                    headers: { 'Authorization': `token ${getToken()}` }
+                });
+                const data = await res.json();
+                if (data.message) { showStatus('Posts error: ' + data.message, 'error'); return; }
+                postsSha = data.sha;
+                const binary = atob(data.content.replace(/\n/g, ''));
+                const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+                posts = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+                renderPosts();
+            } catch (e) { showStatus('Error loading posts: ' + e.message, 'error'); }
+        }
+
+        // Tab navigation
+        function showTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tab)?.classList.remove('hidden');
+            document.querySelector(`[data-tab="${tab}"]`)?.classList.add('active');
+            document.getElementById('post-editor').classList.add('hidden');
+        }
+
+        // Populate forms from content
+        function populateAllForms() {
+            // Settings
+            ['siteTitle', 'siteDescription', 'favicon', 'facebook', 'instagram', 'footerText'].forEach(f => {
+                const el = document.getElementById('settings-' + f);
+                if (el) el.value = content.settings?.[f] || '';
+            });
+
+            // Hero
+            populateBilingualField('hero', 'tagline');
+            populateBilingualField('hero', 'title');
+            populateBilingualField('hero', 'subtitle');
+            populateBilingualField('hero', 'description');
+            populateBilingualField('hero', 'ctaPrimary');
+            populateBilingualField('hero', 'ctaSecondary');
+            document.getElementById('hero-backgroundVideo').value = content.hero?.backgroundVideo || '';
+
+            // Mentor
+            populateBilingualField('mentor', 'tagline');
+            populateBilingualField('mentor', 'greeting');
+            populateBilingualField('mentor', 'bio1');
+            populateBilingualField('mentor', 'bio2');
+            document.getElementById('mentor-name').value = content.mentor?.name || '';
+            document.getElementById('mentor-image').value = content.mentor?.image || '';
+            document.getElementById('mentor-badges').value = (content.mentor?.badges || []).join(', ');
+
+            // DNA
+            populateBilingualField('dna', 'tagline');
+            document.getElementById('dna-title').value = content.dna?.title || '';
+            renderDnaSteps();
+
+            // Roadmap
+            populateBilingualField('roadmap', 'tagline');
+            populateBilingualField('roadmap', 'subtitle');
+            populateBilingualField('roadmap', 'ctaText');
+            document.getElementById('roadmap-title').value = content.roadmap?.title || '';
+            renderRoadmapPhases();
+
+            // FAQ
+            populateBilingualField('faq', 'title');
+            renderFaqList();
+
+            // CTA
+            populateBilingualField('cta', 'tagline');
+            populateBilingualField('cta', 'title');
+            populateBilingualField('cta', 'description');
+            populateBilingualField('cta', 'buttonText');
+
+            // Stats
+            renderStats();
+        }
+
+        function populateBilingualField(section, field) {
+            const vi = document.getElementById(`${section}-${field}-vi`);
+            const en = document.getElementById(`${section}-${field}-en`);
+            if (vi) vi.value = content[section]?.[field]?.vi || '';
+            if (en) en.value = content[section]?.[field]?.en || '';
+        }
+
+        // Collect form data back to content
+        function collectAllForms() {
+            // Settings
+            content.settings = {
+                siteTitle: document.getElementById('settings-siteTitle').value,
+                siteDescription: document.getElementById('settings-siteDescription').value,
+                favicon: document.getElementById('settings-favicon').value,
+                facebook: document.getElementById('settings-facebook').value,
+                instagram: document.getElementById('settings-instagram').value,
+                footerText: document.getElementById('settings-footerText').value
+            };
+
+            // Hero
+            content.hero = {
+                tagline: collectBilingual('hero', 'tagline'),
+                title: collectBilingual('hero', 'title'),
+                subtitle: collectBilingual('hero', 'subtitle'),
+                description: collectBilingual('hero', 'description'),
+                ctaPrimary: collectBilingual('hero', 'ctaPrimary'),
+                ctaSecondary: collectBilingual('hero', 'ctaSecondary'),
+                backgroundVideo: document.getElementById('hero-backgroundVideo').value
+            };
+
+            // Mentor
+            content.mentor = {
+                tagline: collectBilingual('mentor', 'tagline'),
+                name: document.getElementById('mentor-name').value,
+                greeting: collectBilingual('mentor', 'greeting'),
+                bio1: collectBilingual('mentor', 'bio1'),
+                bio2: collectBilingual('mentor', 'bio2'),
+                image: document.getElementById('mentor-image').value,
+                badges: document.getElementById('mentor-badges').value.split(',').map(s => s.trim()).filter(Boolean)
+            };
+
+            // DNA
+            content.dna = {
+                tagline: collectBilingual('dna', 'tagline'),
+                title: document.getElementById('dna-title').value,
+                steps: collectDnaSteps()
+            };
+
+            // Roadmap
+            content.roadmap = {
+                tagline: collectBilingual('roadmap', 'tagline'),
+                title: document.getElementById('roadmap-title').value,
+                subtitle: collectBilingual('roadmap', 'subtitle'),
+                ctaText: collectBilingual('roadmap', 'ctaText'),
+                phases: collectRoadmapPhases()
+            };
+
+            // FAQ
+            content.faq = {
+                title: collectBilingual('faq', 'title'),
+                items: collectFaqItems()
+            };
+
+            // CTA
+            content.cta = {
+                tagline: collectBilingual('cta', 'tagline'),
+                title: collectBilingual('cta', 'title'),
+                description: collectBilingual('cta', 'description'),
+                buttonText: collectBilingual('cta', 'buttonText')
+            };
+
+            // Stats
+            content.stats = collectStats();
+        }
+
+        function collectBilingual(section, field) {
+            return {
+                vi: document.getElementById(`${section}-${field}-vi`)?.value || '',
+                en: document.getElementById(`${section}-${field}-en`)?.value || ''
+            };
+        }
+
+        // Stats
+        function renderStats() {
+            const list = document.getElementById('stats-list');
+            list.innerHTML = (content.stats || []).map((s, i) => `
+                <div class="field-group bg-gray-50 p-4 rounded" data-stat-index="${i}">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium">Stat ${i + 1}</span>
+                        <button onclick="removeStat(${i})" class="text-red-500 text-sm">Remove</button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <span class="lang-label">Value</span>
+                            <input type="text" class="stat-value w-full border p-2 rounded" value="${s.value || ''}">
+                        </div>
+                        <div>
+                            <span class="lang-label">Label (VI)</span>
+                            <input type="text" class="stat-label-vi w-full border p-2 rounded" value="${s.label?.vi || ''}">
+                        </div>
+                        <div>
+                            <span class="lang-label">Label (EN)</span>
+                            <input type="text" class="stat-label-en w-full border p-2 rounded" value="${s.label?.en || ''}">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addStat() {
+            content.stats = content.stats || [];
+            content.stats.push({ value: '', label: { vi: '', en: '' } });
+            renderStats();
+        }
+
+        function removeStat(i) {
+            content.stats.splice(i, 1);
+            renderStats();
+        }
+
+        function collectStats() {
+            return Array.from(document.querySelectorAll('[data-stat-index]')).map(el => ({
+                value: el.querySelector('.stat-value').value,
+                label: {
+                    vi: el.querySelector('.stat-label-vi').value,
+                    en: el.querySelector('.stat-label-en').value
+                }
+            }));
+        }
+
+        // DNA Steps
+        function renderDnaSteps() {
+            const list = document.getElementById('dna-steps-list');
+            list.innerHTML = (content.dna?.steps || []).map((s, i) => `
+                <div class="field-group bg-gray-50 p-4 rounded" data-dna-index="${i}">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium">Step ${i + 1}</span>
+                        <button onclick="removeDnaStep(${i})" class="text-red-500 text-sm">Remove</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div><span class="lang-label">Title (VI)</span><input type="text" class="dna-title-vi w-full border p-2 rounded" value="${s.title?.vi || ''}"></div>
+                        <div><span class="lang-label">Title (EN)</span><input type="text" class="dna-title-en w-full border p-2 rounded" value="${s.title?.en || ''}"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><span class="lang-label">Description (VI)</span><input type="text" class="dna-desc-vi w-full border p-2 rounded" value="${s.description?.vi || ''}"></div>
+                        <div><span class="lang-label">Description (EN)</span><input type="text" class="dna-desc-en w-full border p-2 rounded" value="${s.description?.en || ''}"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addDnaStep() {
+            content.dna = content.dna || { steps: [] };
+            content.dna.steps.push({ title: { vi: '', en: '' }, description: { vi: '', en: '' } });
+            renderDnaSteps();
+        }
+
+        function removeDnaStep(i) {
+            content.dna.steps.splice(i, 1);
+            renderDnaSteps();
+        }
+
+        function collectDnaSteps() {
+            return Array.from(document.querySelectorAll('[data-dna-index]')).map(el => ({
+                title: { vi: el.querySelector('.dna-title-vi').value, en: el.querySelector('.dna-title-en').value },
+                description: { vi: el.querySelector('.dna-desc-vi').value, en: el.querySelector('.dna-desc-en').value }
+            }));
+        }
+
+        // Roadmap Phases
+        function renderRoadmapPhases() {
+            const list = document.getElementById('roadmap-phases-list');
+            list.innerHTML = (content.roadmap?.phases || []).map((p, i) => `
+                <div class="field-group bg-gray-50 p-4 rounded" data-phase-index="${i}">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium">Phase ${i + 1}</span>
+                        <button onclick="removePhase(${i})" class="text-red-500 text-sm">Remove</button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mb-2">
+                        <div><span class="lang-label">Number</span><input type="text" class="phase-number w-full border p-2 rounded" value="${p.number || ''}"></div>
+                        <div><span class="lang-label">Color</span>
+                            <select class="phase-color w-full border p-2 rounded">
+                                <option value="terracotta" ${p.color === 'terracotta' ? 'selected' : ''}>Terracotta</option>
+                                <option value="gold" ${p.color === 'gold' ? 'selected' : ''}>Gold</option>
+                                <option value="espresso" ${p.color === 'espresso' ? 'selected' : ''}>Espresso</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div><span class="lang-label">Title (VI)</span><input type="text" class="phase-title-vi w-full border p-2 rounded" value="${p.title?.vi || ''}"></div>
+                        <div><span class="lang-label">Title (EN)</span><input type="text" class="phase-title-en w-full border p-2 rounded" value="${p.title?.en || ''}"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div><span class="lang-label">Subtitle (VI)</span><input type="text" class="phase-subtitle-vi w-full border p-2 rounded" value="${p.subtitle?.vi || ''}"></div>
+                        <div><span class="lang-label">Subtitle (EN)</span><input type="text" class="phase-subtitle-en w-full border p-2 rounded" value="${p.subtitle?.en || ''}"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div><span class="lang-label">Requirements (VI)</span><textarea class="phase-req-vi w-full border p-2 rounded" rows="2">${p.requirements?.vi || ''}</textarea></div>
+                        <div><span class="lang-label">Requirements (EN)</span><textarea class="phase-req-en w-full border p-2 rounded" rows="2">${p.requirements?.en || ''}</textarea></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><span class="lang-label">Value (VI)</span><textarea class="phase-value-vi w-full border p-2 rounded" rows="2">${p.value?.vi || ''}</textarea></div>
+                        <div><span class="lang-label">Value (EN)</span><textarea class="phase-value-en w-full border p-2 rounded" rows="2">${p.value?.en || ''}</textarea></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addRoadmapPhase() {
+            content.roadmap = content.roadmap || { phases: [] };
+            content.roadmap.phases.push({
+                number: String(content.roadmap.phases.length + 1),
+                color: 'terracotta',
+                title: { vi: '', en: '' },
+                subtitle: { vi: '', en: '' },
+                requirements: { vi: '', en: '' },
+                value: { vi: '', en: '' }
+            });
+            renderRoadmapPhases();
+        }
+
+        function removePhase(i) {
+            content.roadmap.phases.splice(i, 1);
+            renderRoadmapPhases();
+        }
+
+        function collectRoadmapPhases() {
+            return Array.from(document.querySelectorAll('[data-phase-index]')).map(el => ({
+                number: el.querySelector('.phase-number').value,
+                color: el.querySelector('.phase-color').value,
+                title: { vi: el.querySelector('.phase-title-vi').value, en: el.querySelector('.phase-title-en').value },
+                subtitle: { vi: el.querySelector('.phase-subtitle-vi').value, en: el.querySelector('.phase-subtitle-en').value },
+                requirements: { vi: el.querySelector('.phase-req-vi').value, en: el.querySelector('.phase-req-en').value },
+                value: { vi: el.querySelector('.phase-value-vi').value, en: el.querySelector('.phase-value-en').value }
+            }));
+        }
+
+        // FAQ
+        function renderFaqList() {
+            const list = document.getElementById('faq-list');
+            list.innerHTML = (content.faq?.items || []).map((f, i) => `
+                <div class="field-group bg-gray-50 p-4 rounded" data-faq-index="${i}">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium">FAQ ${i + 1}</span>
+                        <button onclick="removeFaq(${i})" class="text-red-500 text-sm">Remove</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div><span class="lang-label">Question (VI)</span><input type="text" class="faq-q-vi w-full border p-2 rounded" value="${f.question?.vi || ''}"></div>
+                        <div><span class="lang-label">Question (EN)</span><input type="text" class="faq-q-en w-full border p-2 rounded" value="${f.question?.en || ''}"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><span class="lang-label">Answer (VI)</span><textarea class="faq-a-vi w-full border p-2 rounded" rows="2">${f.answer?.vi || ''}</textarea></div>
+                        <div><span class="lang-label">Answer (EN)</span><textarea class="faq-a-en w-full border p-2 rounded" rows="2">${f.answer?.en || ''}</textarea></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addFaq() {
+            content.faq = content.faq || { items: [] };
+            content.faq.items.push({ question: { vi: '', en: '' }, answer: { vi: '', en: '' } });
+            renderFaqList();
+        }
+
+        function removeFaq(i) {
+            content.faq.items.splice(i, 1);
+            renderFaqList();
+        }
+
+        function collectFaqItems() {
+            return Array.from(document.querySelectorAll('[data-faq-index]')).map(el => ({
+                question: { vi: el.querySelector('.faq-q-vi').value, en: el.querySelector('.faq-q-en').value },
+                answer: { vi: el.querySelector('.faq-a-vi').value, en: el.querySelector('.faq-a-en').value }
+            }));
+        }
+
+        // Save content.json
+        async function saveContent() {
+            try {
+                collectAllForms();
+                showStatus('Saving...', 'info');
+                const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONTENT_PATH}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${getToken()}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: 'Update content via CMS', content: jsonContent, sha: contentSha })
+                });
+                const data = await res.json();
+                if (data.content) {
+                    contentSha = data.content.sha;
+                    showStatus('Saved! Deploying...', 'success');
+                    document.getElementById('save-status').textContent = 'Last saved: ' + new Date().toLocaleTimeString();
+                } else {
+                    showStatus('Error: ' + (data.message || 'Unknown'), 'error');
+                }
+            } catch (e) { showStatus('Error: ' + e.message, 'error'); }
+        }
+
+        // Blog posts
         function renderPosts() {
             const list = document.getElementById('posts-list');
             list.innerHTML = posts.map(p => `
-                <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
+                <div class="bg-gray-50 p-4 rounded flex justify-between items-center">
                     <div>
-                        <h3 class="font-bold text-espresso">${p.title}</h3>
+                        <h3 class="font-bold text-espresso">${p.title?.substring(0, 60)}${p.title?.length > 60 ? '...' : ''}</h3>
                         <p class="text-sm text-gray-500">${p.date} - ${p.status}</p>
                     </div>
                     <button onclick="editPost('${p.id}')" class="text-terracotta hover:underline">Edit</button>
@@ -148,21 +809,20 @@
             `).join('');
         }
 
-        function showEditor(post = null) {
-            document.getElementById('editor-section').classList.remove('hidden');
-            document.getElementById('posts-section').classList.add('hidden');
-
+        function showPostEditor(post = null) {
+            document.getElementById('tab-blog').classList.add('hidden');
+            document.getElementById('post-editor').classList.remove('hidden');
             if (post) {
                 document.getElementById('editor-title').textContent = 'Edit Post';
                 document.getElementById('post-id').value = post.id;
                 document.getElementById('post-title').value = post.title;
                 document.getElementById('post-slug').value = post.slug;
                 document.getElementById('post-excerpt').value = post.excerpt || '';
+                document.getElementById('post-content').value = post.content || '';
                 document.getElementById('post-image').value = post.image || '';
                 document.getElementById('post-date').value = post.date;
                 document.getElementById('post-status').value = post.status;
                 document.getElementById('delete-btn').classList.remove('hidden');
-                // Show image preview if exists
                 if (post.image) {
                     document.getElementById('preview-img').src = post.image;
                     document.getElementById('image-preview').classList.remove('hidden');
@@ -175,25 +835,25 @@
                 document.getElementById('post-title').value = '';
                 document.getElementById('post-slug').value = '';
                 document.getElementById('post-excerpt').value = '';
+                document.getElementById('post-content').value = '';
                 document.getElementById('post-image').value = '';
                 document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
                 document.getElementById('post-status').value = 'draft';
                 document.getElementById('delete-btn').classList.add('hidden');
                 document.getElementById('image-preview').classList.add('hidden');
             }
-            // Reset file input
             document.getElementById('image-upload').value = '';
             document.getElementById('upload-status').textContent = '';
         }
 
-        function hideEditor() {
-            document.getElementById('editor-section').classList.add('hidden');
-            document.getElementById('posts-section').classList.remove('hidden');
+        function hidePostEditor() {
+            document.getElementById('post-editor').classList.add('hidden');
+            document.getElementById('tab-blog').classList.remove('hidden');
         }
 
         function editPost(id) {
             const post = posts.find(p => p.id === id);
-            if (post) showEditor(post);
+            if (post) showPostEditor(post);
         }
 
         async function savePost() {
@@ -203,57 +863,115 @@
                 title: document.getElementById('post-title').value,
                 slug: document.getElementById('post-slug').value,
                 excerpt: document.getElementById('post-excerpt').value,
+                content: document.getElementById('post-content').value,
                 image: document.getElementById('post-image').value,
                 date: document.getElementById('post-date').value,
                 status: document.getElementById('post-status').value
             };
-
             const idx = posts.findIndex(p => p.id === id);
-            if (idx >= 0) {
-                posts[idx] = post;
-            } else {
-                posts.push(post);
-            }
-
-            await saveToDB();
+            if (idx >= 0) posts[idx] = post;
+            else posts.push(post);
+            await savePosts();
         }
 
         async function deletePost() {
-            const id = document.getElementById('post-id').value;
             if (!confirm('Delete this post?')) return;
+            const id = document.getElementById('post-id').value;
             posts = posts.filter(p => p.id !== id);
-            await saveToDB();
+            await savePosts();
         }
 
-        async function saveToDB() {
+        async function savePosts() {
             try {
                 showStatus('Saving...', 'info');
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
-                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+                const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${POSTS_PATH}`, {
                     method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${getToken()}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: 'Update posts via admin',
-                        content,
-                        sha: fileSha
-                    })
+                    headers: { 'Authorization': `token ${getToken()}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: 'Update posts via CMS', content: jsonContent, sha: postsSha })
                 });
                 const data = await res.json();
                 if (data.content) {
-                    fileSha = data.content.sha;
+                    postsSha = data.content.sha;
                     showStatus('Saved! Deploying...', 'success');
-                    hideEditor();
+                    hidePostEditor();
                     renderPosts();
                 } else {
-                    showStatus('Error: ' + (data.message || 'Unknown error'), 'error');
+                    showStatus('Error: ' + (data.message || 'Unknown'), 'error');
                 }
-            } catch (e) {
-                showStatus('Error saving: ' + e.message, 'error');
-            }
+            } catch (e) { showStatus('Error: ' + e.message, 'error'); }
         }
+
+        // Image upload
+        async function compressImage(file, maxWidth, quality) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    let width = img.width, height = img.height;
+                    if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width; canvas.height = height;
+                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                    canvas.toBlob((blob) => resolve({ blob, size: blob.size }), 'image/webp', quality);
+                };
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        async function uploadImage() {
+            const file = document.getElementById('image-upload').files[0];
+            if (!file) return;
+            const statusEl = document.getElementById('upload-status');
+            const originalSize = (file.size / 1024).toFixed(0);
+            statusEl.textContent = `Compressing ${originalSize}KB...`;
+            try {
+                const compressed = await compressImage(file, 1200, 0.9);
+                const compressedSize = (compressed.size / 1024).toFixed(0);
+                statusEl.textContent = `Uploading ${compressedSize}KB...`;
+                const base64 = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(compressed.blob);
+                });
+                const filename = `${Date.now()}.webp`;
+                const path = `public/images/${filename}`;
+                let sha = null;
+                try {
+                    const checkRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                        headers: { 'Authorization': `token ${getToken()}` }
+                    });
+                    if (checkRes.ok) sha = (await checkRes.json()).sha;
+                } catch (e) {}
+                const body = { message: `Upload image ${filename}`, content: base64 };
+                if (sha) body.sha = sha;
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${getToken()}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (data.content) {
+                    const imageUrl = `/images/${filename}`;
+                    document.getElementById('post-image').value = imageUrl;
+                    document.getElementById('preview-img').src = `https://raw.githubusercontent.com/${REPO}/main/${path}`;
+                    document.getElementById('image-preview').classList.remove('hidden');
+                    statusEl.textContent = `Done! ${compressedSize}KB`;
+                } else {
+                    statusEl.textContent = 'Error: ' + (data.message || 'Failed');
+                }
+            } catch (e) { statusEl.textContent = 'Error: ' + e.message; }
+        }
+
+        document.getElementById('post-image').addEventListener('input', function() {
+            const url = this.value;
+            if (url) {
+                document.getElementById('preview-img').src = url.startsWith('/') ? `https://raw.githubusercontent.com/${REPO}/main/public${url}` : url;
+                document.getElementById('image-preview').classList.remove('hidden');
+            } else {
+                document.getElementById('image-preview').classList.add('hidden');
+            }
+        });
 
         function showStatus(msg, type) {
             const el = document.getElementById('status');
@@ -261,116 +979,6 @@
             el.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'bg-blue-100');
             el.classList.add(type === 'success' ? 'bg-green-100' : type === 'error' ? 'bg-red-100' : 'bg-blue-100');
         }
-
-        async function compressImage(file, maxWidth, quality) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => {
-                    // Calculate new dimensions
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > maxWidth) {
-                        height = (height * maxWidth) / width;
-                        width = maxWidth;
-                    }
-
-                    // Draw to canvas
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    // Export as WebP
-                    canvas.toBlob((blob) => {
-                        resolve({ blob, size: blob.size });
-                    }, 'image/webp', quality);
-                };
-                img.src = URL.createObjectURL(file);
-            });
-        }
-
-        async function uploadImage() {
-            const fileInput = document.getElementById('image-upload');
-            const file = fileInput.files[0];
-            if (!file) return;
-
-            const statusEl = document.getElementById('upload-status');
-            const originalSize = (file.size / 1024).toFixed(0);
-            statusEl.textContent = `Compressing ${originalSize}KB...`;
-
-            try {
-                // Compress image using Canvas
-                const compressed = await compressImage(file, 1200, 0.9);
-                const compressedSize = (compressed.size / 1024).toFixed(0);
-                statusEl.textContent = `Uploading ${compressedSize}KB (was ${originalSize}KB)...`;
-
-                // Read compressed blob as base64
-                const base64 = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result.split(',')[1]);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(compressed.blob);
-                });
-
-                // Generate filename with timestamp (always .webp now)
-                const filename = `${Date.now()}.webp`;
-                const path = `public/images/${filename}`;
-
-                // Check if file exists (to get SHA if updating)
-                let sha = null;
-                try {
-                    const checkRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                        headers: { 'Authorization': `token ${getToken()}` }
-                    });
-                    if (checkRes.ok) {
-                        const existing = await checkRes.json();
-                        sha = existing.sha;
-                    }
-                } catch (e) {}
-
-                // Upload to GitHub
-                const body = {
-                    message: `Upload image ${filename}`,
-                    content: base64
-                };
-                if (sha) body.sha = sha;
-
-                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${getToken()}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                const data = await res.json();
-                if (data.content) {
-                    const imageUrl = `https://raw.githubusercontent.com/${REPO}/main/${path}`;
-                    document.getElementById('post-image').value = imageUrl;
-                    document.getElementById('preview-img').src = imageUrl;
-                    document.getElementById('image-preview').classList.remove('hidden');
-                    const savings = Math.round((1 - compressedSize / originalSize) * 100);
-                    statusEl.textContent = `Done! ${compressedSize}KB (${savings}% smaller)`;
-                } else {
-                    statusEl.textContent = 'Error: ' + (data.message || 'Upload failed');
-                }
-            } catch (e) {
-                statusEl.textContent = 'Error: ' + e.message;
-            }
-        }
-
-        // Show preview when URL is manually entered
-        document.getElementById('post-image').addEventListener('input', function() {
-            const url = this.value;
-            if (url) {
-                document.getElementById('preview-img').src = url;
-                document.getElementById('image-preview').classList.remove('hidden');
-            } else {
-                document.getElementById('image-preview').classList.add('hidden');
-            }
-        });
 
         init();
     </script>

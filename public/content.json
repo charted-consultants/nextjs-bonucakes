@@ -1,0 +1,182 @@
+{
+  "settings": {
+    "siteTitle": "F&B Business Design - Uyen Le",
+    "siteDescription": "Xây dựng sự nghiệp F&B từ chuyên môn độc lập, tự chủ, bền vững.",
+    "favicon": "https://thielts.chartedconsultants.com/bonu/profile.webp",
+    "facebook": "https://www.facebook.com/profile.php?id=100009102362568",
+    "instagram": "",
+    "footerText": "© 2026 Uyen Le - F&B Business Design"
+  },
+  "hero": {
+    "tagline": {
+      "vi": "F&B Business Design",
+      "en": "F&B Business Design"
+    },
+    "title": {
+      "vi": "Xây dựng sự nghiệp F&B từ<br>chuyên môn độc lập<br>tự chủ, bền vững.",
+      "en": "Build your F&B career from<br>independent expertise.<br>Sustainable, self-directed."
+    },
+    "subtitle": {
+      "vi": "Không mơ hồ về bản sắc. Không kiệt sức khi tăng trưởng.",
+      "en": "No confusion about identity. No burnout while growing."
+    },
+    "description": {
+      "vi": "Hệ điều hành toàn diện giúp bạn chuyển hóa chuyên môn F&B thành tài sản thực sự.",
+      "en": "A comprehensive operating system to transform your F&B expertise into real assets."
+    },
+    "ctaPrimary": {
+      "vi": "Khám phá lộ trình",
+      "en": "Explore the roadmap"
+    },
+    "ctaSecondary": {
+      "vi": "Liên hệ tư vấn",
+      "en": "Contact for consultation"
+    },
+    "backgroundVideo": "https://thielts.chartedconsultants.com/bonu/hero-bg.mp4"
+  },
+  "stats": [
+    { "value": "10+", "label": { "vi": "Năm kinh nghiệm", "en": "Years of experience" } },
+    { "value": "5+", "label": { "vi": "Nhà hàng đã mở", "en": "Restaurants opened" } },
+    { "value": "500+", "label": { "vi": "Giờ tư vấn", "en": "Consulting hours" } },
+    { "value": "50+", "label": { "vi": "Khách hàng", "en": "Clients served" } },
+    { "value": "1", "label": { "vi": "Bằng Le Cordon Bleu", "en": "Le Cordon Bleu degree" } },
+    { "value": "UK", "label": { "vi": "Tại Wales, Anh", "en": "Based in Wales" } }
+  ],
+  "mentor": {
+    "tagline": {
+      "vi": "Người hướng dẫn của bạn",
+      "en": "Your guide"
+    },
+    "name": "Uyên",
+    "greeting": {
+      "vi": "Chào bạn,<br>mình là",
+      "en": "Hello,<br>I'm"
+    },
+    "bio1": {
+      "vi": "Mình đã đi qua hành trình gần 15 năm trong ngành F&B, từ phụ bếp đến tốt nghiệp Le Cordon Bleu, từ nhân viên đến chủ nhà hàng. Mình đã trải qua niềm vui của những đêm đông khách và nỗi đau của việc đóng cửa kinh doanh.",
+      "en": "I've walked nearly 15 years in F&B, from kitchen prep to Le Cordon Bleu graduate, from employee to restaurant owner. I've experienced the highs of packed dining rooms and the lows of closing a business."
+    },
+    "bio2": {
+      "vi": "Hiện tại mình điều hành Memoire Saigon tại Wales. Nhưng điều mình tự hào nhất không phải là những con số, mà là sự tự do và trọn vẹn trong từng ngày sống.",
+      "en": "Today I run Memoire Saigon in Wales. But what I'm most proud of isn't the numbers, it's the freedom and fulfillment in every single day."
+    },
+    "image": "https://thielts.chartedconsultants.com/bonu/profile.webp",
+    "badges": ["Le Cordon Bleu", "F&B Mentor"]
+  },
+  "dna": {
+    "tagline": {
+      "vi": "Tuyên ngôn sống & làm nghề",
+      "en": "Philosophy"
+    },
+    "title": "The F&B Expert DNA",
+    "steps": [
+      {
+        "title": { "vi": "Học chuyên môn", "en": "Learn deeply" },
+        "description": { "vi": "Đầu tư nghiêm túc vào chuyên môn", "en": "Invest seriously in expertise" }
+      },
+      {
+        "title": { "vi": "Thực hành", "en": "Apply & practice" },
+        "description": { "vi": "Áp dụng chuyên môn ở quy mô nhỏ", "en": "Apply expertise at small scale" }
+      },
+      {
+        "title": { "vi": "Chia sẻ", "en": "Share value" },
+        "description": { "vi": "Cho đi giá trị trước khi bán", "en": "Give value before selling" }
+      },
+      {
+        "title": { "vi": "Hệ thống hóa", "en": "Systemize" },
+        "description": { "vi": "Đóng gói kiến thức thành sản phẩm", "en": "Package knowledge into products" }
+      },
+      {
+        "title": { "vi": "Thu nhập bền vững", "en": "Sustainable income" },
+        "description": { "vi": "Sống tự chủ, sự nghiệp bền vững", "en": "Live freely, career sustainably" }
+      }
+    ]
+  },
+  "roadmap": {
+    "tagline": {
+      "vi": "Lộ trình F&B Expert",
+      "en": "Roadmap"
+    },
+    "title": "F&B Expert OS Stack",
+    "subtitle": {
+      "vi": "Bản đồ chiến lược giúp bạn tìm đúng thứ mình cần, đi đúng hướng, đúng thời điểm.",
+      "en": "Strategic map to help you find what you need, go the right direction, at the right time."
+    },
+    "phases": [
+      {
+        "number": "1",
+        "color": "terracotta",
+        "title": { "vi": "Khám phá & làm quen", "en": "Discovery & Familiarization" },
+        "subtitle": { "vi": "Nếu bạn mới tìm hiểu, chưa muốn cam kết lớn", "en": "If you're new, not ready for big commitments" },
+        "requirements": { "vi": "Tư duy mở, sẵn sàng tiếp cận cách thức xây dựng sự nghiệp độc lập dựa trên năng lực thực tế.", "en": "Open mindset, ready to approach independent career building based on real capabilities." },
+        "value": { "vi": "Hiểu rõ lộ trình phát triển bền vững, tránh lãng phí thời gian vào các mô hình kinh doanh thiếu chiều sâu.", "en": "Understand sustainable development roadmap, avoid wasting time on shallow business models." }
+      },
+      {
+        "number": "2",
+        "color": "gold",
+        "title": { "vi": "Bản sắc & ngách", "en": "Identity & Niche" },
+        "subtitle": { "vi": "Nếu bạn muốn xác định bản sắc & ngách", "en": "If you want to define your identity & niche" },
+        "requirements": { "vi": "Trung thực với năng lực bản thân, dám lựa chọn thị trường ngách để tạo dựng vị thế riêng.", "en": "Honest about your capabilities, willing to choose a niche market to establish a unique position." },
+        "value": { "vi": "Sở hữu bản đồ định vị độc bản, thoát khỏi sự cạnh tranh đại trà.", "en": "Own a unique positioning map, escape mass competition." }
+      },
+      {
+        "number": "3",
+        "color": "espresso",
+        "title": { "vi": "Uy tín & nội dung", "en": "Credibility & Content" },
+        "subtitle": { "vi": "Nếu bạn muốn xây uy tín & nội dung thu hút", "en": "If you want to build credibility & attractive content" },
+        "requirements": { "vi": "Cam kết chia sẻ giá trị thực, chấp nhận quá trình xây dựng niềm tin từ tệp khán giả chất lượng.", "en": "Committed to sharing real value, accepting the process of building trust from quality audience." },
+        "value": { "vi": "Xây dựng tiếng nói chuyên gia, thu hút cơ hội hợp tác tự nhiên.", "en": "Build expert authority, attract natural collaboration opportunities." }
+      },
+      {
+        "number": "4",
+        "color": "terracotta",
+        "title": { "vi": "Tạo dòng tiền", "en": "Monetization" },
+        "subtitle": { "vi": "Nếu bạn muốn ra tiền từ sản phẩm tri thức", "en": "If you want to earn from knowledge products" },
+        "requirements": { "vi": "Có chuyên môn sâu, sẵn sàng đóng gói giá trị thành giải pháp thực tế cho khách hàng.", "en": "Have deep expertise, ready to package value into practical solutions for customers." },
+        "value": { "vi": "Sở hữu hệ thống sản phẩm dịch vụ chuẩn chỉnh và dòng tiền từ chính tri thức của mình.", "en": "Own a standard product/service system and cash flow from your own knowledge." }
+      }
+    ],
+    "ctaText": {
+      "vi": "Đặt lịch tư vấn lộ trình",
+      "en": "Book a roadmap consultation"
+    }
+  },
+  "faq": {
+    "title": {
+      "vi": "Câu hỏi thường gặp",
+      "en": "Frequently asked questions"
+    },
+    "items": [
+      {
+        "question": { "vi": "Tôi mới bắt đầu và chưa có sản phẩm, nên chọn gói nào?", "en": "I'm new and don't have a product yet, which package should I choose?" },
+        "answer": { "vi": "Bắt đầu với giai đoạn Khám phá & Làm quen. Chương trình này được thiết kế để xây dựng từ gốc: từ tư duy, định vị ngách, xây dựng sản phẩm đầu tiên cho đến khi vận hành ổn định.", "en": "Start with the Discovery phase. This is designed to build from the ground up: from mindset, positioning, building your first product to stable operations." }
+      },
+      {
+        "question": { "vi": "F&B Expert OS khác gì so với các khóa học kinh doanh khác?", "en": "How is F&B Expert OS different from other business courses?" },
+        "answer": { "vi": "Đây không chỉ là một khóa học cung cấp kiến thức. Đây là một HỆ ĐIỀU HÀNH (OS) giúp bạn cài đặt tư duy và quy trình làm việc chuẩn ngay từ đầu.", "en": "This is not just a course providing knowledge. This is an OPERATING SYSTEM (OS) that helps you install standardized mindset and work processes from the start." }
+      },
+      {
+        "question": { "vi": "Tôi có cần kinh nghiệm F&B để tham gia không?", "en": "Do I need F&B experience to join?" },
+        "answer": { "vi": "Không nhất thiết. Nếu bạn có đam mê với F&B và muốn xây dựng sự nghiệp trong lĩnh vực này, chương trình sẽ hướng dẫn bạn từ những nền tảng cơ bản.", "en": "Not necessarily. If you have passion for F&B and want to build a career in this field, this program will guide you from the fundamentals." }
+      }
+    ]
+  },
+  "cta": {
+    "tagline": {
+      "vi": "Bắt đầu ngay",
+      "en": "Get started"
+    },
+    "title": {
+      "vi": "Sẵn sàng chuyển đổi hành trình F&B của bạn?",
+      "en": "Ready to transform your F&B journey?"
+    },
+    "description": {
+      "vi": "Liên hệ với mình để thảo luận về nơi bạn đang ở, nơi bạn muốn đến, và cách chúng ta cùng đến đó.",
+      "en": "Contact me to discuss where you are, where you want to go, and how we'll get there together."
+    },
+    "buttonText": {
+      "vi": "Nhắn tin cho Uyên",
+      "en": "Message Uyen on Facebook"
+    }
+  }
+}

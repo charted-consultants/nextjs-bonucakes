@@ -55,31 +55,8 @@
     <!-- Stats -->
     <section class="bg-warmwhite py-12 border-b border-espresso/10">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 text-center">
-                <div>
-                    <p class="text-3xl md:text-4xl font-bold text-terracotta">10+</p>
-                    <p class="text-coffee text-sm" data-en="Years of experience" data-vi="Năm kinh nghiệm">Năm kinh nghiệm</p>
-                </div>
-                <div>
-                    <p class="text-3xl md:text-4xl font-bold text-terracotta">5+</p>
-                    <p class="text-coffee text-sm" data-en="Restaurants opened" data-vi="Nhà hàng đã mở">Nhà hàng đã mở</p>
-                </div>
-                <div>
-                    <p class="text-3xl md:text-4xl font-bold text-terracotta">500+</p>
-                    <p class="text-coffee text-sm" data-en="Consulting hours" data-vi="Giờ tư vấn">Giờ tư vấn</p>
-                </div>
-                <div>
-                    <p class="text-3xl md:text-4xl font-bold text-terracotta">50+</p>
-                    <p class="text-coffee text-sm" data-en="Clients served" data-vi="Khách hàng">Khách hàng</p>
-                </div>
-                <div>
-                    <p class="text-3xl md:text-4xl font-bold text-terracotta">1</p>
-                    <p class="text-coffee text-sm" data-en="Le Cordon Bleu degree" data-vi="Bằng Le Cordon Bleu">Bằng Le Cordon Bleu</p>
-                </div>
-                <div>
-                    <p class="text-3xl md:text-4xl font-bold text-terracotta">UK</p>
-                    <p class="text-coffee text-sm" data-en="Based in Wales" data-vi="Tại Wales, Anh">Tại Wales, Anh</p>
-                </div>
+            <div id="stats-container" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 text-center">
+                <!-- Dynamic stats loaded from content.json -->
             </div>
         </div>
     </section>
@@ -89,17 +66,16 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="order-2 md:order-1">
-                    <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium" data-en="Your guide" data-vi="Người hướng dẫn của bạn">Người hướng dẫn của bạn</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-6" data-en="Hello, I'm Uyen" data-vi="Chào bạn, mình là Uyên">Chào bạn,<br>mình là <span class="text-terracotta">Uyên</span></h2>
-                    <p class="text-coffee mb-4" data-en="I've walked nearly 15 years in F&B, from kitchen prep to Le Cordon Bleu graduate, from employee to restaurant owner. I've experienced the highs of packed dining rooms and the lows of closing a business." data-vi="Mình đã đi qua hành trình gần 15 năm trong ngành F&B, từ phụ bếp đến tốt nghiệp Le Cordon Bleu, từ nhân viên đến chủ nhà hàng. Mình đã trải qua niềm vui của những đêm đông khách và nỗi đau của việc đóng cửa kinh doanh.">Mình đã đi qua hành trình gần 15 năm trong ngành F&B, từ phụ bếp đến tốt nghiệp Le Cordon Bleu, từ nhân viên đến chủ nhà hàng. Mình đã trải qua niềm vui của những đêm đông khách và nỗi đau của việc đóng cửa kinh doanh.</p>
-                    <p class="text-coffee" data-en="Today I run Memoire Saigon in Wales. But what I'm most proud of isn't the numbers, it's the freedom and fulfillment in every single day." data-vi="Hiện tại mình điều hành Memoire Saigon tại Wales. Nhưng điều mình tự hào nhất không phải là những con số, mà là sự tự do và trọn vẹn trong từng ngày sống.">Hiện tại mình điều hành Memoire Saigon tại Wales. Nhưng điều mình tự hào nhất không phải là những con số, mà là sự tự do và trọn vẹn trong từng ngày sống.</p>
-                    <div class="flex gap-4 mt-6">
-                        <span class="bg-espresso text-cream px-4 py-2 text-sm">Le Cordon Bleu</span>
-                        <span class="bg-espresso text-cream px-4 py-2 text-sm">F&B Mentor</span>
+                    <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium" data-content="mentor-tagline">Người hướng dẫn của bạn</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-6"><span data-content="mentor-greeting">Chào bạn,<br>mình là</span> <span class="text-terracotta" data-content="mentor-name">Uyên</span></h2>
+                    <p class="text-coffee mb-4" data-content="mentor-bio1">Mình đã đi qua hành trình gần 15 năm trong ngành F&B...</p>
+                    <p class="text-coffee" data-content="mentor-bio2">Hiện tại mình điều hành Memoire Saigon tại Wales...</p>
+                    <div id="mentor-badges" class="flex gap-4 mt-6">
+                        <!-- Dynamic badges loaded from content.json -->
                     </div>
                 </div>
                 <div class="order-1 md:order-2 flex justify-center">
-                    <img src="https://thielts.chartedconsultants.com/bonu/profile.webp" alt="Uyen Le" class="w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-gold/30 shadow-2xl object-cover">
+                    <img data-content="mentor-image" src="https://thielts.chartedconsultants.com/bonu/profile.webp" alt="Uyen Le" class="w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-gold/30 shadow-2xl object-cover">
                 </div>
             </div>
         </div>
@@ -109,35 +85,11 @@
     <section class="py-16 md:py-24 bg-espresso text-warmwhite">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-12">
-                <p class="text-gold uppercase tracking-widest text-sm mb-4 font-medium" data-en="Philosophy" data-vi="Triết lý sống & làm nghề">Tuyên ngôn sống & làm nghề</p>
-                <h2 class="text-3xl md:text-4xl font-bold mb-4" data-en="The F&B Expert DNA" data-vi="The F&B Expert DNA">The F&B Expert DNA</h2>
+                <p class="text-gold uppercase tracking-widest text-sm mb-4 font-medium" data-content="dna-tagline">Tuyên ngôn sống & làm nghề</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" data-content="dna-title">The F&B Expert DNA</h2>
             </div>
-            <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-                <div class="bg-cream/10 p-6 text-center">
-                    <div class="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">1</div>
-                    <h3 class="font-semibold mb-2" data-en="Learn deeply" data-vi="Học chuyên môn">Học chuyên môn</h3>
-                    <p class="text-cream/70 text-sm" data-en="Invest seriously in expertise" data-vi="Đầu tư nghiêm túc vào chuyên môn">Đầu tư nghiêm túc vào chuyên môn</p>
-                </div>
-                <div class="bg-cream/10 p-6 text-center">
-                    <div class="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">2</div>
-                    <h3 class="font-semibold mb-2" data-en="Apply & practice" data-vi="Thực hành">Thực hành</h3>
-                    <p class="text-cream/70 text-sm" data-en="Apply expertise at small scale" data-vi="Áp dụng chuyên môn ở quy mô nhỏ">Áp dụng chuyên môn ở quy mô nhỏ</p>
-                </div>
-                <div class="bg-cream/10 p-6 text-center">
-                    <div class="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">3</div>
-                    <h3 class="font-semibold mb-2" data-en="Share value" data-vi="Chia sẻ">Chia sẻ</h3>
-                    <p class="text-cream/70 text-sm" data-en="Give value before selling" data-vi="Cho đi giá trị trước khi bán">Cho đi giá trị trước khi bán</p>
-                </div>
-                <div class="bg-cream/10 p-6 text-center">
-                    <div class="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">4</div>
-                    <h3 class="font-semibold mb-2" data-en="Systemize" data-vi="Hệ thống hóa">Hệ thống hóa</h3>
-                    <p class="text-cream/70 text-sm" data-en="Package knowledge into products" data-vi="Đóng gói kiến thức thành sản phẩm">Đóng gói kiến thức thành sản phẩm</p>
-                </div>
-                <div class="bg-cream/10 p-6 text-center">
-                    <div class="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">5</div>
-                    <h3 class="font-semibold mb-2" data-en="Sustainable income" data-vi="Thu nhập bền vững">Thu nhập bền vững</h3>
-                    <p class="text-cream/70 text-sm" data-en="Live freely, career sustainably" data-vi="Sống tự chủ, sự nghiệp bền vững">Sống tự chủ, sự nghiệp bền vững</p>
-                </div>
+            <div id="dna-steps" class="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- Dynamic DNA steps loaded from content.json -->
             </div>
         </div>
     </section>
@@ -146,99 +98,17 @@
     <section id="roadmap" class="py-16 md:py-24 bg-warmwhite">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-12">
-                <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium" data-en="Roadmap" data-vi="Lộ trình F&B Expert">Lộ trình F&B Expert</p>
-                <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-4" data-en="F&B Expert OS Stack" data-vi="F&B Expert OS Stack">F&B Expert OS Stack</h2>
-                <p class="text-coffee max-w-2xl mx-auto" data-en="Strategic map to help you find what you need, go the right direction, at the right time." data-vi="Bản đồ chiến lược giúp bạn tìm đúng thứ mình cần, đi đúng hướng, đúng thời điểm.">Bản đồ chiến lược giúp bạn tìm đúng thứ mình cần, đi đúng hướng, đúng thời điểm.</p>
+                <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium" data-content="roadmap-tagline">Lộ trình F&B Expert</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-4" data-content="roadmap-title">F&B Expert OS Stack</h2>
+                <p class="text-coffee max-w-2xl mx-auto" data-content="roadmap-subtitle">Bản đồ chiến lược giúp bạn tìm đúng thứ mình cần, đi đúng hướng, đúng thời điểm.</p>
             </div>
 
-            <div class="space-y-8">
-                <!-- Phase 1 -->
-                <div class="bg-cream border-l-4 border-terracotta p-6 md:p-8">
-                    <div class="flex items-start gap-4">
-                        <span class="bg-terracotta text-white px-3 py-1 text-sm font-semibold">Giai đoạn 1</span>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-espresso mb-2" data-en="Discovery & Familiarization" data-vi="Khám phá & làm quen">Khám phá & làm quen</h3>
-                            <p class="text-coffee mb-4" data-en="If you're new, not ready for big commitments" data-vi="Nếu bạn mới tìm hiểu, chưa muốn cam kết lớn">"Nếu bạn mới tìm hiểu, chưa muốn cam kết lớn"</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Requirements:" data-vi="Điều kiện cần:">Điều kiện cần:</p>
-                                    <p class="text-coffee text-sm" data-en="Open mindset, ready to approach independent career building based on real capabilities." data-vi="Tư duy mở, sẵn sàng tiếp cận cách thức xây dựng sự nghiệp độc lập dựa trên năng lực thực tế.">Tư duy mở, sẵn sàng tiếp cận cách thức xây dựng sự nghiệp độc lập dựa trên năng lực thực tế.</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Value received:" data-vi="Giá trị nhận được:">Giá trị nhận được:</p>
-                                    <p class="text-coffee text-sm" data-en="Understand sustainable development roadmap, avoid wasting time on shallow business models." data-vi="Hiểu rõ lộ trình phát triển bền vững, tránh lãng phí thời gian vào các mô hình kinh doanh thiếu chiều sâu.">Hiểu rõ lộ trình phát triển bền vững, tránh lãng phí thời gian vào các mô hình kinh doanh thiếu chiều sâu.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Phase 2 -->
-                <div class="bg-cream border-l-4 border-gold p-6 md:p-8">
-                    <div class="flex items-start gap-4">
-                        <span class="bg-gold text-espresso px-3 py-1 text-sm font-semibold">Giai đoạn 2</span>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-espresso mb-2" data-en="Identity & Niche" data-vi="Bản sắc & ngách">Bản sắc & ngách</h3>
-                            <p class="text-coffee mb-4" data-en="If you want to define your identity & niche" data-vi="Nếu bạn muốn xác định bản sắc & ngách">"Nếu bạn muốn xác định bản sắc & ngách"</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Requirements:" data-vi="Điều kiện cần:">Điều kiện cần:</p>
-                                    <p class="text-coffee text-sm" data-en="Honest about your capabilities, willing to choose a niche market to establish a unique position." data-vi="Trung thực với năng lực bản thân, dám lựa chọn thị trường ngách để tạo dựng vị thế riêng.">Trung thực với năng lực bản thân, dám lựa chọn thị trường ngách để tạo dựng vị thế riêng.</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Value received:" data-vi="Giá trị nhận được:">Giá trị nhận được:</p>
-                                    <p class="text-coffee text-sm" data-en="Own a unique positioning map, escape mass competition." data-vi="Sở hữu bản đồ định vị độc bản, thoát khỏi sự cạnh tranh đại trà.">Sở hữu bản đồ định vị độc bản, thoát khỏi sự cạnh tranh đại trà.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Phase 3 -->
-                <div class="bg-cream border-l-4 border-espresso p-6 md:p-8">
-                    <div class="flex items-start gap-4">
-                        <span class="bg-espresso text-cream px-3 py-1 text-sm font-semibold">Giai đoạn 3</span>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-espresso mb-2" data-en="Credibility & Content" data-vi="Uy tín & nội dung">Uy tín & nội dung</h3>
-                            <p class="text-coffee mb-4" data-en="If you want to build credibility & attractive content" data-vi="Nếu bạn muốn xây uy tín & nội dung thu hút">"Nếu bạn muốn xây uy tín & nội dung thu hút"</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Requirements:" data-vi="Điều kiện cần:">Điều kiện cần:</p>
-                                    <p class="text-coffee text-sm" data-en="Committed to sharing real value, accepting the process of building trust from quality audience." data-vi="Cam kết chia sẻ giá trị thực, chấp nhận quá trình xây dựng niềm tin từ tệp khán giả chất lượng.">Cam kết chia sẻ giá trị thực, chấp nhận quá trình xây dựng niềm tin từ tệp khán giả chất lượng.</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Value received:" data-vi="Giá trị nhận được:">Giá trị nhận được:</p>
-                                    <p class="text-coffee text-sm" data-en="Build expert authority, attract natural collaboration opportunities." data-vi="Xây dựng tiếng nói chuyên gia, thu hút cơ hội hợp tác tự nhiên.">Xây dựng tiếng nói chuyên gia, thu hút cơ hội hợp tác tự nhiên.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Phase 4 -->
-                <div class="bg-cream border-l-4 border-terracotta p-6 md:p-8">
-                    <div class="flex items-start gap-4">
-                        <span class="bg-terracotta text-white px-3 py-1 text-sm font-semibold">Giai đoạn 4</span>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-espresso mb-2" data-en="Monetization" data-vi="Tạo dòng tiền">Tạo dòng tiền</h3>
-                            <p class="text-coffee mb-4" data-en="If you want to earn from knowledge products" data-vi="Nếu bạn muốn ra tiền từ sản phẩm tri thức">"Nếu bạn muốn ra tiền từ sản phẩm tri thức"</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Requirements:" data-vi="Điều kiện cần:">Điều kiện cần:</p>
-                                    <p class="text-coffee text-sm" data-en="Have deep expertise, ready to package value into practical solutions for customers." data-vi="Có chuyên môn sâu, sẵn sàng đóng gói giá trị thành giải pháp thực tế cho khách hàng.">Có chuyên môn sâu, sẵn sàng đóng gói giá trị thành giải pháp thực tế cho khách hàng.</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1" data-en="Value received:" data-vi="Giá trị nhận được:">Giá trị nhận được:</p>
-                                    <p class="text-coffee text-sm" data-en="Own a standard product/service system and cash flow from your own knowledge." data-vi="Sở hữu hệ thống sản phẩm dịch vụ chuẩn chỉnh và dòng tiền từ chính tri thức của mình.">Sở hữu hệ thống sản phẩm dịch vụ chuẩn chỉnh và dòng tiền từ chính tri thức của mình.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="roadmap-phases" class="space-y-8">
+                <!-- Dynamic roadmap phases loaded from content.json -->
             </div>
 
             <div class="text-center mt-12">
-                <a href="#contact" class="inline-block bg-terracotta text-white px-8 py-4 font-semibold hover:bg-terracotta/90 transition-colors" data-en="Book a roadmap consultation" data-vi="Đặt lịch tư vấn lộ trình">Đặt lịch tư vấn lộ trình</a>
+                <a href="#contact" class="inline-block bg-terracotta text-white px-8 py-4 font-semibold hover:bg-terracotta/90 transition-colors" data-content="roadmap-cta">Đặt lịch tư vấn lộ trình</a>
             </div>
         </div>
     </section>
@@ -264,21 +134,10 @@
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center mb-12">
                 <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium">FAQ</p>
-                <h2 class="text-3xl md:text-4xl font-bold text-espresso" data-en="Frequently asked questions" data-vi="Câu hỏi thường gặp">Câu hỏi thường gặp</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-espresso" data-content="faq-title">Câu hỏi thường gặp</h2>
             </div>
-            <div class="space-y-6">
-                <div class="bg-warmwhite p-6 border-l-4 border-terracotta">
-                    <h3 class="font-bold text-espresso mb-2" data-en="I'm new and don't have a product yet, which package should I choose?" data-vi="Tôi mới bắt đầu và chưa có sản phẩm, nên chọn gói nào?">Tôi mới bắt đầu và chưa có sản phẩm, nên chọn gói nào?</h3>
-                    <p class="text-coffee" data-en="Start with the Discovery phase. This is designed to build from the ground up: from mindset, positioning, building your first product to stable operations." data-vi="Bắt đầu với giai đoạn Khám phá & Làm quen. Chương trình này được thiết kế để xây dựng từ gốc: từ tư duy, định vị ngách, xây dựng sản phẩm đầu tiên cho đến khi vận hành ổn định.">Bắt đầu với giai đoạn Khám phá & Làm quen. Chương trình này được thiết kế để xây dựng từ gốc: từ tư duy, định vị ngách, xây dựng sản phẩm đầu tiên cho đến khi vận hành ổn định.</p>
-                </div>
-                <div class="bg-warmwhite p-6 border-l-4 border-terracotta">
-                    <h3 class="font-bold text-espresso mb-2" data-en="How is F&B Expert OS different from other business courses?" data-vi="F&B Expert OS khác gì so với các khóa học kinh doanh khác?">F&B Expert OS khác gì so với các khóa học kinh doanh khác?</h3>
-                    <p class="text-coffee" data-en="This is not just a course providing knowledge. This is an OPERATING SYSTEM (OS) that helps you install standardized mindset and work processes from the start." data-vi="Đây không chỉ là một khóa học cung cấp kiến thức. Đây là một HỆ ĐIỀU HÀNH (OS) giúp bạn cài đặt tư duy và quy trình làm việc chuẩn ngay từ đầu.">Đây không chỉ là một khóa học cung cấp kiến thức. Đây là một HỆ ĐIỀU HÀNH (OS) giúp bạn cài đặt tư duy và quy trình làm việc chuẩn ngay từ đầu.</p>
-                </div>
-                <div class="bg-warmwhite p-6 border-l-4 border-terracotta">
-                    <h3 class="font-bold text-espresso mb-2" data-en="Do I need F&B experience to join?" data-vi="Tôi có cần kinh nghiệm F&B để tham gia không?">Tôi có cần kinh nghiệm F&B để tham gia không?</h3>
-                    <p class="text-coffee" data-en="Not necessarily. If you have passion for F&B and want to build a career in this field, this program will guide you from the fundamentals." data-vi="Không nhất thiết. Nếu bạn có đam mê với F&B và muốn xây dựng sự nghiệp trong lĩnh vực này, chương trình sẽ hướng dẫn bạn từ những nền tảng cơ bản.">Không nhất thiết. Nếu bạn có đam mê với F&B và muốn xây dựng sự nghiệp trong lĩnh vực này, chương trình sẽ hướng dẫn bạn từ những nền tảng cơ bản.</p>
-                </div>
+            <div id="faq-items" class="space-y-6">
+                <!-- Dynamic FAQ items loaded from content.json -->
             </div>
         </div>
     </section>
@@ -286,12 +145,12 @@
     <!-- CTA -->
     <section id="contact" class="py-16 md:py-24 bg-espresso text-warmwhite">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <p class="text-gold uppercase tracking-widest text-sm mb-4 font-medium" data-en="Get started" data-vi="Bắt đầu ngay">Bắt đầu ngay</p>
-            <h2 class="text-3xl md:text-4xl font-bold mb-6" data-en="Ready to transform your F&B journey?" data-vi="Sẵn sàng chuyển đổi hành trình F&B của bạn?">Sẵn sàng chuyển đổi hành trình F&B của bạn?</h2>
-            <p class="text-xl text-cream/80 mb-8 max-w-2xl mx-auto" data-en="Contact me to discuss where you are, where you want to go, and how we'll get there together." data-vi="Liên hệ với mình để thảo luận về nơi bạn đang ở, nơi bạn muốn đến, và cách chúng ta cùng đến đó.">Liên hệ với mình để thảo luận về nơi bạn đang ở, nơi bạn muốn đến, và cách chúng ta cùng đến đó.</p>
-            <a href="https://www.facebook.com/profile.php?id=100009102362568" target="_blank" class="inline-flex items-center gap-3 bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors">
+            <p class="text-gold uppercase tracking-widest text-sm mb-4 font-medium" data-content="cta-tagline">Bắt đầu ngay</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" data-content="cta-title">Sẵn sàng chuyển đổi hành trình F&B của bạn?</h2>
+            <p class="text-xl text-cream/80 mb-8 max-w-2xl mx-auto" data-content="cta-description">Liên hệ với mình để thảo luận về nơi bạn đang ở, nơi bạn muốn đến, và cách chúng ta cùng đến đó.</p>
+            <a id="cta-link" href="https://www.facebook.com/profile.php?id=100009102362568" target="_blank" class="inline-flex items-center gap-3 bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                <span data-en="Message Uyen on Facebook" data-vi="Nhắn tin cho Uyên">Nhắn tin cho Uyên</span>
+                <span data-content="cta-button">Nhắn tin cho Uyên</span>
             </a>
         </div>
     </section>
@@ -299,12 +158,14 @@
     <!-- Footer -->
     <footer class="bg-espresso border-t border-gold/20 text-cream/60 py-8">
         <div class="max-w-6xl mx-auto px-6 text-center">
-            <p>&copy; 2026 Uyen Le - F&B Business Design</p>
+            <p data-content="footer">&copy; 2026 Uyen Le - F&B Business Design</p>
         </div>
     </footer>
 
     <script>
         let currentLang = localStorage.getItem('lang') || 'vi';
+        let siteContent = null;
+
         function setLang(lang) {
             currentLang = lang;
             localStorage.setItem('lang', lang);
@@ -315,8 +176,153 @@
                 const text = el.getAttribute(`data-${lang}`);
                 if (text) el.innerHTML = text;
             });
+            if (siteContent) applyContent();
         }
-        setLang(currentLang);
+
+        // Load and apply content.json
+        async function loadContent() {
+            try {
+                const res = await fetch('/content.json');
+                siteContent = await res.json();
+                applyContent();
+            } catch (e) {
+                console.error('Error loading content:', e);
+            }
+        }
+
+        function applyContent() {
+            if (!siteContent) return;
+            const lang = currentLang;
+            const c = siteContent;
+
+            // Hero
+            if (c.hero) {
+                setText('[data-content="hero-tagline"]', c.hero.tagline?.[lang]);
+                setText('[data-content="hero-title"]', c.hero.title?.[lang]);
+                setText('[data-content="hero-subtitle"]', c.hero.subtitle?.[lang]);
+                setText('[data-content="hero-description"]', c.hero.description?.[lang]);
+                setText('[data-content="hero-cta-primary"]', c.hero.ctaPrimary?.[lang]);
+                setText('[data-content="hero-cta-secondary"]', c.hero.ctaSecondary?.[lang]);
+                const video = document.querySelector('[data-content="hero-video"]');
+                if (video && c.hero.backgroundVideo) video.src = c.hero.backgroundVideo;
+            }
+
+            // Stats
+            if (c.stats) {
+                const statsContainer = document.getElementById('stats-container');
+                if (statsContainer) {
+                    statsContainer.innerHTML = c.stats.map(s => `
+                        <div>
+                            <p class="text-3xl md:text-4xl font-bold text-terracotta">${s.value}</p>
+                            <p class="text-coffee text-sm">${s.label?.[lang] || ''}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Mentor
+            if (c.mentor) {
+                setText('[data-content="mentor-tagline"]', c.mentor.tagline?.[lang]);
+                setText('[data-content="mentor-greeting"]', c.mentor.greeting?.[lang]);
+                setText('[data-content="mentor-name"]', c.mentor.name);
+                setText('[data-content="mentor-bio1"]', c.mentor.bio1?.[lang]);
+                setText('[data-content="mentor-bio2"]', c.mentor.bio2?.[lang]);
+                const mentorImg = document.querySelector('[data-content="mentor-image"]');
+                if (mentorImg && c.mentor.image) mentorImg.src = c.mentor.image;
+                const badgesContainer = document.getElementById('mentor-badges');
+                if (badgesContainer && c.mentor.badges) {
+                    badgesContainer.innerHTML = c.mentor.badges.map(b => `<span class="bg-espresso text-cream px-4 py-2 text-sm">${b}</span>`).join('');
+                }
+            }
+
+            // DNA
+            if (c.dna) {
+                setText('[data-content="dna-tagline"]', c.dna.tagline?.[lang]);
+                setText('[data-content="dna-title"]', c.dna.title);
+                const dnaContainer = document.getElementById('dna-steps');
+                if (dnaContainer && c.dna.steps) {
+                    dnaContainer.innerHTML = c.dna.steps.map((s, i) => `
+                        <div class="bg-cream/10 p-6 text-center">
+                            <div class="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">${i + 1}</div>
+                            <h3 class="font-semibold mb-2">${s.title?.[lang] || ''}</h3>
+                            <p class="text-cream/70 text-sm">${s.description?.[lang] || ''}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Roadmap
+            if (c.roadmap) {
+                setText('[data-content="roadmap-tagline"]', c.roadmap.tagline?.[lang]);
+                setText('[data-content="roadmap-title"]', c.roadmap.title);
+                setText('[data-content="roadmap-subtitle"]', c.roadmap.subtitle?.[lang]);
+                setText('[data-content="roadmap-cta"]', c.roadmap.ctaText?.[lang]);
+                const phasesContainer = document.getElementById('roadmap-phases');
+                if (phasesContainer && c.roadmap.phases) {
+                    const colorMap = { terracotta: 'terracotta', gold: 'gold', espresso: 'espresso' };
+                    phasesContainer.innerHTML = c.roadmap.phases.map(p => {
+                        const color = colorMap[p.color] || 'terracotta';
+                        const bgClass = color === 'gold' ? 'bg-gold text-espresso' : color === 'espresso' ? 'bg-espresso text-cream' : 'bg-terracotta text-white';
+                        return `
+                        <div class="bg-cream border-l-4 border-${color} p-6 md:p-8">
+                            <div class="flex items-start gap-4">
+                                <span class="${bgClass} px-3 py-1 text-sm font-semibold">Giai đoạn ${p.number}</span>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-espresso mb-2">${p.title?.[lang] || ''}</h3>
+                                    <p class="text-coffee mb-4">"${p.subtitle?.[lang] || ''}"</p>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-sm font-semibold text-espresso mb-1">${lang === 'vi' ? 'Điều kiện cần:' : 'Requirements:'}</p>
+                                            <p class="text-coffee text-sm">${p.requirements?.[lang] || ''}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-espresso mb-1">${lang === 'vi' ? 'Giá trị nhận được:' : 'Value received:'}</p>
+                                            <p class="text-coffee text-sm">${p.value?.[lang] || ''}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `}).join('');
+                }
+            }
+
+            // FAQ
+            if (c.faq) {
+                setText('[data-content="faq-title"]', c.faq.title?.[lang]);
+                const faqContainer = document.getElementById('faq-items');
+                if (faqContainer && c.faq.items) {
+                    faqContainer.innerHTML = c.faq.items.map(f => `
+                        <div class="bg-warmwhite p-6 border-l-4 border-terracotta">
+                            <h3 class="font-bold text-espresso mb-2">${f.question?.[lang] || ''}</h3>
+                            <p class="text-coffee">${f.answer?.[lang] || ''}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // CTA
+            if (c.cta) {
+                setText('[data-content="cta-tagline"]', c.cta.tagline?.[lang]);
+                setText('[data-content="cta-title"]', c.cta.title?.[lang]);
+                setText('[data-content="cta-description"]', c.cta.description?.[lang]);
+                setText('[data-content="cta-button"]', c.cta.buttonText?.[lang]);
+            }
+
+            // Settings
+            if (c.settings) {
+                if (c.settings.siteTitle) document.title = c.settings.siteTitle;
+                const footerText = document.querySelector('[data-content="footer"]');
+                if (footerText && c.settings.footerText) footerText.textContent = c.settings.footerText;
+                const ctaLink = document.getElementById('cta-link');
+                if (ctaLink && c.settings.facebook) ctaLink.href = c.settings.facebook;
+            }
+        }
+
+        function setText(selector, text) {
+            const el = document.querySelector(selector);
+            if (el && text) el.innerHTML = text;
+        }
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
@@ -369,6 +375,9 @@
             return date.toLocaleDateString('vi-VN', { year: 'numeric', month: 'short', day: 'numeric' });
         }
 
+        // Initialize
+        setLang(currentLang);
+        loadContent();
         loadBlogPosts();
     </script>
 </body>
