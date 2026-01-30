@@ -25,6 +25,7 @@
             <a href="#" class="text-warmwhite font-semibold text-lg">F&B Business Design</a>
             <div class="flex items-center gap-6">
                 <a href="#roadmap" class="text-cream/80 hover:text-white transition-colors hidden md:block">Lộ trình</a>
+                <a href="#courses" class="text-cream/80 hover:text-white transition-colors hidden md:block">Khóa học</a>
                 <a href="#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block">Liên hệ</a>
                 <div class="flex bg-espresso border border-gold/30 rounded-full p-1">
                     <button onclick="setLang('en')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white" id="btn-en">EN</button>
@@ -138,6 +139,23 @@
             </div>
             <div id="faq-items" class="space-y-6">
                 <!-- Dynamic FAQ items loaded from content.json -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses -->
+    <section id="courses" class="py-16 md:py-24 bg-warmwhite">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium" data-content="courses-tagline">Khóa học</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-4" data-content="courses-title">Các khóa học F&B</h2>
+                <p class="text-coffee max-w-2xl mx-auto" data-content="courses-subtitle">Học từ kinh nghiệm thực chiến, áp dụng ngay vào công việc của bạn.</p>
+            </div>
+            <div id="courses-grid" class="grid md:grid-cols-3 gap-8">
+                <!-- Courses loaded via JS -->
+            </div>
+            <div class="text-center mt-12">
+                <a href="#contact" class="inline-block bg-terracotta text-white px-8 py-4 font-semibold hover:bg-terracotta/90 transition-colors" data-content="courses-cta">Đăng ký tư vấn khóa học</a>
             </div>
         </div>
     </section>
@@ -296,6 +314,34 @@
                         <div class="bg-warmwhite p-6 border-l-4 border-terracotta">
                             <h3 class="font-bold text-espresso mb-2">${f.question?.[lang] || ''}</h3>
                             <p class="text-coffee">${f.answer?.[lang] || ''}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Courses
+            if (c.courses) {
+                setText('[data-content="courses-tagline"]', c.courses.tagline?.[lang]);
+                setText('[data-content="courses-title"]', c.courses.title?.[lang]);
+                setText('[data-content="courses-subtitle"]', c.courses.subtitle?.[lang]);
+                setText('[data-content="courses-cta"]', c.courses.ctaText?.[lang]);
+                const coursesContainer = document.getElementById('courses-grid');
+                if (coursesContainer && c.courses.items) {
+                    coursesContainer.innerHTML = c.courses.items.map(course => `
+                        <div class="bg-cream border border-espresso/10 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                            ${course.image ? `<img src="${course.image}" alt="${course.title?.[lang] || ''}" class="w-full h-48 object-cover">` : `<div class="w-full h-48 bg-gradient-to-br from-terracotta/20 to-gold/20 flex items-center justify-center"><svg class="w-16 h-16 text-terracotta/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>`}
+                            <div class="p-6">
+                                <div class="flex gap-2 mb-3">
+                                    <span class="bg-terracotta/10 text-terracotta px-2 py-1 text-xs font-medium rounded">${course.level?.[lang] || ''}</span>
+                                    <span class="bg-gold/10 text-coffee px-2 py-1 text-xs font-medium rounded">${course.duration?.[lang] || ''}</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-espresso mb-2">${course.title?.[lang] || ''}</h3>
+                                <p class="text-coffee text-sm mb-4">${course.description?.[lang] || ''}</p>
+                                <div class="flex justify-between items-center pt-4 border-t border-espresso/10">
+                                    <span class="text-terracotta font-bold text-lg">${course.price}</span>
+                                    <a href="#contact" class="text-sm text-espresso font-medium hover:text-terracotta transition-colors">${lang === 'vi' ? 'Tìm hiểu thêm →' : 'Learn more →'}</a>
+                                </div>
+                            </div>
                         </div>
                     `).join('');
                 }

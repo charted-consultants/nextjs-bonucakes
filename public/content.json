@@ -296,6 +296,89 @@
       }
     ]
   },
+  "courses": {
+    "tagline": {
+      "vi": "Khóa học",
+      "en": "Courses"
+    },
+    "title": {
+      "vi": "Các khóa học F&B",
+      "en": "F&B Courses"
+    },
+    "subtitle": {
+      "vi": "Học từ kinh nghiệm thực chiến, áp dụng ngay vào công việc của bạn.",
+      "en": "Learn from real experience, apply immediately to your work."
+    },
+    "items": [
+      {
+        "id": "course-1",
+        "title": {
+          "vi": "F&B Foundations - Nền tảng F&B",
+          "en": "F&B Foundations"
+        },
+        "description": {
+          "vi": "Khóa học cơ bản giúp bạn hiểu rõ ngành F&B từ A-Z, xây dựng nền tảng vững chắc cho sự nghiệp.",
+          "en": "Foundational course to understand F&B industry from A-Z, build a solid foundation for your career."
+        },
+        "image": "",
+        "price": "Liên hệ",
+        "duration": {
+          "vi": "4 tuần",
+          "en": "4 weeks"
+        },
+        "level": {
+          "vi": "Cơ bản",
+          "en": "Beginner"
+        }
+      },
+      {
+        "id": "course-2",
+        "title": {
+          "vi": "Xây dựng thương hiệu F&B",
+          "en": "F&B Branding"
+        },
+        "description": {
+          "vi": "Học cách định vị thương hiệu, tạo bản sắc riêng và thu hút khách hàng mục tiêu.",
+          "en": "Learn how to position your brand, create unique identity and attract target customers."
+        },
+        "image": "",
+        "price": "Liên hệ",
+        "duration": {
+          "vi": "6 tuần",
+          "en": "6 weeks"
+        },
+        "level": {
+          "vi": "Trung cấp",
+          "en": "Intermediate"
+        }
+      },
+      {
+        "id": "course-3",
+        "title": {
+          "vi": "Vận hành & Quản lý F&B",
+          "en": "F&B Operations & Management"
+        },
+        "description": {
+          "vi": "Hệ thống hóa quy trình vận hành, quản lý nhân sự và tối ưu chi phí cho nhà hàng/quán.",
+          "en": "Systematize operations, manage staff and optimize costs for your restaurant/café."
+        },
+        "image": "",
+        "price": "Liên hệ",
+        "duration": {
+          "vi": "8 tuần",
+          "en": "8 weeks"
+        },
+        "level": {
+          "vi": "Nâng cao",
+          "en": "Advanced"
+        }
+      }
+    ],
+    "ctaText": {
+      "vi": "Đăng ký tư vấn khóa học",
+      "en": "Register for course consultation"
+    }
+  },
   "cta": {
     "tagline": {
       "vi": "Bắt đầu ngay",
