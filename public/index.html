@@ -288,7 +288,7 @@
                         const color = colorMap[p.color] || 'terracotta';
                         const bgClass = color === 'gold' ? 'bg-gold text-espresso' : color === 'espresso' ? 'bg-espresso text-cream' : 'bg-terracotta text-white';
                         return `
-                        <div class="bg-cream border-l-4 border-${color} p-6 md:p-8">
+                        <div class="bg-cream border border-espresso/10 p-6 md:p-8">
                             <div class="flex items-start gap-4">
                                 <span class="${bgClass} px-3 py-1 text-sm font-semibold">Giai đoạn ${p.number}</span>
                                 <div class="flex-1">
@@ -317,7 +317,7 @@
                 const faqContainer = document.getElementById('faq-items');
                 if (faqContainer && c.faq.items) {
                     faqContainer.innerHTML = c.faq.items.map(f => `
-                        <div class="bg-warmwhite p-6 border-l-4 border-terracotta">
+                        <div class="bg-warmwhite p-6 border border-espresso/10">
                             <h3 class="font-bold text-espresso mb-2">${f.question?.[lang] || ''}</h3>
                             <p class="text-coffee">${f.answer?.[lang] || ''}</p>
                         </div>
