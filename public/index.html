@@ -151,6 +151,12 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-4" data-content="courses-title">Các khóa học F&B</h2>
                 <p class="text-coffee max-w-2xl mx-auto" data-content="courses-subtitle">Học từ kinh nghiệm thực chiến, áp dụng ngay vào công việc của bạn.</p>
             </div>
+
+            <!-- Featured Workshop -->
+            <div id="featured-workshop" class="mb-12 hidden">
+                <!-- Loaded via JS -->
+            </div>
+
             <div id="courses-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Courses loaded via JS -->
             </div>
@@ -325,6 +331,64 @@
                 setText('[data-content="courses-title"]', c.courses.title?.[lang]);
                 setText('[data-content="courses-subtitle"]', c.courses.subtitle?.[lang]);
                 setText('[data-content="courses-cta"]', c.courses.ctaText?.[lang]);
+
+                // Featured Workshop
+                const workshopContainer = document.getElementById('featured-workshop');
+                const ws = c.courses.featuredWorkshop;
+                if (workshopContainer && ws && ws.enabled) {
+                    const wsDate = new Date(ws.date);
+                    const dateStr = wsDate.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                    workshopContainer.classList.remove('hidden');
+                    workshopContainer.innerHTML = `
+                        <div class="bg-gradient-to-r from-terracotta to-espresso rounded-2xl p-8 md:p-10 text-warmwhite relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-gold text-espresso px-4 py-2 text-sm font-bold rounded-bl-xl">${lang === 'vi' ? 'SẮP DIỄN RA' : 'UPCOMING'}</div>
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <p class="text-gold uppercase tracking-widest text-sm mb-3 font-medium">${lang === 'vi' ? 'Workshop đặc biệt' : 'Special Workshop'}</p>
+                                    <h3 class="text-2xl md:text-3xl font-bold mb-4">${ws.title?.[lang] || ''}</h3>
+                                    <p class="text-cream/80 mb-6">${ws.description?.[lang] || ''}</p>
+                                    <div class="flex flex-wrap gap-3 mb-6">
+                                        ${(ws.features?.[lang] || []).map(f => `<span class="bg-warmwhite/10 px-3 py-1 rounded-full text-sm">${f}</span>`).join('')}
+                                    </div>
+                                    <a href="#contact" class="inline-block bg-gold text-espresso px-8 py-4 font-bold hover:bg-gold/90 transition-colors rounded-lg">${ws.ctaText?.[lang] || ''}</a>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="bg-warmwhite/10 rounded-xl p-5">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                            <div>
+                                                <p class="text-sm text-cream/60">${lang === 'vi' ? 'Ngày' : 'Date'}</p>
+                                                <p class="font-semibold">${dateStr}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            <div>
+                                                <p class="text-sm text-cream/60">${lang === 'vi' ? 'Thời gian' : 'Time'}</p>
+                                                <p class="font-semibold">${ws.time} (UK)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <p class="text-sm text-cream/60 uppercase tracking-wider">${lang === 'vi' ? 'Diễn giả' : 'Speakers'}</p>
+                                        ${(ws.speakers || []).map(s => `
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold font-bold">${s.name.charAt(0)}</div>
+                                                <div>
+                                                    <p class="font-semibold">${s.name}</p>
+                                                    <p class="text-sm text-cream/60">${s.role?.[lang] || ''}</p>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (workshopContainer) {
+                    workshopContainer.classList.add('hidden');
+                }
+
                 const coursesContainer = document.getElementById('courses-grid');
                 if (coursesContainer && c.courses.items) {
                     coursesContainer.innerHTML = c.courses.items.map(course => {

@@ -309,6 +309,43 @@
       "vi": "Học từ kinh nghiệm thực chiến, áp dụng ngay vào công việc của bạn.",
       "en": "Learn from real experience, apply immediately to your work."
     },
+    "featuredWorkshop": {
+      "enabled": true,
+      "date": "2025-02-07",
+      "time": "20:00 - 21:30",
+      "title": {
+        "vi": "Workshop: Mở nhà hàng chỉ với £20k",
+        "en": "Workshop: Bootstrap Your Restaurant with Just £20k"
+      },
+      "description": {
+        "vi": "Học cách khởi nghiệp nhà hàng với ngân sách tối thiểu. Hoàn thành bảng câu hỏi đánh giá và nhận scorecard cá nhân hóa cho hành trình F&B của bạn.",
+        "en": "Learn how to start your restaurant with minimal budget. Complete an assessment questionnaire and receive a personalized scorecard for your F&B journey."
+      },
+      "speakers": [
+        {
+          "name": "Uyên Nguyễn",
+          "role": {
+            "vi": "Chuyên gia nhà hàng & Chủ Memoire Saigon",
+            "en": "Restaurant Expert & Owner of Memoire Saigon"
+          }
+        },
+        {
+          "name": "Thi Nguyễn",
+          "role": {
+            "vi": "Chuyên gia tự động hóa cho doanh nghiệp nhỏ",
+            "en": "Automation Specialist for Small Business"
+          }
+        }
+      ],
+      "features": {
+        "vi": ["Bảng câu hỏi đánh giá", "Scorecard cá nhân hóa", "Q&A trực tiếp"],
+        "en": ["Assessment questionnaire", "Personalized scorecard", "Live Q&A"]
+      },
+      "ctaText": {
+        "vi": "Đăng ký ngay - Miễn phí",
+        "en": "Register Now - Free"
+      }
+    },
     "items": [
       {
         "id": "free-consultation",
