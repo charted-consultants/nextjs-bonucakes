@@ -283,21 +283,27 @@
                 setText('[data-content="roadmap-cta"]', c.roadmap.ctaText?.[lang]);
                 const phasesContainer = document.getElementById('roadmap-phases');
                 if (phasesContainer && c.roadmap.phases) {
-                    phasesContainer.innerHTML = c.roadmap.phases.map(p => `
-                        <div class="bg-cream border border-espresso/10 p-6 md:p-8">
+                    const colorMap = { terracotta: 'terracotta', gold: 'gold', espresso: 'espresso' };
+                    phasesContainer.innerHTML = c.roadmap.phases.map(p => {
+                        const color = colorMap[p.color] || 'terracotta';
+                        const bgClass = color === 'gold' ? 'bg-gold text-espresso' : color === 'espresso' ? 'bg-espresso text-cream' : 'bg-terracotta text-white';
+                        return `
+                        <div class="bg-cream border-l-4 border-${color} p-6 md:p-8">
                             <div class="flex items-start gap-4">
-                                <span class="text-terracotta font-semibold">${lang === 'vi' ? 'Giai đoạn' : 'Phase'} ${p.number}</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-espresso mt-3 mb-2">${p.title?.[lang] || ''}</h3>
-                            <p class="text-coffee mb-4">"${p.subtitle?.[lang] || ''}"</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1">${lang === 'vi' ? 'Điều kiện cần:' : 'Requirements:'}</p>
-                                    <p class="text-coffee text-sm">${p.requirements?.[lang] || ''}</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-espresso mb-1">${lang === 'vi' ? 'Giá trị nhận được:' : 'Value received:'}</p>
-                                    <p class="text-coffee text-sm">${p.value?.[lang] || ''}</p>
+                                <span class="${bgClass} px-3 py-1 text-sm font-semibold">Giai đoạn ${p.number}</span>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-espresso mb-2">${p.title?.[lang] || ''}</h3>
+                                    <p class="text-coffee mb-4">"${p.subtitle?.[lang] || ''}"</p>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-sm font-semibold text-espresso mb-1">${lang === 'vi' ? 'Điều kiện cần:' : 'Requirements:'}</p>
+                                            <p class="text-coffee text-sm">${p.requirements?.[lang] || ''}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-espresso mb-1">${lang === 'vi' ? 'Giá trị nhận được:' : 'Value received:'}</p>
+                                            <p class="text-coffee text-sm">${p.value?.[lang] || ''}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
