@@ -342,8 +342,8 @@
           "en": "Vietnamese Food Mastery Program"
         },
         "description": {
-          "vi": "Học làm chủ các món đặc trưng Việt Nam: Bánh mì (pate, thịt nguội, chả), Phở, Trà sữa. Công thức được điều chỉnh cho bất kỳ địa điểm nào trên thế giới. Bao ngon, không ngon hoàn tiền.",
-          "en": "Master signature Vietnamese dishes: Banh Mi (pate, cold cuts, cha), Pho, Milk Tea. Recipes adapted for anywhere in the world. Quality guaranteed or money back."
+          "vi": "Học làm chủ các món đặc trưng Việt Nam: Bánh mì (pate, thịt nguội, chả), Phở, và các món Việt truyền thống. Công thức được điều chỉnh cho bất kỳ địa điểm nào trên thế giới. Bao ngon, không ngon hoàn tiền.",
+          "en": "Master signature Vietnamese dishes: Banh Mi (pate, cold cuts, cha), Pho, and traditional Vietnamese dishes. Recipes adapted for anywhere in the world. Quality guaranteed or money back."
         },
         "image": "",
         "price": "Liên hệ",
@@ -356,6 +356,28 @@
           "en": "Signature"
         },
         "slug": "vietnamese-food-mastery"
+      },
+      {
+        "id": "milk-tea-program",
+        "title": {
+          "vi": "Chương trình Trà sữa độc quyền",
+          "en": "Milk Tea Signature Program"
+        },
+        "description": {
+          "vi": "Thiết kế menu trà sữa độc bản cho quán bạn: nền công thức vững, syrup/topping chuẩn, mix‑flavor tạo vị riêng. Kinh nghiệm thực chiến từ Trung Quốc, Thượng Hải, Đài Loan và chuỗi Nhật.",
+          "en": "Design a unique milk tea menu for your shop: solid base recipes, proper syrups/toppings, and signature flavor design. Hands‑on experience from China (Shanghai), Taiwan, and Japanese chains."
+        },
+        "image": "",
+        "price": "Liên hệ",
+        "duration": {
+          "vi": "Theo nhu cầu",
+          "en": "Customized"
+        },
+        "level": {
+          "vi": "Signature",
+          "en": "Signature"
+        },
+        "slug": "milk-tea-program"
       },
       {
         "id": "salted-egg-sponge-cake",
