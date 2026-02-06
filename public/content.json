@@ -306,53 +306,11 @@
       "en": "F&B Consulting & Training Services"
     },
     "subtitle": {
-      "vi": "Từ công thức độc quyền đến đào tạo toàn diện. Cam kết chất lượng, hoàn tiền nếu không hài lòng.",
-      "en": "From signature recipes to comprehensive training. Quality guaranteed, money-back if not satisfied."
+      "vi": "Tư vấn công thức ẩm thực độc quyền 1-1. Cam kết thành công ngay lần đầu hoặc hoàn tiền.",
+      "en": "Premium 1-1 culinary recipe consultation. Success on first try or money back guarantee."
     },
     "featuredWorkshop": {
-      "enabled": true,
-      "date": "2025-02-07",
-      "time": "20:00 - 21:30",
-      "title": {
-        "vi": "Workshop: Mở nhà hàng chỉ với £20k",
-        "en": "Workshop: Bootstrap Your Restaurant with Just £20k"
-      },
-      "description": {
-        "vi": "Học cách khởi nghiệp nhà hàng với ngân sách tối thiểu. Hoàn thành bảng câu hỏi đánh giá và nhận scorecard cá nhân hóa cho hành trình F&B của bạn.",
-        "en": "Learn how to start your restaurant with minimal budget. Complete an assessment questionnaire and receive a personalized scorecard for your F&B journey."
-      },
-      "speakers": [
-        {
-          "name": "Uyên Nguyễn",
-          "role": {
-            "vi": "Chuyên gia nhà hàng & Chủ Memoire Saigon",
-            "en": "Restaurant Expert & Owner of Memoire Saigon"
-          }
-        },
-        {
-          "name": "Thi Nguyễn",
-          "role": {
-            "vi": "Chuyên gia tự động hóa cho doanh nghiệp nhỏ",
-            "en": "Automation Specialist for Small Business"
-          }
-        }
-      ],
-      "features": {
-        "vi": [
-          "Bảng câu hỏi đánh giá",
-          "Scorecard cá nhân hóa",
-          "Q&A trực tiếp"
-        ],
-        "en": [
-          "Assessment questionnaire",
-          "Personalized scorecard",
-          "Live Q&A"
-        ]
-      },
-      "ctaText": {
-        "vi": "Đăng ký ngay - Miễn phí",
-        "en": "Register Now - Free"
-      }
+      "enabled": false
     },
     "items": [
       {
@@ -400,142 +358,33 @@
         "slug": "vietnamese-food-mastery"
       },
       {
-        "id": "free-consultation",
+        "id": "salted-egg-sponge-cake",
         "title": {
-          "vi": "Tư vấn 1-1 miễn phí",
-          "en": "Free 1-1 Consultation"
+          "vi": "Bông lan trứng muối - Công thức đặc trưng",
+          "en": "Salted Egg Sponge Cake - Signature Recipe"
         },
         "description": {
-          "vi": "30 phút trao đổi trực tiếp với Uyên để định hướng con đường F&B phù hợp với bạn.",
-          "en": "30 minutes direct conversation with Uyen to find the right F&B path for you."
+          "vi": "Công thức nổi tiếng được duy trì suốt 10+ năm với chất lượng ổn định. Tan trong miệng, để qua đêm vẫn mềm mịn không xẹp. Tự nghiên cứu và hoàn thiện qua hàng trăm lần thử nghiệm, sau đó nâng cấp với nguyên liệu 5 sao từ khách sạn Pháp.",
+          "en": "Famous recipe maintained for 10+ years with consistent quality. Melts in mouth, stays soft overnight. Self-developed and perfected through hundreds of tests, upgraded with 5-star ingredients from French hotels."
         },
         "image": "",
-        "price": "Miễn phí",
+        "price": "$3,000 USD",
         "duration": {
-          "vi": "30 phút",
-          "en": "30 mins"
+          "vi": "Công thức trọn đời",
+          "en": "Lifetime formula"
         },
         "level": {
-          "vi": "Miễn phí",
-          "en": "Free"
+          "vi": "Signature",
+          "en": "Signature"
         },
-        "slug": "free-consultation"
-      },
-      {
-        "id": "free-webinar",
-        "title": {
-          "vi": "Webinar: Bí quyết F&B",
-          "en": "Webinar: F&B Secrets"
-        },
-        "description": {
-          "vi": "Tham gia webinar hàng tháng để học các bí quyết xây dựng và vận hành F&B thành công.",
-          "en": "Join monthly webinars to learn secrets of building and running successful F&B businesses."
-        },
-        "image": "",
-        "price": "Miễn phí",
-        "duration": {
-          "vi": "60 phút",
-          "en": "60 mins"
-        },
-        "level": {
-          "vi": "Miễn phí",
-          "en": "Free"
-        },
-        "slug": "free-webinar"
-      },
-      {
-        "id": "free-ebook",
-        "title": {
-          "vi": "Ebook: F&B Expert Starter Kit",
-          "en": "Ebook: F&B Expert Starter Kit"
-        },
-        "description": {
-          "vi": "Tải ngay bộ tài liệu khởi đầu với checklist, template và hướng dẫn chi tiết cho người mới.",
-          "en": "Download the starter kit with checklists, templates and detailed guides for beginners."
-        },
-        "image": "",
-        "price": "Miễn phí",
-        "duration": {
-          "vi": "PDF",
-          "en": "PDF"
-        },
-        "level": {
-          "vi": "Miễn phí",
-          "en": "Free"
-        },
-        "slug": "free-ebook"
-      },
-      {
-        "id": "course-foundation",
-        "title": {
-          "vi": "Khóa học: Nền tảng F&B",
-          "en": "Course: F&B Foundations"
-        },
-        "description": {
-          "vi": "Khóa học toàn diện giúp bạn hiểu rõ ngành F&B từ A-Z, xây dựng nền tảng vững chắc.",
-          "en": "Comprehensive course to understand F&B industry from A-Z, build a solid foundation."
-        },
-        "image": "",
-        "price": "Liên hệ",
-        "duration": {
-          "vi": "4 tuần",
-          "en": "4 weeks"
-        },
-        "level": {
-          "vi": "Cơ bản",
-          "en": "Beginner"
-        },
-        "slug": "course-foundation"
-      },
-      {
-        "id": "course-branding",
-        "title": {
-          "vi": "Khóa học: Xây dựng thương hiệu",
-          "en": "Course: F&B Branding"
-        },
-        "description": {
-          "vi": "Học cách định vị thương hiệu, tạo bản sắc riêng và thu hút khách hàng mục tiêu.",
-          "en": "Learn how to position your brand, create unique identity and attract target customers."
-        },
-        "image": "",
-        "price": "Liên hệ",
-        "duration": {
-          "vi": "6 tuần",
-          "en": "6 weeks"
-        },
-        "level": {
-          "vi": "Trung cấp",
-          "en": "Intermediate"
-        },
-        "slug": "course-branding"
-      },
-      {
-        "id": "course-operations",
-        "title": {
-          "vi": "Khóa học: Vận hành & Quản lý",
-          "en": "Course: Operations & Management"
-        },
-        "description": {
-          "vi": "Hệ thống hóa quy trình vận hành, quản lý nhân sự và tối ưu chi phí cho nhà hàng.",
-          "en": "Systematize operations, manage staff and optimize costs for your restaurant."
-        },
-        "image": "",
-        "price": "Liên hệ",
-        "duration": {
-          "vi": "8 tuần",
-          "en": "8 weeks"
-        },
-        "level": {
-          "vi": "Nâng cao",
-          "en": "Advanced"
-        },
-        "slug": "course-operations"
+        "slug": "salted-egg-sponge-cake"
       }
     ],
     "ctaText": {
-      "vi": "Đăng ký tư vấn khóa học",
-      "en": "Register for course consultation"
-    }
+      "vi": "Xem chi tiết dịch vụ",
+      "en": "View service details"
+    },
+    "ctaLink": "/culinary-consultation.html"
   },
   "cta": {
     "tagline": {
