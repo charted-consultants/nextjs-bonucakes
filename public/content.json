@@ -266,32 +266,52 @@
     "items": [
       {
         "question": {
-          "vi": "Bo mới bắt đầu và chưa có sản phẩm, nên chọn gói nào?",
-          "en": "I'm new and don't have a product yet, which package should I choose?"
+          "vi": "Tư vấn công thức có phù hợp với nguyên liệu tại địa phương tôi không?",
+          "en": "Will the recipe consultation work with my local ingredients?"
         },
         "answer": {
-          "vi": "Bắt đầu với giai đoạn Khám phá & Làm quen. Chương trình này được thiết kế để xây dựng từ gốc: từ tư duy, định vị ngách, xây dựng sản phẩm đầu tiên cho đến khi vận hành ổn định.",
-          "en": "Start with the Discovery phase. This is designed to build from the ground up: from mindset, positioning, building your first product to stable operations."
+          "vi": "Có. Bạn chụp ảnh nguyên liệu có sẵn tại địa phương và gửi cho mình. Mình sẽ điều chỉnh công thức cho phù hợp với nguyên liệu đó. Cam kết làm một phát ăn ngay, hoặc hoàn tiền.",
+          "en": "Yes. You send photos of your local ingredients. I'll adjust the recipe to work with what you have. Success on first try guaranteed, or money back."
         }
       },
       {
         "question": {
-          "vi": "F&B Expert OS khác gì so với các khóa học kinh doanh khác?",
-          "en": "How is F&B Expert OS different from other business courses?"
+          "vi": "Tại sao nên chọn tư vấn từ Uyên thay vì học từ YouTube?",
+          "en": "Why choose Uyên's consultation instead of learning from YouTube?"
         },
         "answer": {
-          "vi": "Đây không chỉ là một khóa học cung cấp kiến thức. Đây là một HỆ ĐIỀU HÀNH (OS) giúp bạn cài đặt tư duy và quy trình làm việc chuẩn ngay từ đầu.",
-          "en": "This is not just a course providing knowledge. This is an OPERATING SYSTEM (OS) that helps you install standardized mindset and work processes from the start."
+          "vi": "YouTube cho kiến thức chung. Tư vấn từ mình cho công thức cụ thể đã được test và điều chỉnh cho chính nguyên liệu của bạn. Mình có 10+ năm kinh nghiệm thực chiến, từ thất bại đến Best Bánh Mì in Manchester. Mình biết những sai lầm phải tránh.",
+          "en": "YouTube gives general knowledge. My consultation gives you specific, tested recipes adjusted for YOUR ingredients. I have 10+ years real experience, from failures to Best Bánh Mì in Manchester. I know what mistakes to avoid."
         }
       },
       {
         "question": {
-          "vi": "Bo có cần kinh nghiệm F&B để tham gia không?",
-          "en": "Do I need F&B experience to join?"
+          "vi": "Tôi chưa có kinh nghiệm F&B, có thể học được không?",
+          "en": "I have no F&B experience, can I still learn?"
         },
         "answer": {
-          "vi": "Không nhất thiết. Nếu bạn có đam mê với F&B và muốn xây dựng sự nghiệp trong lĩnh vực này, chương trình sẽ hướng dẫn bạn từ những nền tảng cơ bản.",
-          "en": "Not necessarily. If you have passion for F&B and want to build a career in this field, this program will guide you from the fundamentals."
+          "vi": "Được. Chương trình Mastery được thiết kế để bạn làm chủ món từ đầu, kể cả khi chưa có kinh nghiệm. Công thức đơn giản, rõ ràng, và mình sẽ hướng dẫn chi tiết từng bước.",
+          "en": "Yes. The Mastery programs are designed for you to master dishes from scratch, even with no experience. Recipes are simple, clear, and I guide you step by step."
+        }
+      },
+      {
+        "question": {
+          "vi": "Làm sao biết công thức có phù hợp với thị trường UK không?",
+          "en": "How do I know the recipes work for the UK market?"
+        },
+        "answer": {
+          "vi": "Mình đã vận hành F&B tại London, Manchester, và Wales suốt 10+ năm. Công thức đã được test với nguyên liệu UK, khẩu vị địa phương, và yêu cầu về Food Safety. Wow Banh Mi được bình chọn Best Bánh Mì in Manchester chính là minh chứng.",
+          "en": "I've run F&B in London, Manchester, and Wales for 10+ years. Recipes are tested with UK ingredients, local taste preferences, and Food Safety requirements. Wow Banh Mi being voted Best Bánh Mì in Manchester is proof."
+        }
+      },
+      {
+        "question": {
+          "vi": "Sau khi học xong, tôi có được hỗ trợ thêm không?",
+          "en": "Do I get ongoing support after the program?"
+        },
+        "answer": {
+          "vi": "Có. Bạn có thể liên hệ mình nếu gặp vấn đề khi thực hành công thức. Mình cam kết hỗ trợ đến khi bạn làm được món ngon và ổn định.",
+          "en": "Yes. You can contact me if you face issues when practicing the recipes. I'm committed to supporting you until you can make consistently good dishes."
         }
       }
     ]
