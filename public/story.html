@@ -15,6 +15,46 @@
         .timeline-dot { width: 16px; height: 16px; }
         .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Drop cap styling */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.5rem;
+            line-height: 0.85;
+            margin: 0.1em 0.1em 0 0;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #C4704A;
+        }
+
+        /* Article styling */
+        .article-text {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            color: #4A3728;
+        }
+
+        .article-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .year-marker {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #C4704A;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .pull-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #3D2314;
+            border-left: 4px solid #D4A853;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+        }
     </style>
 </head>
 <body class="bg-cream">
@@ -49,117 +89,44 @@
         </div>
     </section>
 
-    <!-- Timeline -->
-    <section class="py-16 md:py-24 bg-cream">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-4">Hành trình</h2>
-                <p class="text-coffee">Mỗi chặng đường, một bài học quý giá</p>
+    <!-- Article -->
+    <section class="py-16 md:py-24 bg-warmwhite">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <p class="text-terracotta uppercase tracking-widest text-sm mb-2 font-medium">The Full Story</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-espresso mb-4">Mười năm, ba thành phố, vô số bài học</h2>
+                <p class="text-coffee/60 italic">Một hành trình từ bán bánh online đến nhà hàng ở Wales</p>
             </div>
 
-            <!-- Timeline Items -->
-            <div class="space-y-12">
-                <!-- 2015-2023: Bán bánh online -->
-                <div class="relative pl-8 md:pl-16 border-l-4 border-terracotta">
-                    <div class="absolute -left-2 top-0 timeline-dot bg-terracotta rounded-full"></div>
-                    <div class="bg-warmwhite p-6 md:p-8 shadow-sm">
-                        <span class="text-terracotta font-bold text-sm uppercase tracking-wider">2015 - 2023</span>
-                        <h3 class="text-2xl font-bold text-espresso mt-2 mb-4">Khởi đầu: Bán bánh online 8 năm</h3>
-                        <p class="text-coffee mb-4">Bắt đầu với niềm đam mê patisserie, tôi đã bán bánh online trong 8 năm. Mỗi chiếc bánh được làm bằng tay, giao tận nơi. Từ đây, tôi nghĩ mình đã hiểu rõ về kinh doanh F&B.</p>
-                        <div class="bg-cream/50 p-4 rounded border-l-4 border-gold">
-                            <p class="text-coffee/80 italic text-sm">💡 Bài học: Online business xây dựng nền tảng về chất lượng sản phẩm và quản lý đơn hàng.</p>
-                        </div>
-                    </div>
+            <div class="article-text bg-white p-8 md:p-12 shadow-sm">
+                <p class="year-marker">2015-2023</p>
+
+                <p class="drop-cap">Bắt đầu với niềm đam mê patisserie, tôi đã bán bánh online trong 8 năm. Mỗi chiếc bánh được làm bằng tay, giao tận nơi. Những ngày đầu rất đơn giản: làm bánh buổi sáng, chụp ảnh, đăng lên mạng, rồi giao hàng chiều tối. Từ từ, khách hàng tích lũy, đơn hàng nhiều hơn. Tôi nghĩ mình đã hiểu rõ về kinh doanh F&B. Tôi biết làm sao để tạo ra sản phẩm ngon, biết cách quản lý đơn hàng, biết cách giữ chân khách hàng.</p>
+
+                <p>Nhưng thực ra, tôi chỉ mới biết một phần nhỏ của câu chuyện.</p>
+
+                <p class="year-marker">2023</p>
+
+                <p>Sau 8 năm xây dựng danh tiếng online, tôi quyết định mở Bonu Cakes and Tea tại trung tâm London. Đó là một quyết định táo bạo. Một địa điểm đắc địa ngay Central London. Một không gian đẹp. Menu đa dạng với bánh ngọt, trà sữa, và bánh mì Việt Nam.</p>
+
+                <p>Ban đầu, mọi thứ rất tốt đẹp. Khách đến đông. Sản phẩm được khen ngợi. Tôi tự hào về những gì mình đã tạo ra. Nhưng sau đó, những con số bắt đầu không còn như tôi nghĩ. Chi phí vận hành cao hơn dự tính. Quản lý nhân sự phức tạp hơn nhiều. Marketing offline khác hoàn toàn với online.</p>
+
+                <p class="pull-quote">"Sau hơn một năm, tôi phải đóng cửa. Đó là thất bại lớn đầu tiên của tôi."</p>
+
+                <p>Tôi quá chủ quan. Tôi nghĩ kinh nghiệm 8 năm bán online đủ để vận hành một tiệm. Nhưng thực tế đã dạy tôi một bài học đắt giá: <em>online và offline là hai mô hình hoàn toàn khác nhau</em>. Offline business đòi hỏi business skills nhiều hơn, không chỉ là làm sản phẩm ngon. Nó cần chiến lược về vị trí, về giá cả, về cạnh tranh, về cash flow. Những thứ mà tôi chưa từng thật sự phải đối mặt khi bán online.</p>
+
+                <div class="bg-cream/30 p-6 my-8 border-l-4 border-terracotta">
+                    <p class="text-sm uppercase tracking-wider text-terracotta font-semibold mb-2">Thời kỳ COVID và sau đó</p>
+                    <p class="text-coffee">Sau khi đóng cửa Bonu Cakes and Tea ở London, đặc biệt qua giai đoạn COVID, tôi dừng lại để suy nghĩ. Tôi nhận ra ba điều then chốt: <strong>Sản phẩm ngon không bằng kinh doanh thành công</strong>. Tôi cần học business skills thật sự - từ vị trí, marketing, quản lý nhân sự, đến tài chính. Và cuối cùng, <strong>đam mê không đủ</strong> - cần có chiến lược và hệ thống.</p>
                 </div>
 
-                <!-- 2023: Bonu Cafe London -->
-                <div class="relative pl-8 md:pl-16 border-l-4 border-gold">
-                    <div class="absolute -left-2 top-0 timeline-dot bg-gold rounded-full"></div>
-                    <div class="bg-warmwhite p-6 md:p-8 shadow-sm">
-                        <span class="text-gold font-bold text-sm uppercase tracking-wider">2023</span>
-                        <h3 class="text-2xl font-bold text-espresso mt-2 mb-4">Bonu Cakes and Tea - Central London</h3>
-                        <p class="text-coffee mb-4">Với background về patisserie, tôi mở Bonu Cakes and Tea tại trung tâm London. Chuyên về bánh, trà sữa, và bánh mì Việt Nam. Địa điểm đẹp, sản phẩm ngon. Ban đầu rất thành công.</p>
-                        <div class="grid md:grid-cols-3 gap-4 mb-4">
-                            <div class="text-center p-3 bg-cream/50 rounded">
-                                <p class="text-espresso font-bold">Central London</p>
-                                <p class="text-coffee/60 text-sm">Vị trí đắc địa</p>
-                            </div>
-                            <div class="text-center p-3 bg-cream/50 rounded">
-                                <p class="text-espresso font-bold">Bánh & Trà sữa</p>
-                                <p class="text-coffee/60 text-sm">Signature items</p>
-                            </div>
-                            <div class="text-center p-3 bg-cream/50 rounded">
-                                <p class="text-espresso font-bold">Bánh mì VN</p>
-                                <p class="text-coffee/60 text-sm">Đặc trưng</p>
-                            </div>
-                        </div>
-                        <p class="text-coffee mb-4">Nhưng sau hơn một năm, tôi phải đóng cửa.</p>
-                        <div class="bg-espresso/5 p-4 rounded border-l-4 border-espresso">
-                            <p class="text-espresso font-semibold mb-2">⚠️ Thất bại lớn đầu tiên</p>
-                            <p class="text-coffee/80 text-sm">Tôi quá chủ quan. Tôi nghĩ kinh nghiệm 8 năm bán online đủ để vận hành một tiệm. Nhưng thực tế: <strong>online và offline là hai mô hình hoàn toàn khác nhau</strong>. Offline business đòi hỏi business skills nhiều hơn, không chỉ là làm sản phẩm ngon.</p>
-                        </div>
-                    </div>
-                </div>
+                <p class="year-marker">2024</p>
 
-                <!-- Post-COVID: Learning Period -->
-                <div class="relative pl-8 md:pl-16 border-l-4 border-coffee">
-                    <div class="absolute -left-2 top-0 timeline-dot bg-coffee rounded-full"></div>
-                    <div class="bg-warmwhite p-6 md:p-8 shadow-sm">
-                        <span class="text-coffee font-bold text-sm uppercase tracking-wider">Sau London</span>
-                        <h3 class="text-2xl font-bold text-espresso mt-2 mb-4">Thời kỳ học hỏi và đau đớn</h3>
-                        <p class="text-coffee mb-4">Sau khi đóng cửa Bonu Cakes and Tea ở London, đặc biệt qua giai đoạn COVID, tôi dừng lại để suy nghĩ. Tôi nhận ra:</p>
-                        <ul class="space-y-3 mb-4">
-                            <li class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-terracotta flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span class="text-coffee"><strong>Sản phẩm ngon ≠ Kinh doanh thành công</strong></span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-terracotta flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span class="text-coffee"><strong>Cần học business skills</strong>: vị trí, marketing, quản lý nhân sự, tài chính</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-terracotta flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span class="text-coffee"><strong>Đam mê không đủ</strong> - cần chiến lược và hệ thống</span>
-                            </li>
-                        </ul>
-                        <div class="bg-cream/50 p-4 rounded border-l-4 border-gold">
-                            <p class="text-coffee/80 italic text-sm">💡 Bài học: Thất bại là phần không thể thiếu của hành trình. Điều quan trọng là học được gì từ nó.</p>
-                        </div>
-                    </div>
-                </div>
+                <p class="drop-cap">Manchester là khởi đầu mới. Lần này, tôi không đi một mình. Tôi trở thành co-founder của Wow Banh Mi, một nhà hàng nhỏ chuyên về các món truyền thống Việt Nam. Khác với lần trước, lần này tôi đã chuẩn bị kỹ hơn. Tôi áp dụng những gì đã học được từ thất bại ở London.</p>
 
-                <!-- Manchester: Wow Banh Mi -->
-                <div class="relative pl-8 md:pl-16 border-l-4 border-terracotta">
-                    <div class="absolute -left-2 top-0 timeline-dot bg-terracotta rounded-full"></div>
-                    <div class="bg-warmwhite p-6 md:p-8 shadow-sm">
-                        <span class="text-terracotta font-bold text-sm uppercase tracking-wider">2024 - Manchester</span>
-                        <h3 class="text-2xl font-bold text-espresso mt-2 mb-4">Wow Banh Mi - Thành công ở Manchester</h3>
-                        <p class="text-coffee mb-4">Học từ thất bại, tôi chuyển đến Manchester và trở thành co-founder của một nhà hàng nhỏ. Lần này, tôi áp dụng những gì đã học được.</p>
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div class="bg-cream/50 p-4 rounded">
-                                <p class="text-espresso font-semibold mb-2">Menu đặc trưng</p>
-                                <ul class="text-coffee text-sm space-y-1">
-                                    <li>• Bánh mì Việt Nam</li>
-                                    <li>• Phở truyền thống</li>
-                                    <li>• Cà phê Việt Nam</li>
-                                    <li>• Các món ăn truyền thống</li>
-                                </ul>
-                            </div>
-                            <div class="bg-cream/50 p-4 rounded">
-                                <p class="text-espresso font-semibold mb-2">Kết quả</p>
-                                <ul class="text-coffee text-sm space-y-1">
-                                    <li>✨ Best Bánh Mì in Manchester</li>
-                                    <li>📈 Business đang phát triển tốt</li>
-                                    <li>🎯 Mô hình bền vững</li>
-                                    <li>💪 Đội ngũ vững mạnh</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="bg-cream/50 p-4 rounded border-l-4 border-gold">
-                            <p class="text-coffee/80 italic text-sm">💡 Bài học: Áp dụng đúng business skills + chất lượng sản phẩm = Thành công bền vững.</p>
-                        </div>
-                    </div>
-                </div>
+                <p>Wow Banh Mi không chỉ bán bánh mì. Chúng tôi có phở, cà phê Việt Nam, và các món ăn truyền thống khác. Nhưng điều quan trọng hơn là cách chúng tôi xây dựng business. Chúng tôi có hệ thống. Chúng tôi có chiến lược. Chúng tôi hiểu rõ thị trường địa phương.</p>
+
+                <p>Và kết quả đã chứng minh mọi thứ. Wow Banh Mi được bình chọn là <strong>Best Bánh Mì in Manchester</strong>. Business đang phát triển tốt. Mô hình bền vững. Đội ngũ vững mạnh. Lần này, chúng tôi đã làm đúng.</p>
 
                 <!-- Wales: Memoire Saigon -->
                 <div class="relative pl-8 md:pl-16 border-l-4 border-gold">
