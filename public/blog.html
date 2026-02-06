@@ -14,18 +14,20 @@
 </head>
 <body class="bg-cream min-h-screen">
     <!-- Navbar -->
-    <nav class="bg-espresso text-white p-4">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="/" class="text-3xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
             <div class="flex items-center gap-6">
-                <a href="/" class="text-cream/80 hover:text-white">Trang chủ</a>
-                <a href="/blog.html" class="text-white font-medium">Blog</a>
+                <a href="/story.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Câu chuyện</a>
+                <a href="/#roadmap" class="text-cream/80 hover:text-white transition-colors hidden md:block">Lộ trình</a>
+                <a href="/#courses" class="text-cream/80 hover:text-white transition-colors hidden md:block">Khóa học</a>
+                <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block">Liên hệ</a>
             </div>
         </div>
     </nav>
 
     <!-- Header -->
-    <header class="bg-warmwhite py-12 border-b border-espresso/10">
+    <header class="bg-warmwhite py-24 md:py-28 border-b border-espresso/10">
         <div class="max-w-6xl mx-auto px-6 text-center">
             <h1 class="text-4xl font-bold text-espresso mb-4">Blog</h1>
             <p class="text-coffee max-w-2xl mx-auto">Chia sẻ kinh nghiệm, góc nhìn và hành trình trong ngành F&B</p>
