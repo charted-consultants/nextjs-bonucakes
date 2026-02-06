@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Khoá học - Bonu F&B</title>
+    <link rel="icon" href="https://thielts.chartedconsultants.com/bonu/profile.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{cream:'#FDF8F3',warmwhite:'#FFFBF5',terracotta:'#C4704A',espresso:'#3D2314',gold:'#D4A853',coffee:'#4A3728'}}}};</script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+      h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-cream min-h-screen">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-3xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
+            <div class="flex items-center gap-6">
+                <a href="/story.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Câu chuyện</a>
+                <a href="/#roadmap" class="text-cream/80 hover:text-white transition-colors hidden md:block">Lộ trình</a>
+                <a href="/#courses" class="text-cream/80 hover:text-white transition-colors hidden md:block">Khóa học</a>
+                <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block">Liên hệ</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-warmwhite pt-24 md:pt-28 pb-10 border-b border-espresso/10">
+        <div class="max-w-4xl mx-auto px-6">
+            <p id="course-level" class="text-terracotta uppercase tracking-widest text-sm mb-3 font-medium"></p>
+            <h1 id="course-title" class="text-3xl md:text-4xl font-bold text-espresso mb-4">Đang tải...</h1>
+            <p id="course-description" class="text-coffee text-lg"></p>
+        </div>
+    </header>
+
+    <!-- Details -->
+    <main class="max-w-4xl mx-auto px-6 py-10">
+        <div class="grid md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white border border-espresso/10 p-5">
+                <p class="text-coffee/70 text-sm">Thời lượng / Duration</p>
+                <p id="course-duration" class="text-espresso font-semibold"></p>
+            </div>
+            <div class="bg-white border border-espresso/10 p-5">
+                <p class="text-coffee/70 text-sm">Mức / Level</p>
+                <p id="course-level2" class="text-espresso font-semibold"></p>
+            </div>
+            <div class="bg-white border border-espresso/10 p-5">
+                <p class="text-coffee/70 text-sm">Giá / Price</p>
+                <p id="course-price" class="text-espresso font-semibold"></p>
+            </div>
+        </div>
+
+        <div class="bg-white border border-espresso/10 p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-espresso mb-4">Nội dung / What you get</h2>
+            <div id="course-body" class="text-coffee leading-7">
+                <p class="text-coffee/70">Chi tiết sẽ được trao đổi theo nhu cầu. Vui lòng liên hệ để nhận lộ trình phù hợp.</p>
+            </div>
+            <div class="mt-8">
+                <a href="/culinary-consultation.html#contact" class="inline-flex items-center gap-3 bg-terracotta text-white px-8 py-3 font-semibold hover:bg-terracotta/90 transition-colors">Liên hệ tư vấn</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-espresso border-t border-gold/20 py-12 mt-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <span class="text-2xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</span>
+                </div>
+                <div class="flex gap-6 text-cream/60 text-sm">
+                    <a href="/" class="hover:text-white transition-colors">Trang chủ</a>
+                    <a href="/blog.html" class="hover:text-white transition-colors">Blog</a>
+                </div>
+            </div>
+            <div class="border-t border-cream/10 mt-8 pt-8 text-center text-cream/40 text-sm">
+                <p>&copy; 2026 Bonu F&B</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      let currentLang = localStorage.getItem('lang') || 'vi';
+      function setText(el, value){ if(el && value) el.innerHTML = value; }
+      async function load() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const slug = params.get('slug');
+          const res = await fetch('/content.json');
+          const data = await res.json();
+          const courses = (data.courses && data.courses.items) || [];
+          const found = courses.find(c => c.slug === slug);
+          const title = document.getElementById('course-title');
+          const desc = document.getElementById('course-description');
+          const level = document.getElementById('course-level');
+          const level2 = document.getElementById('course-level2');
+          const duration = document.getElementById('course-duration');
+          const price = document.getElementById('course-price');
+          const body = document.getElementById('course-body');
+          const pageTitle = document.getElementById('page-title');
+          if (!found) {
+            setText(title, currentLang==='vi' ? 'Không tìm thấy khoá học' : 'Course not found');
+            return;
+          }
+          setText(pageTitle, (found.title?.[currentLang] || 'Khoá học') + ' - Bonu F&B');
+          setText(title, found.title?.[currentLang] || '');
+          setText(desc, found.description?.[currentLang] || '');
+          setText(level, found.level?.[currentLang] || found.level || '');
+          setText(level2, found.level?.[currentLang] || found.level || '');
+          setText(duration, found.duration?.[currentLang] || found.duration || '');
+          setText(price, found.price || '');
+          // Optional long body: reuse description as default
+          setText(body, found.longDescription?.[currentLang] || found.description?.[currentLang] || '');
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      load();
+    </script>
+</body>
+</html>
+
