@@ -1,11 +1,11 @@
 {
   "settings": {
-    "siteTitle": "F&B Mentor - Nguyễn Ngọc Minh Uyên",
+    "siteTitle": "F&B business mentor - Nguyễn Ngọc Minh Uyên",
     "siteDescription": "Xây dựng sự nghiệp F&B từ chuyên môn độc lập, tự chủ, bền vững.",
     "favicon": "https://thielts.chartedconsultants.com/bonu/profile.webp",
     "facebook": "https://www.facebook.com/profile.php?id=100009102362568",
     "instagram": "",
-    "footerText": "© 2026 Uyên Nguyễn - F&B Business Mentor"
+    "footerText": "© 2026 Uyên Nguyễn - F&B business mentor"
   },
   "hero": {
     "tagline": {
@@ -99,7 +99,7 @@
     "image": "https://thielts.chartedconsultants.com/bonu/profile.webp",
     "badges": [
       "Le Cordon Bleu",
-      "F&B Mentor"
+      "F&B business mentor"
     ]
   },
   "dna": {
