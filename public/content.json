@@ -266,7 +266,7 @@
     "items": [
       {
         "question": {
-          "vi": "Tôi mới bắt đầu và chưa có sản phẩm, nên chọn gói nào?",
+          "vi": "Bo mới bắt đầu và chưa có sản phẩm, nên chọn gói nào?",
           "en": "I'm new and don't have a product yet, which package should I choose?"
         },
         "answer": {
@@ -286,7 +286,7 @@
       },
       {
         "question": {
-          "vi": "Tôi có cần kinh nghiệm F&B để tham gia không?",
+          "vi": "Bo có cần kinh nghiệm F&B để tham gia không?",
           "en": "Do I need F&B experience to join?"
         },
         "answer": {

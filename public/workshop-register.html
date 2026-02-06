@@ -192,7 +192,7 @@
                     {
                         id: 'expectations',
                         label: 'Bạn kỳ vọng gì từ workshop này?',
-                        placeholder: 'Ví dụ: Tôi muốn học cách lập ngân sách khởi nghiệp, tìm hiểu về các bước cần thiết để mở nhà hàng...',
+                        placeholder: 'Ví dụ: Bo muốn học cách lập ngân sách khởi nghiệp, tìm hiểu về các bước cần thiết để mở nhà hàng...',
                         required: true
                     },
                     {
@@ -269,7 +269,7 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    showSuccess(result.message || 'Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn sớm.');
+                    showSuccess(result.message || 'Đăng ký thành công! Bonu F&B sẽ liên hệ với bạn sớm.');
                     document.getElementById('registration-form').reset();
                 } else {
                     throw new Error(result.error || 'Có lỗi xảy ra');
