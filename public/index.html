@@ -393,21 +393,46 @@
                 setText('[data-content="roadmap-cta"]', c.roadmap.ctaText?.[lang]);
                 const phasesContainer = document.getElementById('roadmap-phases');
                 if (phasesContainer && c.roadmap.phases) {
+                    const labelPhase = (lang === 'vi' ? 'Giai đoạn' : 'Phase');
+                    const labelReq = (lang === 'vi' ? 'Điều kiện cần' : 'Requirements');
+                    const labelVal = (lang === 'vi' ? 'Giá trị nhận được' : 'Value received');
                     phasesContainer.innerHTML = `
-                        <div class="overflow-x-auto">
+                        <!-- Mobile: stacked cards -->
+                        <div class="space-y-4 md:hidden">
+                            ${c.roadmap.phases.map((p, i) => `
+                                <div class="bg-warmwhite border border-espresso/10">
+                                    <div class="p-4">
+                                        <p class="text-terracotta font-semibold text-sm mb-1">${labelPhase} ${p.number}</p>
+                                        <h3 class="font-bold text-espresso">${p.title?.[lang] || ''}</h3>
+                                        <p class="text-coffee text-sm mt-1">"${p.subtitle?.[lang] || ''}"</p>
+                                    </div>
+                                    <div class="border-t border-espresso/10 p-4">
+                                        <p class="text-espresso font-semibold text-sm mb-1">${labelReq}</p>
+                                        <p class="text-coffee text-sm">${p.requirements?.[lang] || ''}</p>
+                                    </div>
+                                    <div class="border-t border-espresso/10 p-4">
+                                        <p class="text-espresso font-semibold text-sm mb-1">${labelVal}</p>
+                                        <p class="text-coffee text-sm">${p.value?.[lang] || ''}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Desktop: table layout -->
+                        <div class="overflow-x-auto hidden md:block">
                             <table class="w-full border-collapse">
                                 <thead>
                                     <tr class="bg-espresso text-warmwhite text-left">
-                                        <th class="p-4 font-semibold">${lang === 'vi' ? 'Giai đoạn' : 'Phase'}</th>
-                                        <th class="p-4 font-semibold">${lang === 'vi' ? 'Điều kiện cần' : 'Requirements'}</th>
-                                        <th class="p-4 font-semibold">${lang === 'vi' ? 'Giá trị nhận được' : 'Value received'}</th>
+                                        <th class="p-4 font-semibold">${labelPhase}</th>
+                                        <th class="p-4 font-semibold">${labelReq}</th>
+                                        <th class="p-4 font-semibold">${labelVal}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     ${c.roadmap.phases.map((p, i) => `
                                         <tr class="${i % 2 === 0 ? 'bg-cream' : 'bg-warmwhite'}">
                                             <td class="p-4 align-top border-b border-espresso/10">
-                                                <p class="text-terracotta font-semibold text-sm mb-1">${lang === 'vi' ? 'Giai đoạn' : 'Phase'} ${p.number}</p>
+                                                <p class="text-terracotta font-semibold text-sm mb-1">${labelPhase} ${p.number}</p>
                                                 <p class="font-bold text-espresso">${p.title?.[lang] || ''}</p>
                                                 <p class="text-coffee text-sm mt-1">"${p.subtitle?.[lang] || ''}"</p>
                                             </td>
