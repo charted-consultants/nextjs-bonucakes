@@ -182,12 +182,12 @@
                 const name = product.name[currentLang] || product.name.vi;
                 const shortDesc = product.shortDescription[currentLang] || product.shortDescription.vi;
                 const promotion = product.promotion ? (product.promotion[currentLang] || product.promotion.vi) : '';
-                const image = product.images && product.images.length > 0 ? product.images[0] : '/images/placeholder-product.webp';
+                const image = product.images && product.images.length > 0 ? product.images[0] : '/img/profile.webp';
 
                 return `
-                    <div class="bg-white border border-espresso/10 overflow-hidden hover-lift">
+                    <a href="/banh-mi/product.html?slug=${product.slug}" class="block bg-white border border-espresso/10 overflow-hidden hover-lift cursor-pointer">
                         <div class="relative">
-                            <img src="${image}" alt="${name}" class="w-full h-64 object-cover" onerror="this.src='/images/placeholder-product.webp'">
+                            <img src="${image}" alt="${name}" class="w-full h-64 object-cover" onerror="this.src='/img/profile.webp'">
                             ${product.featured ? `<div class="absolute top-4 right-4 bg-gold text-espresso px-3 py-1 text-sm font-semibold">${currentLang === 'vi' ? 'Nổi bật' : 'Featured'}</div>` : ''}
                             ${promotion ? `<div class="absolute top-4 left-4 bg-terracotta text-white px-3 py-1 text-sm font-semibold">${promotion}</div>` : ''}
                         </div>
@@ -197,11 +197,11 @@
                             <div class="flex items-center justify-between mb-4">
                                 <div class="text-2xl font-bold text-terracotta">${product.price.displayPrice}</div>
                             </div>
-                            <a href="/banh-mi/product.html?slug=${product.slug}" class="block w-full text-center bg-terracotta text-white px-6 py-3 font-semibold hover:bg-terracotta/90 transition-colors">
+                            <div class="block w-full text-center bg-terracotta text-white px-6 py-3 font-semibold hover:bg-terracotta/90 transition-colors">
                                 ${currentLang === 'vi' ? 'Xem chi tiết & Đặt hàng' : 'View Details & Order'}
-                            </a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 `;
             }).join('');
 
