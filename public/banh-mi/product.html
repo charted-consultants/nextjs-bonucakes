@@ -582,25 +582,15 @@
             const totalItems = quantity + freeItems;
 
             const orderData = {
-                customerInfo: {
-                    name: document.getElementById('customer-name').value.trim(),
-                    email: document.getElementById('customer-email').value.trim(),
-                    phone: document.getElementById('customer-phone').value.trim(),
-                    deliveryAddress: document.getElementById('delivery-address').value.trim()
-                },
-                orderItems: [{
-                    productId: currentProduct.id,
-                    productName: currentProduct.name.vi,
-                    quantity: quantity,
-                    unitPrice: currentProduct.price.amount,
-                    currency: currentProduct.price.currency,
-                    itemTotal: quantity * currentProduct.price.amount,
-                    promotion: freeItems > 0 ? `Mua 10 tặng 1 (thực tế ${totalItems} ổ)` : null
-                }],
+                customerName: document.getElementById('customer-name').value.trim(),
+                customerEmail: document.getElementById('customer-email').value.trim(),
+                customerPhone: document.getElementById('customer-phone').value.trim(),
+                deliveryAddress: document.getElementById('delivery-address').value.trim(),
+                productId: currentProduct.id,
+                productName: currentProduct.name.vi,
+                quantity: quantity,
                 deliveryDate: document.getElementById('delivery-date').value,
-                specialNotes: document.getElementById('special-notes').value.trim(),
-                orderTotal: quantity * currentProduct.price.amount,
-                currency: currentProduct.price.currency
+                specialNotes: document.getElementById('special-notes').value.trim()
             };
 
             try {
@@ -618,14 +608,16 @@
                     // Redirect to success page
                     window.location.href = `/banh-mi/order-success.html?orderId=${result.orderId}`;
                 } else {
-                    throw new Error(result.message || 'Order failed');
+                    console.error('API error response:', result);
+                    throw new Error(result.error || result.message || 'Order failed');
                 }
 
             } catch (error) {
                 console.error('Order submission error:', error);
+                const errorMsg = error.message || 'Unknown error';
                 formError.textContent = currentLang === 'vi'
-                    ? 'Có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ trực tiếp với chúng tôi.'
-                    : 'An error occurred. Please try again or contact us directly.';
+                    ? `Có lỗi xảy ra: ${errorMsg}. Vui lòng thử lại hoặc liên hệ trực tiếp với chúng tôi.`
+                    : `An error occurred: ${errorMsg}. Please try again or contact us directly.`;
                 formError.classList.add('active');
                 submitButton.disabled = false;
                 loadingMessage.classList.add('hidden');
