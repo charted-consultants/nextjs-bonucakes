@@ -754,7 +754,7 @@
         // Initialize
         setLang(currentLang);
         loadContent();
-        loadFeaturedProducts();
+        // loadFeaturedProducts is defined in a later script block
         loadBlogPosts();
     </script>
 
@@ -814,6 +814,9 @@
                 console.error('Error loading featured products:', e);
             }
         }
+
+        // Call after definition to avoid reference errors across script blocks
+        document.addEventListener('DOMContentLoaded', loadFeaturedProducts);
 
         // Update cart badge
         function updateCartBadge() {
