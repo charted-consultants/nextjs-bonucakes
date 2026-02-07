@@ -133,6 +133,37 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Product FAQs -->
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-espresso mb-6" data-vi="Câu hỏi thường gặp" data-en="Frequently Asked Questions">Câu hỏi thường gặp</h2>
+                    <div class="space-y-3">
+                        <details class="bg-white border border-espresso/10">
+                            <summary class="cursor-pointer px-4 py-3 font-semibold text-espresso hover:bg-cream transition-colors">
+                                <span data-vi="Giao hàng như thế nào?" data-en="How is delivery handled?">Giao hàng như thế nào?</span>
+                            </summary>
+                            <div class="px-4 pb-3 text-coffee">
+                                <p id="faq-delivery"></p>
+                            </div>
+                        </details>
+                        <details class="bg-white border border-espresso/10">
+                            <summary class="cursor-pointer px-4 py-3 font-semibold text-espresso hover:bg-cream transition-colors">
+                                <span data-vi="Bảo quản & sử dụng" data-en="Storage & preparation">Bảo quản & sử dụng</span>
+                            </summary>
+                            <div class="px-4 pb-3 text-coffee">
+                                <p data-vi="Xem mục ‘Bảo quản’ và ‘Cách sử dụng’ ở trên để áp dụng đúng cho sản phẩm này." data-en="See the ‘Storage’ and ‘Preparation’ sections above for product‑specific guidance.">Xem mục ‘Bảo quản’ và ‘Cách sử dụng’ ở trên để áp dụng đúng cho sản phẩm này.</p>
+                            </div>
+                        </details>
+                        <details class="bg-white border border-espresso/10">
+                            <summary class="cursor-pointer px-4 py-3 font-semibold text-espresso hover:bg-cream transition-colors">
+                                <span data-vi="Đổi trả" data-en="Returns">Đổi trả</span>
+                            </summary>
+                            <div class="px-4 pb-3 text-coffee">
+                                <p data-vi="Vì là thực phẩm tươi, chúng tôi không nhận đổi trả. Nếu có vấn đề về chất lượng, vui lòng liên hệ ngay để được hỗ trợ." data-en="As fresh food, we do not accept returns. If there are quality issues, please contact us for support.">Vì là thực phẩm tươi, chúng tôi không nhận đổi trả. Nếu có vấn đề về chất lượng, vui lòng liên hệ ngay để được hỗ trợ.</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -341,6 +372,8 @@
             // Delivery info
             const deliveryText = currentProduct.deliveryInfo[currentLang];
             document.querySelector('#delivery-info p').textContent = deliveryText;
+            const faqDeliveryEl = document.getElementById('faq-delivery');
+            if (faqDeliveryEl) faqDeliveryEl.textContent = deliveryText;
 
             // Ingredients
             const ingredientsHtml = currentProduct.ingredients[currentLang].map(ing =>
