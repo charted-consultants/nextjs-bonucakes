@@ -43,6 +43,12 @@
                 <a href="/#courses" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Tư vấn" data-en="Services">Tư vấn</a>
                 <a href="/blog.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Blog</a>
                 <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
+                <a href="/cart.html" class="relative text-white font-semibold transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-terracotta text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                </a>
                 <div class="flex bg-espresso border border-gold/30 rounded-full p-1">
                     <button onclick="setLang('en')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white" id="btn-en">EN</button>
                     <button onclick="setLang('vi')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white active" id="btn-vi">VI</button>
@@ -180,114 +186,45 @@
             </div>
         </section>
 
-        <!-- Order Form -->
-        <section id="order-form" class="py-16 bg-warmwhite">
+        <!-- Add to Cart -->
+        <section id="add-to-cart-section" class="py-16 bg-warmwhite">
             <div class="max-w-4xl mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-espresso mb-4" data-vi="Đặt hàng" data-en="Place Your Order">Đặt hàng</h2>
-                    <p class="text-coffee" data-vi="Điền thông tin bên dưới để đặt hàng. Chúng tôi sẽ liên hệ xác nhận sau khi nhận được thanh toán." data-en="Fill in the information below to place your order. We will contact you for confirmation after receiving payment.">Điền thông tin bên dưới để đặt hàng. Chúng tôi sẽ liên hệ xác nhận sau khi nhận được thanh toán.</p>
+                <div class="bg-white border border-espresso/10 p-8">
+                    <h2 class="text-3xl font-bold text-espresso mb-6 text-center" data-vi="Thêm vào giỏ hàng" data-en="Add to Cart">Thêm vào giỏ hàng</h2>
+
+                    <div class="max-w-md mx-auto">
+                        <!-- Quantity -->
+                        <div class="mb-6">
+                            <label class="block text-coffee font-semibold mb-3 text-center" data-vi="Số lượng" data-en="Quantity">Số lượng</label>
+                            <div class="flex items-center justify-center gap-4">
+                                <button onclick="decreaseQuantity()" class="w-12 h-12 border-2 border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold text-xl">-</button>
+                                <input type="number" id="cart-quantity" value="1" min="1" max="50" class="w-24 text-center text-2xl font-bold border-2 border-espresso/20 py-2 focus:border-terracotta focus:outline-none">
+                                <button onclick="increaseQuantity()" class="w-12 h-12 border-2 border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold text-xl">+</button>
+                            </div>
+                            <p class="text-sm text-coffee text-center mt-2" id="promotion-hint" data-vi="Mua 10 tặng 1" data-en="Buy 10 get 1 free">Mua 10 tặng 1</p>
+                        </div>
+
+                        <!-- Price Display -->
+                        <div class="bg-gold/10 border border-gold/30 p-4 mb-6 text-center">
+                            <p class="text-coffee mb-1" data-vi="Giá" data-en="Price">Giá</p>
+                            <p class="text-3xl font-bold text-terracotta" id="cart-price-display">£9</p>
+                        </div>
+
+                        <!-- Add to Cart Button -->
+                        <button onclick="addToCart()" class="w-full bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors mb-4" data-vi="Thêm vào giỏ hàng" data-en="Add to Cart">Thêm vào giỏ hàng</button>
+
+                        <!-- Success Message -->
+                        <div id="cart-success" class="hidden bg-gold/10 border border-gold/30 p-4 rounded text-center mb-4">
+                            <p class="text-espresso font-semibold mb-2" data-vi="Đã thêm vào giỏ hàng!" data-en="Added to cart!">Đã thêm vào giỏ hàng!</p>
+                            <div class="flex gap-2 justify-center">
+                                <a href="/cart.html" class="inline-block bg-espresso text-white px-6 py-2 font-semibold hover:bg-espresso/90 transition-colors text-sm" data-vi="Xem giỏ hàng" data-en="View Cart">Xem giỏ hàng</a>
+                                <a href="/checkout.html" class="inline-block bg-gold text-espresso px-6 py-2 font-semibold hover:bg-gold/90 transition-colors text-sm" data-vi="Thanh toán" data-en="Checkout">Thanh toán</a>
+                            </div>
+                        </div>
+
+                        <a href="/products.html" class="block text-center text-coffee hover:text-espresso transition-colors" data-vi="← Tiếp tục mua sắm" data-en="← Continue Shopping">← Tiếp tục mua sắm</a>
+                    </div>
                 </div>
-
-                <form id="order-form-element" class="bg-white border border-espresso/10 p-8">
-                    <!-- Customer Information -->
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold text-espresso mb-4" data-vi="Thông tin khách hàng" data-en="Customer Information">Thông tin khách hàng</h3>
-
-                        <div class="mb-4">
-                            <label class="block text-coffee font-medium mb-2">
-                                <span data-vi="Họ tên" data-en="Full Name">Họ tên</span> <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="customer-name" required class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none">
-                            <p class="error-message text-red-500 text-sm mt-1" id="name-error"></p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-coffee font-medium mb-2">
-                                    <span data-vi="Email" data-en="Email">Email</span> <span class="text-red-500">*</span>
-                                </label>
-                                <input type="email" id="customer-email" required class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none">
-                                <p class="error-message text-red-500 text-sm mt-1" id="email-error"></p>
-                            </div>
-                            <div>
-                                <label class="block text-coffee font-medium mb-2">
-                                    <span data-vi="Số điện thoại" data-en="Phone Number">Số điện thoại</span> <span class="text-red-500">*</span>
-                                </label>
-                                <input type="tel" id="customer-phone" required class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none" placeholder="+44 1234 567890">
-                                <p class="error-message text-red-500 text-sm mt-1" id="phone-error"></p>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-coffee font-medium mb-2">
-                                <span data-vi="Địa chỉ giao hàng" data-en="Delivery Address">Địa chỉ giao hàng</span> <span class="text-red-500">*</span>
-                            </label>
-                            <textarea id="delivery-address" required rows="3" class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none"></textarea>
-                            <p class="error-message text-red-500 text-sm mt-1" id="address-error"></p>
-                        </div>
-                    </div>
-
-                    <!-- Order Details -->
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold text-espresso mb-4" data-vi="Chi tiết đơn hàng" data-en="Order Details">Chi tiết đơn hàng</h3>
-
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-coffee font-medium mb-2">
-                                    <span data-vi="Số lượng" data-en="Quantity">Số lượng</span> <span class="text-red-500">*</span>
-                                </label>
-                                <input type="number" id="quantity" value="1" min="1" max="50" required class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none">
-                                <p class="error-message text-red-500 text-sm mt-1" id="quantity-error"></p>
-                            </div>
-                            <div>
-                                <label class="block text-coffee font-medium mb-2">
-                                    <span data-vi="Ngày giao mong muốn" data-en="Preferred Delivery Date">Ngày giao mong muốn</span> <span class="text-red-500">*</span>
-                                </label>
-                                <input type="date" id="delivery-date" required class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none">
-                                <p class="error-message text-red-500 text-sm mt-1" id="date-error"></p>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-coffee font-medium mb-2">
-                                <span data-vi="Ghi chú đặc biệt" data-en="Special Notes">Ghi chú đặc biệt</span>
-                            </label>
-                            <textarea id="special-notes" rows="3" class="w-full px-4 py-3 border border-espresso/20 focus:border-terracotta focus:outline-none" placeholder=""></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Price Summary -->
-                    <div class="bg-gold/10 border border-gold/30 p-6 mb-6">
-                        <h3 class="text-xl font-bold text-espresso mb-4" data-vi="Tổng đơn hàng" data-en="Order Summary">Tổng đơn hàng</h3>
-                        <div class="space-y-2 text-coffee">
-                            <div class="flex justify-between">
-                                <span data-vi="Đơn giá" data-en="Unit Price">Đơn giá</span>
-                                <span id="unit-price-display"></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span data-vi="Số lượng" data-en="Quantity">Số lượng</span>
-                                <span id="quantity-display">1</span>
-                            </div>
-                            <div id="promotion-line" class="flex justify-between text-terracotta font-semibold hidden">
-                                <span data-vi="Khuyến mãi" data-en="Promotion">Khuyến mãi</span>
-                                <span id="promotion-display"></span>
-                            </div>
-                            <div class="border-t border-gold/30 pt-2 mt-2 flex justify-between text-lg font-bold">
-                                <span data-vi="Tổng cộng" data-en="Total">Tổng cộng</span>
-                                <span id="total-price-display" class="text-terracotta"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="text-center">
-                        <button type="submit" id="submit-button" class="bg-terracotta text-white px-12 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            <span data-vi="Xác nhận đặt hàng" data-en="Confirm Order">Xác nhận đặt hàng</span>
-                        </button>
-                        <p class="error-message text-red-500 mt-4" id="form-error"></p>
-                        <p id="loading-message" class="text-coffee mt-4 hidden" data-vi="Đang xử lý..." data-en="Processing...">Đang xử lý...</p>
-                    </div>
-                </form>
             </div>
         </section>
     </div>
@@ -446,6 +383,9 @@
 
             // Price display
             document.getElementById('unit-price-display').textContent = currentProduct.price.displayPrice;
+
+            // Initialize cart price display
+            updatePriceDisplay();
         }
 
         // Change main image
@@ -453,174 +393,61 @@
             document.getElementById('main-image').src = src;
         }
 
-        // Calculate price with promotion
-        function calculatePrice() {
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+        // Cart quantity controls
+        function increaseQuantity() {
+            const input = document.getElementById('cart-quantity');
+            const currentValue = parseInt(input.value) || 1;
+            if (currentValue < 50) {
+                input.value = currentValue + 1;
+                updatePriceDisplay();
+            }
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('cart-quantity');
+            const currentValue = parseInt(input.value) || 1;
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+                updatePriceDisplay();
+            }
+        }
+
+        function updatePriceDisplay() {
+            const quantity = parseInt(document.getElementById('cart-quantity').value) || 1;
             const unitPrice = currentProduct.price.amount;
             const currency = currentProduct.price.currency;
+            const totalPrice = quantity * unitPrice;
 
-            // Apply promotion: Buy 10 get 1 free
-            const freeItems = Math.floor(quantity / 10);
-            const totalItems = quantity + freeItems;
-            const totalPrice = quantity * unitPrice; // Customer pays for quantity, gets extra free
-
-            // Update displays
-            document.getElementById('quantity-display').textContent = quantity;
-
-            if (freeItems > 0) {
-                document.getElementById('promotion-line').classList.remove('hidden');
-                const promoText = currentLang === 'vi'
-                    ? `+${freeItems} ổ tặng (tổng ${totalItems} ổ)`
-                    : `+${freeItems} free (total ${totalItems} pcs)`;
-                document.getElementById('promotion-display').textContent = promoText;
-            } else {
-                document.getElementById('promotion-line').classList.add('hidden');
-            }
-
-            const totalDisplay = currency === 'GBP' ? `£${totalPrice.toFixed(2)}` : `${totalPrice.toLocaleString()}₫`;
-            document.getElementById('total-price-display').textContent = totalDisplay;
+            const totalDisplay = currency === 'GBP' ? `£${totalPrice}` : `${totalPrice.toLocaleString()}₫`;
+            document.getElementById('cart-price-display').textContent = totalDisplay;
         }
 
-        // Form validation
-        function validateForm() {
-            let isValid = true;
+        // Add to cart
+        function addToCart() {
+            const quantity = parseInt(document.getElementById('cart-quantity').value) || 1;
 
-            // Clear previous errors
-            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+            Cart.addToCart(currentProduct, quantity);
 
-            // Name
-            const name = document.getElementById('customer-name').value.trim();
-            if (!name) {
-                showError('name-error', currentLang === 'vi' ? 'Vui lòng nhập họ tên' : 'Please enter your name');
-                isValid = false;
-            }
+            // Show success message
+            document.getElementById('cart-success').classList.remove('hidden');
 
-            // Email
-            const email = document.getElementById('customer-email').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email) {
-                showError('email-error', currentLang === 'vi' ? 'Vui lòng nhập email' : 'Please enter your email');
-                isValid = false;
-            } else if (!emailRegex.test(email)) {
-                showError('email-error', currentLang === 'vi' ? 'Email không hợp lệ' : 'Invalid email format');
-                isValid = false;
-            }
-
-            // Phone
-            const phone = document.getElementById('customer-phone').value.trim();
-            if (!phone) {
-                showError('phone-error', currentLang === 'vi' ? 'Vui lòng nhập số điện thoại' : 'Please enter your phone number');
-                isValid = false;
-            }
-
-            // Address
-            const address = document.getElementById('delivery-address').value.trim();
-            if (!address) {
-                showError('address-error', currentLang === 'vi' ? 'Vui lòng nhập địa chỉ giao hàng' : 'Please enter delivery address');
-                isValid = false;
-            }
-
-            // Quantity
-            const quantity = parseInt(document.getElementById('quantity').value);
-            if (!quantity || quantity < 1 || quantity > 50) {
-                showError('quantity-error', currentLang === 'vi' ? 'Số lượng từ 1-50' : 'Quantity must be 1-50');
-                isValid = false;
-            }
-
-            // Date
-            const date = document.getElementById('delivery-date').value;
-            if (!date) {
-                showError('date-error', currentLang === 'vi' ? 'Vui lòng chọn ngày giao hàng' : 'Please select delivery date');
-                isValid = false;
-            } else {
-                const selectedDate = new Date(date);
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                tomorrow.setHours(0, 0, 0, 0);
-                if (selectedDate < tomorrow) {
-                    showError('date-error', currentLang === 'vi' ? 'Ngày giao phải từ ngày mai trở đi' : 'Delivery date must be tomorrow or later');
-                    isValid = false;
-                }
-            }
-
-            return isValid;
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('cart-success').classList.add('hidden');
+            }, 5000);
         }
 
-        function showError(elementId, message) {
-            const errorEl = document.getElementById(elementId);
-            errorEl.textContent = message;
-            errorEl.classList.add('active');
-
-            const inputId = elementId.replace('-error', '');
-            const inputEl = document.getElementById(inputId);
-            if (inputEl) {
-                inputEl.classList.add('input-error');
-            }
-        }
-
-        // Submit order
-        async function submitOrder(e) {
-            e.preventDefault();
-
-            if (!validateForm()) {
-                return;
-            }
-
-            const submitButton = document.getElementById('submit-button');
-            const loadingMessage = document.getElementById('loading-message');
-            const formError = document.getElementById('form-error');
-
-            // Disable submit button
-            submitButton.disabled = true;
-            loadingMessage.classList.remove('hidden');
-            formError.classList.remove('active');
-
-            // Gather form data
-            const quantity = parseInt(document.getElementById('quantity').value);
-            const freeItems = Math.floor(quantity / 10);
-            const totalItems = quantity + freeItems;
-
-            const orderData = {
-                customerName: document.getElementById('customer-name').value.trim(),
-                customerEmail: document.getElementById('customer-email').value.trim(),
-                customerPhone: document.getElementById('customer-phone').value.trim(),
-                deliveryAddress: document.getElementById('delivery-address').value.trim(),
-                productId: currentProduct.id,
-                productName: currentProduct.name.vi,
-                quantity: quantity,
-                deliveryDate: document.getElementById('delivery-date').value,
-                specialNotes: document.getElementById('special-notes').value.trim()
-            };
-
-            try {
-                const response = await fetch('https://api.chartedconsultants.com/api/orders/banh-mi', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(orderData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    // Redirect to success page
-                    window.location.href = `/banh-mi/order-success.html?orderId=${result.orderId}`;
+        // Update cart badge
+        function updateCartBadge() {
+            const count = Cart.getCartCount();
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.textContent = count;
+                if (count > 0) {
+                    badge.classList.remove('hidden');
                 } else {
-                    console.error('API error response:', result);
-                    throw new Error(result.error || result.message || 'Order failed');
+                    badge.classList.add('hidden');
                 }
-
-            } catch (error) {
-                console.error('Order submission error:', error);
-                const errorMsg = error.message || 'Unknown error';
-                formError.textContent = currentLang === 'vi'
-                    ? `Có lỗi xảy ra: ${errorMsg}. Vui lòng thử lại hoặc liên hệ trực tiếp với chúng tôi.`
-                    : `An error occurred: ${errorMsg}. Please try again or contact us directly.`;
-                formError.classList.add('active');
-                submitButton.disabled = false;
-                loadingMessage.classList.add('hidden');
             }
         }
 
@@ -636,12 +463,15 @@
 
             loadProduct();
 
-            // Quantity change listener
-            document.getElementById('quantity').addEventListener('input', calculatePrice);
+            // Quantity change listener for price update
+            document.getElementById('cart-quantity').addEventListener('input', updatePriceDisplay);
 
-            // Form submit
-            document.getElementById('order-form-element').addEventListener('submit', submitOrder);
+            // Update cart badge on page load
+            updateCartBadge();
         });
+
+        // Listen for cart updates
+        window.addEventListener('cartUpdated', updateCartBadge);
 
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
@@ -653,5 +483,8 @@
             }
         });
     </script>
+
+    <!-- Cart JS -->
+    <script src="/js/cart.js"></script>
 </body>
 </html>
