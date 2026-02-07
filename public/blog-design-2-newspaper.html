@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Design 2 - Newspaper Columns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{cream:'#FDF8F3',warmwhite:'#FFFBF5',terracotta:'#C4704A',espresso:'#3D2314',gold:'#D4A853',coffee:'#4A3728'}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-warmwhite min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="text-center mb-12 pb-8 border-b-4 border-espresso">
+            <h1 class="text-5xl font-bold text-espresso mb-2" style="font-family: 'Playfair Display', serif;">BONU F&B JOURNAL</h1>
+            <p class="text-coffee text-sm uppercase tracking-wider">DESIGN 2: Classic Newspaper</p>
+        </div>
+
+        <!-- Hero/Lead Story -->
+        <div class="mb-12 pb-12 border-b-2 border-espresso/20">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <img src="/images/thinking-types.webp" alt="Lead story" class="w-full h-96 object-cover">
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">BÀI VIẾT CHÍNH</div>
+                    <h2 class="text-4xl font-bold text-espresso mb-4 leading-tight">
+                        Khi chủ doanh nghiệp đi làm thuê
+                    </h2>
+                    <p class="text-coffee text-lg mb-4 leading-relaxed">
+                        Có một giai đoạn trong đời mình, khi Bonucakes đã đang vận hành ổn định, mình quyết định làm một việc mà nhiều người nghe xong đều ngạc nhiên: Mình đi làm thuê tại một chuỗi Korean street food.
+                    </p>
+                    <div class="flex items-center gap-4 text-sm text-coffee/70">
+                        <time>6 tháng 2, 2026</time>
+                        <span>•</span>
+                        <span>5 phút đọc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Column Layout -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <!-- Column 1 -->
+            <div class="space-y-8">
+                <article class="border-b border-espresso/20 pb-6">
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">Kinh doanh</div>
+                    <h3 class="text-xl font-bold text-espresso mb-2">
+                        Kinh doanh ngành F&B không cần bạn giỏi mọi thứ
+                    </h3>
+                    <p class="text-coffee text-sm mb-3">
+                        Chỉ cần bạn nghĩ đúng kiểu. Trong F&B, rất nhiều vấn đề không khó. Chỉ là… chúng không cần cùng một cách nghĩ.
+                    </p>
+                    <time class="text-xs text-coffee/60">1 tháng 2, 2026</time>
+                </article>
+
+                <article class="border-b border-espresso/20 pb-6">
+                    <img src="/images/post_1.webp" class="w-full h-32 object-cover mb-3">
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">Phát triển</div>
+                    <h3 class="text-lg font-bold text-espresso mb-2">
+                        Điều khiến nhiều quán ăn không thể lớn hơn
+                    </h3>
+                    <time class="text-xs text-coffee/60">29 tháng 1, 2026</time>
+                </article>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="space-y-8">
+                <article class="border-b border-espresso/20 pb-6">
+                    <img src="/images/community-mindmap.webp" class="w-full h-48 object-cover mb-3">
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">Tâm lý</div>
+                    <h3 class="text-xl font-bold text-espresso mb-2">
+                        Hành trình từ bên trong
+                    </h3>
+                    <p class="text-coffee text-sm mb-3">
+                        Mình là Uyên, chủ nhà hàng Memoire Saigon tại Anh, và cũng là người đã vấp ngã không ít lần trên con đường kinh doanh.
+                    </p>
+                    <time class="text-xs text-coffee/60">1 tháng 2, 2026</time>
+                </article>
+
+                <article class="border-b border-espresso/20 pb-6">
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">Bài học</div>
+                    <h3 class="text-lg font-bold text-espresso mb-2">
+                        4 yếu tố sống còn để nhà hàng không rơi vào quên lãng
+                    </h3>
+                    <time class="text-xs text-coffee/60">28 tháng 1, 2026</time>
+                </article>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="space-y-8">
+                <article class="border-b border-espresso/20 pb-6">
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">Hiệu suất</div>
+                    <h3 class="text-xl font-bold text-espresso mb-2">
+                        Nếu bạn đang bận cả ngày nhưng vẫn không xong việc
+                    </h3>
+                    <p class="text-coffee text-sm mb-3">
+                        6h sáng, mình mở mắt với to-do list dài như sớ. Đến tối, kiệt sức, nhưng nhìn lại, những việc quan trọng vẫn… chưa hề nhúc nhích.
+                    </p>
+                    <time class="text-xs text-coffee/60">26 tháng 1, 2026</time>
+                </article>
+
+                <article class="border-b border-espresso/20 pb-6">
+                    <img src="/images/post_2.webp" class="w-full h-32 object-cover mb-3">
+                    <div class="text-xs uppercase tracking-wider text-terracotta font-bold mb-2">Chiến lược</div>
+                    <h3 class="text-lg font-bold text-espresso mb-2">
+                        Series: Những điều không ai nói với bạn về F&B
+                    </h3>
+                    <time class="text-xs text-coffee/60">27 tháng 1, 2026</time>
+                </article>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
