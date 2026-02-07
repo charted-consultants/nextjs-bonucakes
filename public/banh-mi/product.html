@@ -170,16 +170,16 @@
                         <p id="storage-text" class="text-red-900 font-medium"></p>
                     </div>
 
-                    <!-- Reheating -->
-                    <div class="mb-6 border border-espresso/20 bg-white p-6">
+                    <!-- Preparation -->
+                    <div id="preparation-section" class="mb-6 border border-espresso/20 bg-white p-6">
                         <h3 class="font-semibold text-espresso text-lg mb-3">
-                            <span data-vi="Nướng lại bánh" data-en="Reheating Bread">Nướng lại bánh</span>
+                            <span data-vi="Cách sử dụng" data-en="Preparation">Cách sử dụng</span>
                         </h3>
                         <div id="reheating-text" class="text-coffee space-y-2"></div>
                     </div>
 
                     <!-- Preparing Fillings -->
-                    <div class="mb-6 border border-espresso/20 bg-white p-6">
+                    <div id="fillings-section" class="mb-6 border border-espresso/20 bg-white p-6 hidden">
                         <h3 class="font-semibold text-espresso text-lg mb-3">
                             <span data-vi="Chuẩn bị nhân" data-en="Preparing Fillings">Chuẩn bị nhân</span>
                         </h3>
@@ -187,7 +187,7 @@
                     </div>
 
                     <!-- Assembly -->
-                    <div class="mb-6 border border-espresso/20 bg-white p-6">
+                    <div id="assembly-section" class="mb-6 border border-espresso/20 bg-white p-6 hidden">
                         <h3 class="font-semibold text-espresso text-lg mb-3">
                             <span data-vi="Cách ráp bánh" data-en="Assembly">Cách ráp bánh</span>
                         </h3>
@@ -333,20 +333,35 @@
             // Packaging
             document.getElementById('packaging-info').textContent = currentProduct.packaging[currentLang];
 
-            // Usage instructions
-            document.getElementById('storage-text').textContent = currentProduct.usageInstructions.storage[currentLang];
+            // Usage instructions - only render if they exist
+            if (currentProduct.usageInstructions && currentProduct.usageInstructions.storage) {
+                document.getElementById('storage-text').textContent = currentProduct.usageInstructions.storage[currentLang];
+            }
 
-            const reheatingHtml = currentProduct.usageInstructions.reheating[currentLang]
-                .map(line => `<p>${line}</p>`).join('');
-            document.getElementById('reheating-text').innerHTML = reheatingHtml;
+            if (currentProduct.usageInstructions && currentProduct.usageInstructions.reheating) {
+                const reheatingHtml = currentProduct.usageInstructions.reheating[currentLang]
+                    .map(line => `<p>${line}</p>`).join('');
+                document.getElementById('reheating-text').innerHTML = reheatingHtml;
+            } else if (currentProduct.usageInstructions && currentProduct.usageInstructions.preparation) {
+                // Use preparation field for non-banh-mi products
+                const preparationHtml = currentProduct.usageInstructions.preparation[currentLang]
+                    .map(line => `<p>${line}</p>`).join('');
+                document.getElementById('reheating-text').innerHTML = preparationHtml;
+            }
 
-            const fillingsHtml = currentProduct.usageInstructions.preparingFillings[currentLang]
-                .map(line => `<p>${line}</p>`).join('');
-            document.getElementById('fillings-text').innerHTML = fillingsHtml;
+            if (currentProduct.usageInstructions && currentProduct.usageInstructions.preparingFillings) {
+                const fillingsHtml = currentProduct.usageInstructions.preparingFillings[currentLang]
+                    .map(line => `<p>${line}</p>`).join('');
+                document.getElementById('fillings-text').innerHTML = fillingsHtml;
+                document.getElementById('fillings-section').classList.remove('hidden');
+            }
 
-            const assemblyHtml = currentProduct.usageInstructions.assembly[currentLang]
-                .map(line => `<p>${line}</p>`).join('');
-            document.getElementById('assembly-text').innerHTML = assemblyHtml;
+            if (currentProduct.usageInstructions && currentProduct.usageInstructions.assembly) {
+                const assemblyHtml = currentProduct.usageInstructions.assembly[currentLang]
+                    .map(line => `<p>${line}</p>`).join('');
+                document.getElementById('assembly-text').innerHTML = assemblyHtml;
+                document.getElementById('assembly-section').classList.remove('hidden');
+            }
 
             // Initialize cart price display
             updatePriceDisplay();
