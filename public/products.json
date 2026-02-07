@@ -332,7 +332,8 @@
         "en": "Crispy skin roast duck, pre-cut for convenience. Reheat in oven or microwave. Includes exclusive recipe for duck noodle soup made from duck bones."
       },
       "images": [
-        "/images/products/vit-quay.webp"
+        "/images/products/vit-quay.webp",
+        "/images/products/vit-quay-2.webp"
       ],
       "price": {
         "amount": 0,
@@ -398,7 +399,10 @@
         "en": "Homemade pork nem lui, can be eaten with vermicelli, spring rolls, or simply with rice and fresh vegetables. Very convenient for nail shops or busy days - just grill or microwave."
       },
       "images": [
-        "/images/products/nem-lui.webp"
+        "/images/products/nem-lui.webp",
+        "/images/products/nem-lui-2.webp",
+        "/images/products/nem-lui-3.webp",
+        "/images/products/nem-lui-4.webp"
       ],
       "price": {
         "amount": 0,
