@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://bonucakes.com/</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://bonucakes.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bonucakes.com/" />
+  </url>
+
+  <!-- Story Page -->
+  <url>
+    <loc>https://bonucakes.com/story.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://bonucakes.com/story.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bonucakes.com/story.html" />
+  </url>
+
+  <!-- Blog Page -->
+  <url>
+    <loc>https://bonucakes.com/blog.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://bonucakes.com/blog.html" />
+  </url>
+
+  <!-- Culinary Consultation -->
+  <url>
+    <loc>https://bonucakes.com/culinary-consultation.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://bonucakes.com/culinary-consultation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bonucakes.com/culinary-consultation.html" />
+  </url>
+
+  <!-- Course Page -->
+  <url>
+    <loc>https://bonucakes.com/course.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://bonucakes.com/course.html" />
+  </url>
+
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://bonucakes.com/blog/kinh-doanh-nganh-fb-khong-can-gioi-moi-thu.html</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/chao-ban-hanh-trinh-tu-ben-trong.html</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/dao-nay-minh-co-dip.html</loc>
+    <lastmod>2026-01-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/dieu-khien-nhieu-quan-an.html</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/series-nhung-dieu-khong-ai.html</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/neu-ban-dang-ban-ca.html</loc>
+    <lastmod>2026-01-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/90-nguoi-muon-mo-quan.html</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/tai-san-vo-hinh-bai.html</loc>
+    <lastmod>2026-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/tu-doi-tay-chui-toilet.html</loc>
+    <lastmod>2026-01-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/ban-khong-the-day-ai.html</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/dung-so-mat-nghe-chuan-hoa-khong-phu-thuoc-dau-bep.html</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/xin-chao-cac-ban-cac-khach-hang-than-thuong.html</loc>
+    <lastmod>2026-01-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/cach-minh-lua-ban-than-oc-sach-va-ket-qua-sau-1-nam-khien-minh-mat-tien.html</loc>
+    <lastmod>2026-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/hai-lan-that-bai-day-toi-it-hon-mot-cau-hoi-ung.html</loc>
+    <lastmod>2026-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/neu-ban-tung-nghi-thoi-muon-roi-thi-xin-nhac-nhe.html</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/ban-ang-lam-chu-mot-giac-mo-hay-la-con-tin-cua-chinh-tiem-minh-mo-ra.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/4-yếu-tố-sống-còn-để-nhà-hàng-của-bạn-không-rơi-và.html</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/giữ-chân-người-giỏi-không-nằm-ở-lương-cao-mà-ở.html</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/có-bao-giờ-mình-kể-với-ai-chưa-rằng-hành-trình-k.html</loc>
+    <lastmod>2026-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/khi-chu-doanh-nghiep-di-lam-thue.html</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/có-những-người-trong-kinh-doanh-không-nên-tin.html</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/câu-hỏi-đáng-sợ-nhất-không-phải-là-mình-đủ-giỏi-c.html</loc>
+    <lastmod>2026-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/kinh-doanh-ngành-fb.html</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/mình-vừa-mở-một-cộng-đồng-học-tập-nhỏ.html</loc>
+    <lastmod>2026-01-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bonucakes.com/blog/12-bước-mở-quán-tại-uk-từ-a-đến-z.html</loc>
+    <lastmod>2026-01-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
