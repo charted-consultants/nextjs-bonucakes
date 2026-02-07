@@ -80,8 +80,8 @@
                 <div class="grid md:grid-cols-2 gap-12 items-start">
                     <!-- Product Images -->
                     <div>
-                        <div id="main-image-container" class="mb-4">
-                            <img id="main-image" src="" alt="" class="w-full h-96 object-cover border border-espresso/10">
+                        <div id="main-image-container" class="mb-4 cursor-pointer bg-white" onclick="openLightbox()">
+                            <img id="main-image" src="" alt="" class="w-full h-96 object-contain border border-espresso/10">
                         </div>
                         <div id="image-thumbnails" class="flex gap-4 overflow-x-auto">
                             <!-- Thumbnail images loaded via JS -->
@@ -100,9 +100,40 @@
                         <div id="delivery-info" class="bg-gold/10 border border-gold/30 p-4 mb-6">
                             <p class="text-coffee font-semibold"></p>
                         </div>
-                        <a href="#order-form" class="inline-block bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors">
-                            <span data-vi="Đặt hàng ngay" data-en="Order Now">Đặt hàng ngay</span>
-                        </a>
+
+                        <!-- Add to Cart Controls -->
+                        <div class="bg-white border border-espresso/10 p-6 mb-4">
+                            <!-- Quantity -->
+                            <div class="mb-4">
+                                <label class="block text-coffee font-semibold mb-3" data-vi="Số lượng" data-en="Quantity">Số lượng</label>
+                                <div class="flex items-center gap-4 mb-2">
+                                    <button onclick="decreaseQuantity()" class="w-12 h-12 border-2 border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold text-xl">-</button>
+                                    <input type="number" id="cart-quantity" value="1" min="1" max="50" class="w-24 text-center text-2xl font-bold border-2 border-espresso/20 py-2 focus:border-terracotta focus:outline-none">
+                                    <button onclick="increaseQuantity()" class="w-12 h-12 border-2 border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold text-xl">+</button>
+                                </div>
+                                <p class="text-sm text-coffee" id="promotion-hint" data-vi="Mua 10 tặng 1" data-en="Buy 10 get 1 free">Mua 10 tặng 1</p>
+                            </div>
+
+                            <!-- Price Display -->
+                            <div class="bg-gold/10 border border-gold/30 p-4 mb-4">
+                                <p class="text-coffee mb-1" data-vi="Giá" data-en="Price">Giá</p>
+                                <p class="text-3xl font-bold text-terracotta" id="cart-price-display">£9</p>
+                            </div>
+
+                            <!-- Add to Cart Button -->
+                            <button onclick="addToCart()" class="w-full bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors mb-3" data-vi="Thêm vào giỏ hàng" data-en="Add to Cart">Thêm vào giỏ hàng</button>
+
+                            <!-- Success Message -->
+                            <div id="cart-success" class="hidden bg-gold/10 border border-gold/30 p-4 rounded text-center mb-3">
+                                <p class="text-espresso font-semibold mb-2" data-vi="Đã thêm vào giỏ hàng!" data-en="Added to cart!">Đã thêm vào giỏ hàng!</p>
+                                <div class="flex gap-2 justify-center">
+                                    <a href="/cart.html" class="inline-block bg-espresso text-white px-6 py-2 font-semibold hover:bg-espresso/90 transition-colors text-sm" data-vi="Xem giỏ hàng" data-en="View Cart">Xem giỏ hàng</a>
+                                    <a href="/checkout.html" class="inline-block bg-gold text-espresso px-6 py-2 font-semibold hover:bg-gold/90 transition-colors text-sm" data-vi="Thanh toán" data-en="Checkout">Thanh toán</a>
+                                </div>
+                            </div>
+
+                            <a href="/products.html" class="block text-center text-coffee hover:text-espresso transition-colors text-sm" data-vi="← Tiếp tục mua sắm" data-en="← Continue Shopping">← Tiếp tục mua sắm</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,9 +141,9 @@
 
         <!-- Product Details Tabs -->
         <section class="py-16 bg-cream">
-            <div class="max-w-5xl mx-auto px-6">
+            <div class="max-w-6xl mx-auto px-6">
                 <!-- Ingredients -->
-                <div class="mb-8">
+                <div class="mb-12">
                     <h2 class="text-2xl font-bold text-espresso mb-4" data-vi="Thành phần" data-en="Ingredients">Thành phần</h2>
                     <ul id="ingredients-list" class="grid md:grid-cols-2 gap-3">
                         <!-- Loaded via JS -->
@@ -120,113 +151,57 @@
                 </div>
 
                 <!-- Packaging -->
-                <div class="mb-8">
+                <div class="mb-12">
                     <h2 class="text-2xl font-bold text-espresso mb-4" data-vi="Đóng gói" data-en="Packaging">Đóng gói</h2>
                     <div id="packaging-info" class="bg-warmwhite border border-espresso/10 p-6">
                         <!-- Loaded via JS -->
                     </div>
                 </div>
 
-                <!-- Usage Instructions (Accordion) -->
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-espresso mb-4" data-vi="Hướng dẫn sử dụng" data-en="Usage Instructions">Hướng dẫn sử dụng</h2>
+                <!-- Usage Instructions (Expanded) -->
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-espresso mb-6" data-vi="Hướng dẫn sử dụng" data-en="Usage Instructions">Hướng dẫn sử dụng</h2>
 
                     <!-- Storage Instructions (Critical) -->
-                    <div class="mb-4 border-2 border-red-500 bg-red-50">
-                        <button onclick="toggleAccordion('storage')" class="w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold text-red-700">
-                                <span data-vi="Bảo quản (QUAN TRỌNG)" data-en="Storage (CRITICAL)">Bảo quản (QUAN TRỌNG)</span>
-                            </span>
-                            <span id="storage-icon" class="text-2xl">+</span>
-                        </button>
-                        <div id="storage-content" class="accordion-content active px-6 pb-4">
-                            <p id="storage-text" class="text-red-900 font-medium"></p>
-                        </div>
+                    <div class="mb-6 border-2 border-red-500 bg-red-50 p-6">
+                        <h3 class="font-semibold text-red-700 text-lg mb-3">
+                            <span data-vi="Bảo quản (QUAN TRỌNG)" data-en="Storage (CRITICAL)">Bảo quản (QUAN TRỌNG)</span>
+                        </h3>
+                        <p id="storage-text" class="text-red-900 font-medium"></p>
                     </div>
 
                     <!-- Reheating -->
-                    <div class="mb-4 border border-espresso/20 bg-white">
-                        <button onclick="toggleAccordion('reheating')" class="w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold text-espresso">
-                                <span data-vi="Nướng lại bánh" data-en="Reheating Bread">Nướng lại bánh</span>
-                            </span>
-                            <span id="reheating-icon" class="text-2xl">+</span>
-                        </button>
-                        <div id="reheating-content" class="accordion-content px-6 pb-4">
-                            <div id="reheating-text" class="text-coffee space-y-2"></div>
-                        </div>
+                    <div class="mb-6 border border-espresso/20 bg-white p-6">
+                        <h3 class="font-semibold text-espresso text-lg mb-3">
+                            <span data-vi="Nướng lại bánh" data-en="Reheating Bread">Nướng lại bánh</span>
+                        </h3>
+                        <div id="reheating-text" class="text-coffee space-y-2"></div>
                     </div>
 
                     <!-- Preparing Fillings -->
-                    <div class="mb-4 border border-espresso/20 bg-white">
-                        <button onclick="toggleAccordion('fillings')" class="w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold text-espresso">
-                                <span data-vi="Chuẩn bị nhân" data-en="Preparing Fillings">Chuẩn bị nhân</span>
-                            </span>
-                            <span id="fillings-icon" class="text-2xl">+</span>
-                        </button>
-                        <div id="fillings-content" class="accordion-content px-6 pb-4">
-                            <div id="fillings-text" class="text-coffee space-y-2"></div>
-                        </div>
+                    <div class="mb-6 border border-espresso/20 bg-white p-6">
+                        <h3 class="font-semibold text-espresso text-lg mb-3">
+                            <span data-vi="Chuẩn bị nhân" data-en="Preparing Fillings">Chuẩn bị nhân</span>
+                        </h3>
+                        <div id="fillings-text" class="text-coffee space-y-2"></div>
                     </div>
 
                     <!-- Assembly -->
-                    <div class="mb-4 border border-espresso/20 bg-white">
-                        <button onclick="toggleAccordion('assembly')" class="w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold text-espresso">
-                                <span data-vi="Cách ráp bánh" data-en="Assembly">Cách ráp bánh</span>
-                            </span>
-                            <span id="assembly-icon" class="text-2xl">+</span>
-                        </button>
-                        <div id="assembly-content" class="accordion-content px-6 pb-4">
-                            <div id="assembly-text" class="text-coffee space-y-2"></div>
-                        </div>
+                    <div class="mb-6 border border-espresso/20 bg-white p-6">
+                        <h3 class="font-semibold text-espresso text-lg mb-3">
+                            <span data-vi="Cách ráp bánh" data-en="Assembly">Cách ráp bánh</span>
+                        </h3>
+                        <div id="assembly-text" class="text-coffee space-y-2"></div>
                     </div>
                 </div>
             </div>
         </section>
+    </div>
 
-        <!-- Add to Cart -->
-        <section id="add-to-cart-section" class="py-16 bg-warmwhite">
-            <div class="max-w-4xl mx-auto px-6">
-                <div class="bg-white border border-espresso/10 p-8">
-                    <h2 class="text-3xl font-bold text-espresso mb-6 text-center" data-vi="Thêm vào giỏ hàng" data-en="Add to Cart">Thêm vào giỏ hàng</h2>
-
-                    <div class="max-w-md mx-auto">
-                        <!-- Quantity -->
-                        <div class="mb-6">
-                            <label class="block text-coffee font-semibold mb-3 text-center" data-vi="Số lượng" data-en="Quantity">Số lượng</label>
-                            <div class="flex items-center justify-center gap-4">
-                                <button onclick="decreaseQuantity()" class="w-12 h-12 border-2 border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold text-xl">-</button>
-                                <input type="number" id="cart-quantity" value="1" min="1" max="50" class="w-24 text-center text-2xl font-bold border-2 border-espresso/20 py-2 focus:border-terracotta focus:outline-none">
-                                <button onclick="increaseQuantity()" class="w-12 h-12 border-2 border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold text-xl">+</button>
-                            </div>
-                            <p class="text-sm text-coffee text-center mt-2" id="promotion-hint" data-vi="Mua 10 tặng 1" data-en="Buy 10 get 1 free">Mua 10 tặng 1</p>
-                        </div>
-
-                        <!-- Price Display -->
-                        <div class="bg-gold/10 border border-gold/30 p-4 mb-6 text-center">
-                            <p class="text-coffee mb-1" data-vi="Giá" data-en="Price">Giá</p>
-                            <p class="text-3xl font-bold text-terracotta" id="cart-price-display">£9</p>
-                        </div>
-
-                        <!-- Add to Cart Button -->
-                        <button onclick="addToCart()" class="w-full bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors mb-4" data-vi="Thêm vào giỏ hàng" data-en="Add to Cart">Thêm vào giỏ hàng</button>
-
-                        <!-- Success Message -->
-                        <div id="cart-success" class="hidden bg-gold/10 border border-gold/30 p-4 rounded text-center mb-4">
-                            <p class="text-espresso font-semibold mb-2" data-vi="Đã thêm vào giỏ hàng!" data-en="Added to cart!">Đã thêm vào giỏ hàng!</p>
-                            <div class="flex gap-2 justify-center">
-                                <a href="/cart.html" class="inline-block bg-espresso text-white px-6 py-2 font-semibold hover:bg-espresso/90 transition-colors text-sm" data-vi="Xem giỏ hàng" data-en="View Cart">Xem giỏ hàng</a>
-                                <a href="/checkout.html" class="inline-block bg-gold text-espresso px-6 py-2 font-semibold hover:bg-gold/90 transition-colors text-sm" data-vi="Thanh toán" data-en="Checkout">Thanh toán</a>
-                            </div>
-                        </div>
-
-                        <a href="/products.html" class="block text-center text-coffee hover:text-espresso transition-colors" data-vi="← Tiếp tục mua sắm" data-en="← Continue Shopping">← Tiếp tục mua sắm</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Image Lightbox -->
+    <div id="image-lightbox" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onclick="closeLightbox()">
+        <img id="lightbox-image" src="" alt="" class="max-w-full max-h-full object-contain">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300">&times;</button>
     </div>
 
     <!-- Footer -->
@@ -438,6 +413,24 @@
                     badge.classList.add('hidden');
                 }
             }
+        }
+
+        // Image lightbox
+        function openLightbox() {
+            const mainImage = document.getElementById('main-image');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightbox = document.getElementById('image-lightbox');
+
+            lightboxImage.src = mainImage.src;
+            lightboxImage.alt = mainImage.alt;
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('image-lightbox');
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
 
         // Event listeners
