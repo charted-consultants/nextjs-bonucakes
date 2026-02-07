@@ -1,0 +1,646 @@
+{
+  "products": [
+    {
+      "id": "banh-mi-saigon",
+      "slug": "banh-mi-sai-gon-half-baked",
+      "name": {
+        "vi": "Bánh Mì Sài Gòn Half-Baked",
+        "en": "Saigon Half-Baked Baguette"
+      },
+      "shortDescription": {
+        "vi": "Bánh mì nướng 70%, đóng gói riêng với đầy đủ nhân",
+        "en": "70% pre-baked bread with all fillings separately packed"
+      },
+      "description": {
+        "vi": "Bánh mì Sài Gòn truyền thống được nướng 70%, khách tự nướng lại tại nhà để bánh giòn xốp. Tất cả nhân được đóng gói riêng trong hộp kính đảm bảo vệ sinh và giữ chất lượng tốt nhất.",
+        "en": "Traditional Saigon baguette 70% pre-baked, customers bake at home for crispy texture. All fillings separately packed in glass containers to ensure hygiene and maintain best quality."
+      },
+      "images": [
+        "/img/banh-mi/banh-mi-1.webp",
+        "/img/banh-mi/banh-mi-2.webp",
+        "/img/banh-mi/banh-mi-3.webp",
+        "/img/banh-mi/banh-mi-4.webp",
+        "/img/banh-mi/banh-mi-5.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "promotion": {
+        "vi": "Mua 10 tặng 1",
+        "en": "Buy 10 get 1 free"
+      },
+      "ingredients": {
+        "vi": [
+          "Bánh mì nướng 70% (đóng gói riêng)",
+          "Pate gan heo (hộp kính)",
+          "Thịt nguội (hộp kính)",
+          "Chà bông (hộp kính)",
+          "Đồ chua - cà rốt, củ cải (hộp kính)",
+          "Chả lụa (hộp kính)",
+          "Sốt bơ (hộp kính)"
+        ],
+        "en": [
+          "70% pre-baked baguette (separately packed)",
+          "Pork liver pate (glass container)",
+          "Cold cuts (glass container)",
+          "Pork floss (glass container)",
+          "Pickled vegetables - carrot, daikon (glass container)",
+          "Vietnamese ham (glass container)",
+          "Butter sauce (glass container)"
+        ]
+      },
+      "packaging": {
+        "vi": "Bánh mì và tất cả nhân được đóng gói riêng trong hộp kính để đảm bảo vệ sinh và giữ chất lượng tốt nhất",
+        "en": "Bread and all fillings separately packed in glass containers to ensure hygiene and maintain best quality"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Phải cho vào tủ lạnh ngay khi nhận hàng. Thịt và nhân sẽ nhanh hư nếu không bảo quản lạnh.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Meat and fillings spoil quickly without refrigeration."
+        },
+        "reheating": {
+          "vi": [
+            "Dùng lò nướng/lò đối lưu/đồ chiên không dầu:",
+            "- Làm nóng lò trước 3-5 phút ở 180-200°C",
+            "- Nướng bánh 5-7 phút cho đến khi vỏ vàng giòn",
+            "",
+            "Không có lò:",
+            "- Dùng chảo chống dính, lật đều tay vài phút",
+            "- Nướng đến khi bánh giòn, ruột vẫn mềm"
+          ],
+          "en": [
+            "Using oven/air fryer/toaster:",
+            "- Preheat 3-5 minutes at 180-200°C (356-392°F)",
+            "- Bake 5-7 minutes until golden brown",
+            "",
+            "Without oven:",
+            "- Use non-stick pan, flip evenly for a few minutes",
+            "- Bake until crispy outside, soft inside"
+          ]
+        },
+        "preparingFillings": {
+          "vi": [
+            "- Lấy nhân ra để ở nhiệt độ phòng 5-10 phút",
+            "- Có thể làm ấm pate và thịt trong microwave 30 giây",
+            "- KHÔNG hâm nóng đồ chua"
+          ],
+          "en": [
+            "- Take fillings out 5-10 minutes to warm to room temperature",
+            "- Can microwave pate and meat for 30 seconds if desired",
+            "- DO NOT heat pickles"
+          ]
+        },
+        "assembly": {
+          "vi": [
+            "1. Rạch nhẹ thân bánh theo chiều dọc",
+            "2. Quét sốt bơ lên",
+            "3. Quét pate",
+            "4. Xếp lần lượt: thịt → chà bông → đồ chua → chả lụa",
+            "5. Bánh ngon hơn khi ăn nóng"
+          ],
+          "en": [
+            "1. Slice bread lengthwise",
+            "2. Spread butter sauce",
+            "3. Spread pate",
+            "4. Layer: meat → pork floss → pickles → Vietnamese ham",
+            "5. Best eaten while hot"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Làm vào sáng, giao ngày hôm sau. Ship next-day qua DPD hoặc DHL.",
+        "en": "Made in the morning, delivered next day. Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "bo-vien",
+      "slug": "bo-vien",
+      "name": {
+        "vi": "Bò Viên",
+        "en": "Beef Balls"
+      },
+      "shortDescription": {
+        "vi": "Bò viên tự làm, không chất bảo quản, giòn tươi",
+        "en": "Homemade beef balls, no preservatives, fresh and bouncy"
+      },
+      "description": {
+        "vi": "Bò viên được làm hoàn toàn tại nhà hàng theo quy trình chuẩn, không sử dụng chất bảo quản. Rất giòn và tươi, thích hợp cho gia đình có con nhỏ. Có thể dùng để nấu hủ tiếu, phở, hoặc các món khác.",
+        "en": "Beef balls made entirely in-house following standard procedures, no preservatives used. Very fresh and bouncy texture, suitable for families with children. Can be used for pho, hu tieu, or other dishes."
+      },
+      "images": [
+        "/images/products/bo-vien.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt bò tươi",
+          "Gia vị tự nhiên",
+          "Không chất bảo quản"
+        ],
+        "en": [
+          "Fresh beef",
+          "Natural seasonings",
+          "No preservatives"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass containers for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Có thể nấu hủ tiếu, phở",
+            "Dùng cho lẩu",
+            "Chiên hoặc nướng"
+          ],
+          "en": [
+            "Can be used for pho, hu tieu",
+            "Use for hot pot",
+            "Fry or grill"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 2
+    },
+    {
+      "id": "ga-vien",
+      "slug": "ga-vien",
+      "name": {
+        "vi": "Gà Viên",
+        "en": "Chicken Balls"
+      },
+      "shortDescription": {
+        "vi": "Gà viên tự làm, không chất bảo quản, giòn tươi",
+        "en": "Homemade chicken balls, no preservatives, fresh and bouncy"
+      },
+      "description": {
+        "vi": "Gà viên được làm hoàn toàn tại nhà hàng theo quy trình chuẩn, không sử dụng chất bảo quản. Rất giòn và tươi, thích hợp cho gia đình có con nhỏ. Có thể dùng để nấu hủ tiếu, phở, hoặc các món khác.",
+        "en": "Chicken balls made entirely in-house following standard procedures, no preservatives used. Very fresh and bouncy texture, suitable for families with children. Can be used for pho, hu tieu, or other dishes."
+      },
+      "images": [
+        "/images/products/ga-vien.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt gà tươi",
+          "Gia vị tự nhiên",
+          "Không chất bảo quản"
+        ],
+        "en": [
+          "Fresh chicken",
+          "Natural seasonings",
+          "No preservatives"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass containers for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Có thể nấu hủ tiếu, phở",
+            "Dùng cho lẩu",
+            "Chiên hoặc nướng"
+          ],
+          "en": [
+            "Can be used for pho, hu tieu",
+            "Use for hot pot",
+            "Fry or grill"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 3
+    },
+    {
+      "id": "xa-xiu",
+      "slug": "thit-xa-xiu",
+      "name": {
+        "vi": "Thịt Xá Xíu",
+        "en": "Char Siu (BBQ Pork)"
+      },
+      "shortDescription": {
+        "vi": "Thịt xá xíu tự làm, ăn với mì, cơm, hoặc bánh",
+        "en": "Homemade char siu, great with noodles, rice, or bread"
+      },
+      "description": {
+        "vi": "Thịt xá xíu được ướp và nướng theo công thức truyền thống. Có thể ăn với mì, cơm, hoặc bánh. Đóng gói riêng để dễ sử dụng.",
+        "en": "Char siu marinated and roasted following traditional recipe. Can be eaten with noodles, rice, or bread. Separately packed for easy use."
+      },
+      "images": [
+        "/images/products/xa-xiu.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt heo thăn",
+          "Nước sốt xá xíu đặc biệt",
+          "Gia vị truyền thống"
+        ],
+        "en": [
+          "Pork shoulder",
+          "Special char siu sauce",
+          "Traditional seasonings"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass containers for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Ăn với mì, cơm trắng",
+            "Chặt miếng và hâm nóng",
+            "Có thể dùng làm nhân bánh bao"
+          ],
+          "en": [
+            "Eat with noodles or rice",
+            "Slice and reheat",
+            "Can be used as baozi filling"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 4
+    },
+    {
+      "id": "vit-quay",
+      "slug": "vit-quay",
+      "name": {
+        "vi": "Vịt Quay",
+        "en": "Roast Duck"
+      },
+      "shortDescription": {
+        "vi": "Vịt quay giòn da, đã chặt sẵn, kèm công thức mì vịt tiềm",
+        "en": "Crispy roast duck, pre-cut, includes duck noodle soup recipe"
+      },
+      "description": {
+        "vi": "Vịt quay da giòn thịt mềm, đã chặt sẵn để dễ sử dụng. Hâm lại bằng lò hoặc microwave. Kèm theo công thức độc quyền để nấu mì vịt tiềm từ xương vịt.",
+        "en": "Crispy skin roast duck, pre-cut for convenience. Reheat in oven or microwave. Includes exclusive recipe for duck noodle soup made from duck bones."
+      },
+      "images": [
+        "/images/products/vit-quay.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Vịt tươi nguyên con",
+          "Gia vị ướp đặc biệt",
+          "Kèm công thức mì vịt tiềm"
+        ],
+        "en": [
+          "Fresh whole duck",
+          "Special marinade",
+          "Includes duck noodle soup recipe"
+        ]
+      },
+      "packaging": {
+        "vi": "Vịt đã chặt sẵn, đóng gói trong hộp kính",
+        "en": "Pre-cut duck, packed in glass container"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Hâm lại bằng lò (oven) hoặc airfryer cho da giòn",
+            "Có thể hâm bằng microwave",
+            "Dùng xương để nấu mì vịt tiềm theo công thức kèm theo"
+          ],
+          "en": [
+            "Reheat in oven or air fryer for crispy skin",
+            "Can microwave for quick heating",
+            "Use bones to make duck noodle soup with included recipe"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 5
+    },
+    {
+      "id": "nem-lui",
+      "slug": "nem-lui",
+      "name": {
+        "vi": "Nem Lụi",
+        "en": "Grilled Pork Skewers (Nem Lui)"
+      },
+      "shortDescription": {
+        "vi": "Nem lụi tự làm, nướng sơ hoặc hâm microwave là ăn được",
+        "en": "Homemade nem lui, grill or microwave to serve"
+      },
+      "description": {
+        "vi": "Nem lụi thịt heo tự làm, có thể ăn với bún thịt nướng, bún chả giò, hoặc đơn giản là ăn với cơm và rau sống. Rất tiện cho shop nail hoặc những ngày bận rộn - chỉ cần nướng lại hoặc hâm microwave.",
+        "en": "Homemade pork nem lui, can be eaten with vermicelli, spring rolls, or simply with rice and fresh vegetables. Very convenient for nail shops or busy days - just grill or microwave."
+      },
+      "images": [
+        "/images/products/nem-lui.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt heo tươi",
+          "Gia vị truyền thống Huế",
+          "Làm thủ công"
+        ],
+        "en": [
+          "Fresh pork",
+          "Traditional Hue seasonings",
+          "Handmade"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass containers for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Nướng lại trên lửa hoặc lò nướng",
+            "Hâm nóng bằng microwave (tiện cho shop nail)",
+            "Ăn với bún, rau sống, nước mắm",
+            "Ăn với cơm cũng rất ngon"
+          ],
+          "en": [
+            "Grill over flame or in oven",
+            "Microwave for convenience (great for nail shops)",
+            "Eat with vermicelli, fresh vegetables, fish sauce",
+            "Also great with rice"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 6
+    },
+    {
+      "id": "cha-lua",
+      "slug": "cha-lua",
+      "name": {
+        "vi": "Chả Lụa",
+        "en": "Vietnamese Ham (Cha Lua)"
+      },
+      "shortDescription": {
+        "vi": "Chả lụa tự làm, bán riêng để khách tự kết hợp",
+        "en": "Homemade Vietnamese ham, sold separately for custom use"
+      },
+      "description": {
+        "vi": "Chả lụa truyền thống tự làm tại nhà hàng. Có thể dùng để làm bánh mì, ăn với cơm, hoặc các món khác.",
+        "en": "Traditional Vietnamese ham made in-house. Can be used for banh mi, eaten with rice, or in other dishes."
+      },
+      "images": [
+        "/images/products/cha-lua.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt heo tươi",
+          "Gia vị truyền thống"
+        ],
+        "en": [
+          "Fresh pork",
+          "Traditional seasonings"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass container for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Cắt lát mỏng",
+            "Ăn trực tiếp hoặc hơi nóng qua",
+            "Dùng cho bánh mì, bánh cuốn, hoặc ăn với cơm"
+          ],
+          "en": [
+            "Slice thinly",
+            "Eat directly or warm slightly",
+            "Use for banh mi, banh cuon, or eat with rice"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 7
+    },
+    {
+      "id": "pate",
+      "slug": "pate",
+      "name": {
+        "vi": "Pate",
+        "en": "Pork Liver Pate"
+      },
+      "shortDescription": {
+        "vi": "Pate gan heo tự làm, bán riêng",
+        "en": "Homemade pork liver pate, sold separately"
+      },
+      "description": {
+        "vi": "Pate gan heo tự làm theo công thức truyền thống. Có thể dùng để làm bánh mì hoặc ăn với bánh crackers.",
+        "en": "Homemade pork liver pate following traditional recipe. Can be used for banh mi or eaten with crackers."
+      },
+      "images": [
+        "/images/products/pate.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Gan heo tươi",
+          "Gia vị đặc biệt"
+        ],
+        "en": [
+          "Fresh pork liver",
+          "Special seasonings"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass container for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Có thể làm ấm nhẹ trong microwave 30 giây",
+            "Dùng cho bánh mì",
+            "Ăn với bánh crackers"
+          ],
+          "en": [
+            "Can warm slightly in microwave for 30 seconds",
+            "Use for banh mi",
+            "Eat with crackers"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 8
+    },
+    {
+      "id": "thit-nguoi",
+      "slug": "thit-nguoi",
+      "name": {
+        "vi": "Thịt Nguội",
+        "en": "Cold Cuts"
+      },
+      "shortDescription": {
+        "vi": "Thịt nguội tự làm, bán riêng",
+        "en": "Homemade cold cuts, sold separately"
+      },
+      "description": {
+        "vi": "Thịt nguội tự làm tại nhà hàng. Có thể dùng để làm bánh mì hoặc ăn trực tiếp.",
+        "en": "Homemade cold cuts made in-house. Can be used for banh mi or eaten directly."
+      },
+      "images": [
+        "/images/products/thit-nguoi.webp"
+      ],
+      "price": {
+        "amount": 0,
+        "currency": "GBP",
+        "displayPrice": "Contact for pricing",
+        "displayPriceVi": "Liên hệ để biết giá"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt heo tươi",
+          "Gia vị truyền thống"
+        ],
+        "en": [
+          "Fresh pork",
+          "Traditional seasonings"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói trong hộp kính đảm bảo vệ sinh",
+        "en": "Packed in glass container for hygiene"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "QUAN TRỌNG: Cho vào tủ lạnh ngay khi nhận. Bảo quản tủ lạnh 1 tuần, tủ đá 1-3 tháng.",
+          "en": "IMPORTANT: Refrigerate immediately upon receiving. Keep refrigerated for 1 week, frozen for 1-3 months."
+        },
+        "preparation": {
+          "vi": [
+            "Cắt lát mỏng",
+            "Có thể làm ấm nhẹ trong microwave 30 giây",
+            "Dùng cho bánh mì hoặc ăn với cơm"
+          ],
+          "en": [
+            "Slice thinly",
+            "Can warm slightly in microwave for 30 seconds",
+            "Use for banh mi or eat with rice"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Ship next-day qua DPD hoặc DHL.",
+        "en": "Next-day shipping via DPD or DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 9
+    }
+  ]
+}
