@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N2YKRZNC4F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-N2YKRZNC4F');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt hàng thành công - Bonu F&B</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="icon" href="https://thielts.chartedconsultants.com/bonu/profile.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{cream:'#FDF8F3',warmwhite:'#FFFBF5',terracotta:'#C4704A',espresso:'#3D2314',gold:'#D4A853',coffee:'#4A3728'}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        .lang-btn { transition: all 0.2s ease; }
+        .lang-btn.active { background-color: #C4704A; color: white; }
+        .nav-scrolled { box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #4BB543;
+            stroke-miterlimit: 10;
+            margin: 0 auto 2rem;
+            box-shadow: inset 0px 0px 0px #4BB543;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #4BB543;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+        @keyframes fill {
+            100% { box-shadow: inset 0px 0px 0px 40px #4BB543; }
+        }
+    </style>
+</head>
+<body class="bg-cream">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-sm" id="site-nav">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-3xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
+            <div class="flex items-center gap-6">
+                <a href="/story.html" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Câu chuyện" data-en="Story">Câu chuyện</a>
+                <a href="/banh-mi.html" class="text-white font-semibold transition-colors hidden md:block" data-vi="Sản phẩm" data-en="Products">Sản phẩm</a>
+                <a href="/#courses" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Tư vấn" data-en="Services">Tư vấn</a>
+                <a href="/blog.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Blog</a>
+                <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
+                <div class="flex bg-espresso border border-gold/30 rounded-full p-1">
+                    <button onclick="setLang('en')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white" id="btn-en">EN</button>
+                    <button onclick="setLang('vi')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white active" id="btn-vi">VI</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Content -->
+    <main class="pt-32 pb-16 min-h-screen">
+        <div class="max-w-4xl mx-auto px-6">
+            <!-- Success Animation -->
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-espresso mb-4" data-vi="Đặt hàng thành công!" data-en="Order Placed Successfully!">Đặt hàng thành công!</h1>
+                <p class="text-xl text-coffee" data-vi="Cảm ơn bạn đã đặt hàng tại Bonu F&B" data-en="Thank you for your order at Bonu F&B">Cảm ơn bạn đã đặt hàng tại Bonu F&B</p>
+            </div>
+
+            <!-- Order Details -->
+            <div class="bg-white border border-espresso/10 p-8 mb-8">
+                <div class="border-b border-espresso/10 pb-4 mb-6">
+                    <h2 class="text-2xl font-bold text-espresso mb-2" data-vi="Mã đơn hàng" data-en="Order ID">Mã đơn hàng</h2>
+                    <p id="order-id" class="text-3xl font-bold text-terracotta"></p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-espresso mb-3" data-vi="Email xác nhận đã được gửi" data-en="Confirmation Email Sent">Email xác nhận đã được gửi</h3>
+                    <p class="text-coffee" data-vi="Chúng tôi đã gửi email xác nhận đơn hàng và hướng dẫn thanh toán đến địa chỉ email của bạn." data-en="We have sent an order confirmation email and payment instructions to your email address.">Chúng tôi đã gửi email xác nhận đơn hàng và hướng dẫn thanh toán đến địa chỉ email của bạn.</p>
+                </div>
+            </div>
+
+            <!-- Payment Instructions -->
+            <div class="bg-gold/10 border-2 border-gold/50 p-8 mb-8">
+                <h2 class="text-2xl font-bold text-espresso mb-6" data-vi="Hướng dẫn thanh toán" data-en="Payment Instructions">Hướng dẫn thanh toán</h2>
+
+                <div class="space-y-4 text-coffee">
+                    <div class="flex justify-between border-b border-gold/30 pb-3">
+                        <span class="font-semibold" data-vi="Ngân hàng" data-en="Bank">Ngân hàng</span>
+                        <span class="text-right">Vietcombank</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gold/30 pb-3">
+                        <span class="font-semibold" data-vi="Số tài khoản" data-en="Account Number">Số tài khoản</span>
+                        <span class="text-right font-mono">1234567890</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gold/30 pb-3">
+                        <span class="font-semibold" data-vi="Tên tài khoản" data-en="Account Name">Tên tài khoản</span>
+                        <span class="text-right">NGUYEN NGOC MINH UYEN</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gold/30 pb-3">
+                        <span class="font-semibold" data-vi="Nội dung chuyển khoản" data-en="Transfer Note">Nội dung chuyển khoản</span>
+                        <span id="transfer-note" class="text-right font-mono font-bold"></span>
+                    </div>
+                    <div class="flex justify-between text-xl font-bold pt-3">
+                        <span data-vi="Số tiền" data-en="Amount">Số tiền</span>
+                        <span id="order-total" class="text-terracotta"></span>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-white p-4 border border-gold/30">
+                    <p class="text-sm text-coffee"><strong data-vi="Lưu ý:" data-en="Note:">Lưu ý:</strong> <span data-vi="Vui lòng chuyển khoản đúng nội dung để chúng tôi xác nhận đơn hàng nhanh hơn." data-en="Please transfer with the correct note for faster order confirmation.">Vui lòng chuyển khoản đúng nội dung để chúng tôi xác nhận đơn hàng nhanh hơn.</span></p>
+                </div>
+            </div>
+
+            <!-- What Happens Next -->
+            <div class="bg-warmwhite border border-espresso/10 p-8 mb-8">
+                <h2 class="text-2xl font-bold text-espresso mb-6" data-vi="Tiếp theo sẽ như thế nào?" data-en="What Happens Next?">Tiếp theo sẽ như thế nào?</h2>
+
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-terracotta text-white rounded-full flex items-center justify-center font-bold">1</div>
+                        <div>
+                            <h3 class="font-semibold text-espresso mb-2" data-vi="Thanh toán" data-en="Payment">Thanh toán</h3>
+                            <p class="text-coffee" data-vi="Chuyển khoản theo hướng dẫn bên trên với nội dung chính xác" data-en="Transfer payment as instructed above with the exact transfer note">Chuyển khoản theo hướng dẫn bên trên với nội dung chính xác</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-terracotta text-white rounded-full flex items-center justify-center font-bold">2</div>
+                        <div>
+                            <h3 class="font-semibold text-espresso mb-2" data-vi="Xác nhận" data-en="Confirmation">Xác nhận</h3>
+                            <p class="text-coffee" data-vi="Sau khi nhận được thanh toán, chúng tôi sẽ liên hệ với bạn để xác nhận đơn hàng và thời gian giao" data-en="After receiving payment, we will contact you to confirm your order and delivery time">Sau khi nhận được thanh toán, chúng tôi sẽ liên hệ với bạn để xác nhận đơn hàng và thời gian giao</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-terracotta text-white rounded-full flex items-center justify-center font-bold">3</div>
+                        <div>
+                            <h3 class="font-semibold text-espresso mb-2" data-vi="Chuẩn bị" data-en="Preparation">Chuẩn bị</h3>
+                            <p class="text-coffee" data-vi="Đơn hàng của bạn sẽ được làm tươi vào sáng và chuẩn bị giao hàng" data-en="Your order will be made fresh in the morning and prepared for delivery">Đơn hàng của bạn sẽ được làm tươi vào sáng và chuẩn bị giao hàng</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-terracotta text-white rounded-full flex items-center justify-center font-bold">4</div>
+                        <div>
+                            <h3 class="font-semibold text-espresso mb-2" data-vi="Giao hàng" data-en="Delivery">Giao hàng</h3>
+                            <p class="text-coffee" data-vi="Ship next-day qua DPD hoặc DHL. Bạn sẽ nhận hàng vào ngày đã chọn." data-en="Next-day shipping via DPD or DHL. You will receive your order on the selected date.">Ship next-day qua DPD hoặc DHL. Bạn sẽ nhận hàng vào ngày đã chọn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Warning -->
+            <div class="bg-red-50 border-2 border-red-300 p-6 mb-8">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-red-900 mb-2" data-vi="Lưu ý quan trọng về giao hàng" data-en="Important Shipping Notice">Lưu ý quan trọng về giao hàng</h3>
+                        <p class="text-red-800 text-sm mb-2" data-vi="Chúng tôi kiểm soát chất lượng đồ ăn khi đóng gói nhưng KHÔNG THỂ kiểm soát thời gian giao hàng của đơn vị vận chuyển (DPD/DHL). Nếu đơn hàng bị giao trễ, chúng tôi không thể đảm bảo chất lượng sản phẩm." data-en="We control food quality during packaging but CANNOT control delivery delays by shipping companies (DPD/DHL). If delivery is delayed, we cannot guarantee product quality.">Chúng tôi kiểm soát chất lượng đồ ăn khi đóng gói nhưng KHÔNG THỂ kiểm soát thời gian giao hàng của đơn vị vận chuyển (DPD/DHL). Nếu đơn hàng bị giao trễ, chúng tôi không thể đảm bảo chất lượng sản phẩm.</p>
+                        <p class="text-red-800 text-sm" data-vi="Nếu bạn nhận đồ hư hỏng hoặc không ăn được, vui lòng báo ngay cho chúng tôi. Chúng tôi sẽ refund hoặc gửi lại đơn hàng mới." data-en="If you receive damaged or inedible food, please report immediately. We will refund or send a new order.">Nếu bạn nhận đồ hư hỏng hoặc không ăn được, vui lòng báo ngay cho chúng tôi. Chúng tôi sẽ refund hoặc gửi lại đơn hàng mới.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage Instructions -->
+            <div class="bg-warmwhite border border-espresso/10 p-8 mb-8">
+                <h2 class="text-2xl font-bold text-espresso mb-4" data-vi="Hướng dẫn bảo quản" data-en="Storage Instructions">Hướng dẫn bảo quản</h2>
+                <ul class="space-y-3 text-coffee">
+                    <li class="flex items-start gap-2">
+                        <span class="text-terracotta font-bold">•</span>
+                        <span data-vi="Cho vào tủ lạnh NGAY khi nhận hàng" data-en="Refrigerate IMMEDIATELY upon receiving">Cho vào tủ lạnh NGAY khi nhận hàng</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-terracotta font-bold">•</span>
+                        <span data-vi="Bảo quản trong tủ lạnh: 1 tuần" data-en="Refrigerated storage: 1 week">Bảo quản trong tủ lạnh: 1 tuần</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-terracotta font-bold">•</span>
+                        <span data-vi="Bảo quản trong tủ đá: 1-3 tháng" data-en="Frozen storage: 1-3 months">Bảo quản trong tủ đá: 1-3 tháng</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-terracotta font-bold">•</span>
+                        <span data-vi="Nếu đông đá, chia nhỏ từng phần để dễ sử dụng" data-en="If freezing, divide into portions for easier use">Nếu đông đá, chia nhỏ từng phần để dễ sử dụng</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="bg-espresso text-warmwhite p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-4" data-vi="Cần hỗ trợ?" data-en="Need Help?">Cần hỗ trợ?</h2>
+                <p class="mb-4" data-vi="Nếu có bất kỳ thắc mắc nào về đơn hàng, vui lòng liên hệ với chúng tôi:" data-en="If you have any questions about your order, please contact us:">Nếu có bất kỳ thắc mắc nào về đơn hàng, vui lòng liên hệ với chúng tôi:</p>
+                <a href="https://www.facebook.com/profile.php?id=100009102362568" target="_blank" class="inline-flex items-center gap-3 bg-terracotta text-white px-6 py-3 font-semibold hover:bg-terracotta/90 transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    <span data-vi="Nhắn tin Facebook" data-en="Message on Facebook">Nhắn tin Facebook</span>
+                </a>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center space-y-4">
+                <a href="/banh-mi.html" class="inline-block bg-terracotta text-white px-8 py-4 font-semibold text-lg hover:bg-terracotta/90 transition-colors">
+                    <span data-vi="Tiếp tục mua sắm" data-en="Continue Shopping">Tiếp tục mua sắm</span>
+                </a>
+                <div>
+                    <a href="/" class="text-coffee hover:text-terracotta transition-colors" data-vi="Quay lại trang chủ" data-en="Back to Home">Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-espresso border-t border-gold/20 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <a href="/" class="text-2xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
+                <div class="flex gap-6 text-cream/60 text-sm">
+                    <a href="/story.html" class="hover:text-white transition-colors" data-vi="Câu chuyện" data-en="Story">Câu chuyện</a>
+                    <a href="/banh-mi.html" class="hover:text-white transition-colors" data-vi="Sản phẩm" data-en="Products">Sản phẩm</a>
+                    <a href="/#courses" class="hover:text-white transition-colors" data-vi="Tư vấn" data-en="Services">Tư vấn</a>
+                    <a href="/blog.html" class="hover:text-white transition-colors">Blog</a>
+                    <a href="/#contact" class="hover:text-white transition-colors" data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
+                </div>
+            </div>
+            <div class="border-t border-cream/10 mt-8 pt-8 text-center text-cream/40 text-sm">
+                <p>&copy; 2026 Uyen Nguyen - F&B Business Design</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentLang = localStorage.getItem('lang') || 'vi';
+
+        // Get order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+
+        // Language switcher
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+
+            document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            document.querySelectorAll('[data-vi]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${lang}`);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setLang(currentLang);
+
+            if (orderId) {
+                document.getElementById('order-id').textContent = orderId;
+                document.getElementById('transfer-note').textContent = orderId;
+            } else {
+                document.getElementById('order-id').textContent = 'N/A';
+                document.getElementById('transfer-note').textContent = 'Please check your email';
+            }
+
+            // You could fetch order details from localStorage or API here if needed
+            // For now, we'll leave it as is since the order total is in the email
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('site-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

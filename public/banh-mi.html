@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N2YKRZNC4F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-N2YKRZNC4F');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bánh Mì Sài Gòn - Bonu F&B</title>
+    <meta name="description" content="Bánh mì Sài Gòn truyền thống half-baked. Đóng gói riêng trong hộp kính đảm bảo vệ sinh. Giao hàng trong ngày.">
+    <meta name="keywords" content="bánh mì Sài Gòn, bánh mì half-baked, Vietnamese sandwich, banh mi">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bonucakes.com/banh-mi.html">
+    <meta property="og:title" content="Bánh Mì Sài Gòn - Bonu F&B">
+    <meta property="og:description" content="Bánh mì Sài Gòn truyền thống half-baked. Đóng gói riêng, giao hàng trong ngày.">
+    <meta property="og:image" content="https://bonucakes.com/images/products/banh-mi-saigon-1.webp">
+
+    <link rel="icon" href="https://thielts.chartedconsultants.com/bonu/profile.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{cream:'#FDF8F3',warmwhite:'#FFFBF5',terracotta:'#C4704A',espresso:'#3D2314',gold:'#D4A853',coffee:'#4A3728'}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .lang-btn { transition: all 0.2s ease; }
+        .lang-btn.active { background-color: #C4704A; color: white; }
+        html { scroll-behavior: smooth; }
+        .hover-lift { transition: transform .25s ease, box-shadow .25s ease; }
+        .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+        .nav-scrolled { box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    </style>
+</head>
+<body class="bg-cream">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-sm" id="site-nav">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-3xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
+            <div class="flex items-center gap-6">
+                <a href="/story.html" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Câu chuyện" data-en="Story">Câu chuyện</a>
+                <a href="/banh-mi.html" class="text-white font-semibold transition-colors hidden md:block" data-vi="Sản phẩm" data-en="Products">Sản phẩm</a>
+                <a href="/#courses" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Tư vấn" data-en="Services">Tư vấn</a>
+                <a href="/blog.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Blog</a>
+                <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
+                <div class="flex bg-espresso border border-gold/30 rounded-full p-1">
+                    <button onclick="setLang('en')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white" id="btn-en">EN</button>
+                    <button onclick="setLang('vi')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white active" id="btn-vi">VI</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="relative bg-warmwhite pt-32 pb-16 border-b border-espresso/10">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-terracotta uppercase tracking-widest text-sm mb-4 font-medium" data-vi="Sản phẩm của chúng tôi" data-en="Our Products">Sản phẩm của chúng tôi</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-espresso mb-6" data-vi="Bánh Mì Sài Gòn" data-en="Saigon Bánh Mì">Bánh Mì Sài Gòn</h1>
+            <p class="text-xl text-coffee max-w-3xl mx-auto" data-vi="Bánh mì truyền thống Việt Nam, được nướng 70% (half-baked), đóng gói riêng trong hộp kính đảm bảo vệ sinh. Làm vào sáng, giao ngày hôm sau." data-en="Traditional Vietnamese sandwiches, 70% pre-baked, separately packed in glass containers for hygiene. Made in the morning, delivered next day.">Bánh mì truyền thống Việt Nam, được nướng 70% (half-baked), đóng gói riêng trong hộp kính đảm bảo vệ sinh. Làm vào sáng, giao ngày hôm sau.</p>
+        </div>
+    </header>
+
+    <!-- Products Grid -->
+    <section class="py-16 md:py-24 bg-cream">
+        <div class="max-w-6xl mx-auto px-6">
+            <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products loaded via JS -->
+            </div>
+
+            <div id="no-products" class="text-center py-12 hidden">
+                <p class="text-coffee text-lg" data-vi="Chưa có sản phẩm nào." data-en="No products available yet.">Chưa có sản phẩm nào.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="py-16 bg-espresso text-warmwhite">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gold" data-vi="Half-Baked" data-en="Half-Baked">Half-Baked</h3>
+                    <p class="text-cream/80" data-vi="Nướng 70%, bạn tự nướng lại để bánh giòn xốp" data-en="70% pre-baked, you bake at home for crispiness">Nướng 70%, bạn tự nướng lại để bánh giòn xốp</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gold" data-vi="Đóng gói riêng" data-en="Separately Packed">Đóng gói riêng</h3>
+                    <p class="text-cream/80" data-vi="Bánh và nhân trong hộp kính riêng biệt, đảm bảo vệ sinh" data-en="Bread and fillings in separate glass containers, hygienic">Bánh và nhân trong hộp kính riêng biệt, đảm bảo vệ sinh</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gold" data-vi="Giao ngày mai" data-en="Next-Day Delivery">Giao ngày mai</h3>
+                    <p class="text-cream/80" data-vi="Làm vào sáng, ship trong ngày, bạn nhận ngày mai" data-en="Made in morning, shipped same day, you receive next day">Làm vào sáng, ship trong ngày, bạn nhận ngày mai</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-espresso border-t border-gold/20 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <a href="/" class="text-2xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
+                <div class="flex gap-6 text-cream/60 text-sm">
+                    <a href="/story.html" class="hover:text-white transition-colors" data-vi="Câu chuyện" data-en="Story">Câu chuyện</a>
+                    <a href="/banh-mi.html" class="hover:text-white transition-colors" data-vi="Sản phẩm" data-en="Products">Sản phẩm</a>
+                    <a href="/#courses" class="hover:text-white transition-colors" data-vi="Tư vấn" data-en="Services">Tư vấn</a>
+                    <a href="/blog.html" class="hover:text-white transition-colors">Blog</a>
+                    <a href="/#contact" class="hover:text-white transition-colors" data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
+                </div>
+            </div>
+            <div class="border-t border-cream/10 mt-8 pt-8 text-center text-cream/40 text-sm">
+                <p>&copy; 2026 Uyen Nguyen - F&B Business Design</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentLang = localStorage.getItem('lang') || 'vi';
+        let productsData = null;
+
+        // Language switcher
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+
+            // Update active button
+            document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            // Update all bilingual elements
+            document.querySelectorAll('[data-vi]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${lang}`);
+            });
+
+            // Reload products with new language
+            if (productsData) {
+                renderProducts();
+            }
+        }
+
+        // Load products
+        async function loadProducts() {
+            try {
+                const response = await fetch('/products.json');
+                const data = await response.json();
+                productsData = data;
+                renderProducts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('no-products').classList.remove('hidden');
+            }
+        }
+
+        // Render products
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const noProducts = document.getElementById('no-products');
+
+            if (!productsData || !productsData.products || productsData.products.length === 0) {
+                noProducts.classList.remove('hidden');
+                return;
+            }
+
+            // Filter available products
+            const availableProducts = productsData.products.filter(p => p.available);
+
+            if (availableProducts.length === 0) {
+                noProducts.classList.remove('hidden');
+                return;
+            }
+
+            // Sort by sortOrder
+            availableProducts.sort((a, b) => (a.sortOrder || 999) - (b.sortOrder || 999));
+
+            grid.innerHTML = availableProducts.map(product => {
+                const name = product.name[currentLang] || product.name.vi;
+                const shortDesc = product.shortDescription[currentLang] || product.shortDescription.vi;
+                const promotion = product.promotion ? (product.promotion[currentLang] || product.promotion.vi) : '';
+                const image = product.images && product.images.length > 0 ? product.images[0] : '/images/placeholder-product.webp';
+
+                return `
+                    <div class="bg-white border border-espresso/10 overflow-hidden hover-lift">
+                        <div class="relative">
+                            <img src="${image}" alt="${name}" class="w-full h-64 object-cover" onerror="this.src='/images/placeholder-product.webp'">
+                            ${product.featured ? `<div class="absolute top-4 right-4 bg-gold text-espresso px-3 py-1 text-sm font-semibold">${currentLang === 'vi' ? 'Nổi bật' : 'Featured'}</div>` : ''}
+                            ${promotion ? `<div class="absolute top-4 left-4 bg-terracotta text-white px-3 py-1 text-sm font-semibold">${promotion}</div>` : ''}
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-espresso mb-2">${name}</h3>
+                            <p class="text-coffee mb-4">${shortDesc}</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="text-2xl font-bold text-terracotta">${product.price.displayPrice}</div>
+                            </div>
+                            <a href="/banh-mi/product.html?slug=${product.slug}" class="block w-full text-center bg-terracotta text-white px-6 py-3 font-semibold hover:bg-terracotta/90 transition-colors">
+                                ${currentLang === 'vi' ? 'Xem chi tiết & Đặt hàng' : 'View Details & Order'}
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            noProducts.classList.add('hidden');
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('site-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setLang(currentLang);
+            loadProducts();
+        });
+    </script>
+</body>
+</html>
