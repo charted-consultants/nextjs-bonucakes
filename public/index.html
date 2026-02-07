@@ -268,7 +268,16 @@
                 <h2 class="text-4xl md:text-5xl font-bold mb-4" data-vi="Bếp Bà Bo" data-en="Bếp Bà Bo">Bếp Bà Bo</h2>
                 <p class="text-lg text-cream/80 max-w-2xl mx-auto" data-vi="Đồ ăn Việt Nam tự làm với công thức truyền thống. Chất lượng tươi ngon, đóng gói cẩn thận, giao hàng nhanh chóng." data-en="Homemade Vietnamese food with traditional recipes. Fresh quality, carefully packaged, fast delivery.">Đồ ăn Việt Nam tự làm với công thức truyền thống. Chất lượng tươi ngon, đóng gói cẩn thận, giao hàng nhanh chóng.</p>
             </div>
-            <div class="flex justify-center">
+            <!-- Featured products carousel -->
+            <div class="relative">
+                <button id="fp-prev" aria-label="Previous" class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gold text-espresso/90 hover:bg-gold/90 w-10 h-10 items-center justify-center">‹</button>
+                <div id="featured-products-track" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-4">
+                    <!-- Cards injected by JS -->
+                </div>
+                <button id="fp-next" aria-label="Next" class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gold text-espresso/90 hover:bg-gold/90 w-10 h-10 items-center justify-center">›</button>
+            </div>
+
+            <div class="flex justify-center mt-8">
                 <a href="/products.html" class="bg-gold text-espresso px-8 py-4 font-semibold hover:bg-gold/90 transition-colors inline-block" data-vi="Xem sản phẩm" data-en="View Products">Xem sản phẩm</a>
             </div>
         </div>
@@ -745,12 +754,67 @@
         // Initialize
         setLang(currentLang);
         loadContent();
+        loadFeaturedProducts();
         loadBlogPosts();
     </script>
 
     <!-- Cart functionality -->
     <script src="/js/cart.js"></script>
     <script>
+        // Load featured products for homepage carousel
+        async function loadFeaturedProducts() {
+            try {
+                const res = await fetch('/products.json');
+                const data = await res.json();
+                const products = (data.products || [])
+                    .filter(p => p.available)
+                    .sort((a,b) => (a.sortOrder||999) - (b.sortOrder||999));
+
+                const featured = products.filter(p => p.featured).slice(0, 8);
+                const items = (featured.length > 0 ? featured : products.slice(0, 8));
+
+                const track = document.getElementById('featured-products-track');
+                if (!track) return;
+
+                track.innerHTML = items.map(p => {
+                    const name = p.name?.[currentLang] || p.name?.vi || '';
+                    const desc = p.shortDescription?.[currentLang] || p.shortDescription?.vi || '';
+                    const image = (p.images && p.images[0]) || '/placeholder-product.webp';
+                    const amount = Number(p.price?.amount || 0);
+                    const currency = p.price?.currency || 'GBP';
+                    const display = p.price?.displayPrice || '';
+                    const priceText = amount > 0 ? (currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`) : display;
+                    return `
+                        <article class="snap-start flex-none w-72 bg-white text-espresso border border-espresso/10 hover-lift">
+                            <a href="/banh-mi/product.html?slug=${p.slug}" class="block">
+                                <img src="${image}" alt="${name}" class="w-full h-44 object-cover" onerror="this.src='/placeholder-product.webp'">
+                            </a>
+                            <div class="p-4 flex flex-col h-48">
+                                <h3 class="font-bold text-lg line-clamp-2 mb-1"><a href="/banh-mi/product.html?slug=${p.slug}" class="hover:text-terracotta">${name}</a></h3>
+                                <p class="text-coffee/80 text-sm line-clamp-2 mb-3">${desc}</p>
+                                <div class="mt-auto flex items-center justify-between">
+                                    <span class="font-semibold text-terracotta">${priceText}</span>
+                                    <a href="/banh-mi/product.html?slug=${p.slug}" class="text-sm text-terracotta hover:underline" data-vi="Xem chi tiết" data-en="View details">${currentLang==='vi'?'Xem chi tiết':'View details'}</a>
+                                </div>
+                            </div>
+                        </article>`;
+                }).join('');
+
+                // Simple scroll controls
+                const prev = document.getElementById('fp-prev');
+                const next = document.getElementById('fp-next');
+                const step = 320; // approximate card width + gap
+                if (prev && next) {
+                    prev.classList.remove('hidden');
+                    next.classList.remove('hidden');
+                    prev.addEventListener('click', () => track.scrollBy({ left: -step, behavior: 'smooth' }));
+                    next.addEventListener('click', () => track.scrollBy({ left: step, behavior: 'smooth' }));
+                }
+            } catch (e) {
+                console.error('Error loading featured products:', e);
+            }
+        }
+
         // Update cart badge
         function updateCartBadge() {
             const count = Cart.getCartCount();
