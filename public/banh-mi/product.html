@@ -301,14 +301,6 @@
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('product-detail').classList.remove('hidden');
 
-                // Set minimum delivery date (tomorrow)
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                document.getElementById('delivery-date').min = tomorrow.toISOString().split('T')[0];
-
-                // Initialize price calculation
-                calculatePrice();
-
             } catch (error) {
                 console.error('Error loading product:', error);
                 document.getElementById('loading').classList.add('hidden');
