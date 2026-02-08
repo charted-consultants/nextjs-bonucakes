@@ -229,7 +229,7 @@
                 if (!price || price <= 0) price = Cart.parseDisplayPrice(it.displayPrice || '');
                 return sum + (qty * (price || 0));
             }, 0);
-            const shipping = cart.items.length > 0 ? Cart.SHIPPING_FEE : 0;
+            const shipping = cart.items.length > 0 ? Number((window.Cart && Cart.SHIPPING_FEE) || 8) : 0;
             const grand = subtotal + shipping;
             document.getElementById('summary-count').textContent = `${totalCount} ${currentLang === 'vi' ? 'sản phẩm' : 'items'}`;
             document.getElementById('summary-shipping').textContent = `£${shipping}`;
