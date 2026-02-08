@@ -196,7 +196,8 @@ const Cart = {
             productName: item.productName.vi || item.productName,
             quantity: item.quantity,
             unitPrice: Number(item.unitPrice || 0) || undefined,
-            unit: (item.unitEn || item.unitVi || this.parseDisplayUnit(item.displayPrice || item.displayPriceVi || '')) || undefined
+            unitVi: item.unitVi || this.parseDisplayUnit(item.displayPriceVi || item.displayPrice || '') || undefined,
+            unitEn: item.unitEn || this.parseDisplayUnit(item.displayPrice || '') || undefined
         }));
     }
 };
