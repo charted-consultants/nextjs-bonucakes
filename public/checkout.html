@@ -247,7 +247,14 @@
                             ${freeItems > 0 ? `<p class="text-xs text-gold">${currentLang === 'vi' ? 'Tặng' : 'Free'}: +${freeItems}</p>` : ''}
                         </div>
                         <div class="text-right">
-                            <p class="font-semibold text-terracotta">${item.displayPrice}</p>
+                            <p class="font-semibold text-terracotta">
+                                ${(() => {
+                                    const isBanhMi = item.productSlug === 'banh-mi-sai-gon-half-baked';
+                                    if (isBanhMi && item.displayPrice) return item.displayPrice;
+                                    const amount = Number(item.unitPrice || 0);
+                                    return amount > 0 ? `£${amount}` : (item.displayPrice || '');
+                                })()}
+                            </p>
                         </div>
                     </div>
                 `;

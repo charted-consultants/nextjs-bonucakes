@@ -199,7 +199,14 @@
                         ${item.image ? `<img src="${item.image}" alt="${itemName}" class="w-24 h-24 object-cover">` : '<div class="w-24 h-24 bg-cream flex items-center justify-center text-coffee">No Image</div>'}
                         <div class="flex-grow">
                             <h3 class="text-lg font-bold text-espresso mb-1">${itemName}</h3>
-                            <p class="text-terracotta font-semibold mb-2">${item.displayPrice} ${currentLang === 'vi' ? 'mỗi ổ' : 'each'}</p>
+                            <p class="text-terracotta font-semibold mb-2">
+                                ${(() => {
+                                    const isBanhMi = item.productSlug === 'banh-mi-sai-gon-half-baked';
+                                    if (isBanhMi && item.displayPrice) return `${item.displayPrice}`;
+                                    const amount = Number(item.unitPrice || 0);
+                                    return amount > 0 ? `£${amount}` : (item.displayPrice || '');
+                                })()}
+                            </p>
                             ${freeItems > 0 ? `<p class="text-sm text-gold font-semibold mb-2">${currentLang === 'vi' ? 'Mua 10 tặng 1' : 'Buy 10 get 1 free'} (${currentLang === 'vi' ? 'thực tế' : 'actual'}: ${actualQuantity})</p>` : ''}
 
                             <div class="flex items-center gap-3">

@@ -3,10 +3,23 @@ const Cart = {
     STORAGE_KEY: 'bonu_cart',
     SHIPPING_FEE: 8,
 
-    // Get current cart
+    // Get current cart (migrates missing numeric prices from displayPrice)
     getCart() {
-        const cart = localStorage.getItem(this.STORAGE_KEY);
-        return cart ? JSON.parse(cart) : { items: [] };
+        const raw = localStorage.getItem(this.STORAGE_KEY);
+        const cart = raw ? JSON.parse(raw) : { items: [] };
+        let changed = false;
+        cart.items.forEach(item => {
+            const price = Number(item && item.unitPrice);
+            if (!price || price <= 0) {
+                const parsed = this.parseDisplayPrice(item && item.displayPrice ? item.displayPrice : '');
+                if (parsed > 0) {
+                    item.unitPrice = parsed;
+                    changed = true;
+                }
+            }
+        });
+        if (changed) this.saveCart(cart);
+        return cart;
     },
 
     // Save cart to localStorage
@@ -95,6 +108,13 @@ const Cart = {
     // Grand total = subtotal + shipping
     getGrandTotal() {
         return this.getCartTotal() + this.getShippingFee();
+    },
+
+    // Utility: parse number from display price like "£15 / 500gr"
+    parseDisplayPrice(text) {
+        if (!text || typeof text !== 'string') return 0;
+        const m = text.replace(/,/g, '').match(/(\d+(?:\.\d+)?)/);
+        return m ? parseFloat(m[1]) : 0;
     },
 
     // Calculate promotion (buy 10 get 1 free per product)
