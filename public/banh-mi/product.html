@@ -345,27 +345,24 @@
 
             // Product info
             document.getElementById('product-name').textContent = name;
-            // Prefer displayPrice (shows units like /ổ, /500g); fallback to numeric; hide placeholder
+            // Show units only for Banh Mi; others use numeric; hide placeholders
             (function () {
                 const amount = Number(currentProduct.price.amount || 0);
                 const currency = currentProduct.price.currency || 'GBP';
                 const display = currentProduct.price.displayPrice || '';
                 const priceEl = document.getElementById('product-price');
                 const currencyEl = document.getElementById('product-currency');
+                const isBanhMi = currentProduct.slug === 'banh-mi-sai-gon-half-baked';
 
-                if (display) {
-                    // Use provided display with units
-                    // Hide generic placeholders like "Contact for pricing"
-                    if (/contact for pricing/i.test(display)) {
-                        priceEl.textContent = '';
-                        currencyEl.textContent = '';
-                    } else {
-                        priceEl.textContent = display;
-                        currencyEl.textContent = '';
-                    }
+                if (isBanhMi && display) {
+                    priceEl.textContent = display;
+                    currencyEl.textContent = '';
                 } else if (amount > 0) {
                     const unit = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
                     priceEl.textContent = unit;
+                    currencyEl.textContent = '';
+                } else if (display && !/contact for pricing/i.test(display)) {
+                    priceEl.textContent = display;
                     currencyEl.textContent = '';
                 } else {
                     priceEl.textContent = '';

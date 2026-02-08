@@ -781,7 +781,10 @@
                     const amount = Number(p.price?.amount || 0);
                     const currency = p.price?.currency || 'GBP';
                     const display = p.price?.displayPrice || '';
-                    const priceText = display || (amount > 0 ? (currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`) : '');
+                    const isBanhMi = p.slug === 'banh-mi-sai-gon-half-baked';
+                    const priceText = (isBanhMi && display)
+                        ? display
+                        : (amount > 0 ? (currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`) : (display || ''));
                     return `
                         <article class="snap-start flex-none w-72 md:w-auto bg-white text-espresso border border-espresso/10 hover-lift">
                             <a href="/banh-mi/product.html?slug=${p.slug}" class="block">
