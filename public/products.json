@@ -137,10 +137,10 @@
         "/images/products/bo-vien-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 15,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£15 / 500g",
+        "displayPriceVi": "£15 / 500gr"
       },
       "ingredients": {
         "vi": [
@@ -203,10 +203,10 @@
         "/images/products/ga-vien-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 12,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£12 / 500g",
+        "displayPriceVi": "£12 / 500gr"
       },
       "ingredients": {
         "vi": [
@@ -336,10 +336,10 @@
         "/images/products/vit-quay-2-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 32,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£32",
+        "displayPriceVi": "£32 / con"
       },
       "ingredients": {
         "vi": [
@@ -473,10 +473,10 @@
         "/images/products/cha-lua-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 12,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£12 / 500g",
+        "displayPriceVi": "£12 / 500gr"
       },
       "ingredients": {
         "vi": [
@@ -537,10 +537,10 @@
         "/images/products/pate-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 16,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£16 / 500g",
+        "displayPriceVi": "£16 / 500gr"
       },
       "ingredients": {
         "vi": [
@@ -601,10 +601,10 @@
         "/images/products/thit-nguoi-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 15,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£15 / 500g",
+        "displayPriceVi": "£15 / 500gr"
       },
       "ingredients": {
         "vi": [
