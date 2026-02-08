@@ -25,8 +25,9 @@
       "price": {
         "amount": 9,
         "currency": "GBP",
-        "displayPrice": "£9 / ổ",
-        "displayPriceVi": "£9/ổ"
+        "displayPrice": "£9 / loaf",
+        "displayPriceVi": "£9 / ổ",
+        "unit": { "en": "loaf", "vi": "ổ" }
       },
       "promotion": {
         "vi": "Mua 10 tặng 1",
@@ -140,7 +141,8 @@
         "amount": 15,
         "currency": "GBP",
         "displayPrice": "£15 / 500g",
-        "displayPriceVi": "£15 / 500gr"
+        "displayPriceVi": "£15 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -206,7 +208,8 @@
         "amount": 12,
         "currency": "GBP",
         "displayPrice": "£12 / 500g",
-        "displayPriceVi": "£12 / 500gr"
+        "displayPriceVi": "£12 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -272,7 +275,8 @@
         "amount": 16,
         "currency": "GBP",
         "displayPrice": "£16 / 500g",
-        "displayPriceVi": "£16 / 500gr"
+        "displayPriceVi": "£16 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -339,7 +343,8 @@
         "amount": 32,
         "currency": "GBP",
         "displayPrice": "£32 / con",
-        "displayPriceVi": "£32 / con"
+        "displayPriceVi": "£32 / con",
+        "unit": { "en": "whole duck", "vi": "con" }
       },
       "ingredients": {
         "vi": [
@@ -408,7 +413,8 @@
         "amount": 15,
         "currency": "GBP",
         "displayPrice": "£15 / 500g",
-        "displayPriceVi": "£15 / 500gr"
+        "displayPriceVi": "£15 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -476,7 +482,8 @@
         "amount": 12,
         "currency": "GBP",
         "displayPrice": "£12 / 500g",
-        "displayPriceVi": "£12 / 500gr"
+        "displayPriceVi": "£12 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -541,7 +548,8 @@
         "amount": 16,
         "currency": "GBP",
         "displayPrice": "£16 / 500g",
-        "displayPriceVi": "£16 / 500gr"
+        "displayPriceVi": "£16 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -605,7 +613,8 @@
         "amount": 15,
         "currency": "GBP",
         "displayPrice": "£15 / 500g",
-        "displayPriceVi": "£15 / 500gr"
+        "displayPriceVi": "£15 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [
@@ -670,7 +679,8 @@
         "amount": 35,
         "currency": "GBP",
         "displayPrice": "£35 / 500g",
-        "displayPriceVi": "£35 / 500gr"
+        "displayPriceVi": "£35 / 500gr",
+        "unit": { "en": "500g", "vi": "500gr" }
       },
       "ingredients": {
         "vi": [

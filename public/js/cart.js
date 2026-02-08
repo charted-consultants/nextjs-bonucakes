@@ -17,6 +17,30 @@ const Cart = {
                     changed = true;
                 }
             }
+            // Data migration for localized display price and correct EN unit for banh mi
+            if (item && item.productSlug === 'banh-mi-sai-gon-half-baked') {
+                if (!item.displayPriceVi && item.displayPrice) {
+                    item.displayPriceVi = item.displayPrice; // old data had only VI in displayPrice
+                    changed = true;
+                }
+                // Ensure English display uses loaf (not Vietnamese 'ổ')
+                const numeric = Number(item.unitPrice || 0) || this.parseDisplayPrice(item.displayPrice || '');
+                if (!item.displayPrice || /ổ/.test(item.displayPrice)) {
+                    if (numeric > 0) {
+                        item.displayPrice = `£${numeric} / loaf`;
+                    } else {
+                        item.displayPrice = '£9 / loaf';
+                    }
+                    changed = true;
+                }
+            }
+            // Backfill unit labels if missing
+            if (!item.unitEn && (item.displayPrice || item.displayPriceVi)) {
+                const unitFromEn = this.parseDisplayUnit(item.displayPrice || '');
+                const unitFromVi = this.parseDisplayUnit(item.displayPriceVi || item.displayPrice || '');
+                if (unitFromEn) { item.unitEn = unitFromEn; changed = true; }
+                if (unitFromVi) { item.unitVi = unitFromVi; changed = true; }
+            }
         });
         if (changed) this.saveCart(cart);
         return cart;
@@ -50,6 +74,9 @@ const Cart = {
                 unitPrice: unitPrice,
                 currency: product.price.currency,
                 displayPrice: product.price.displayPrice,
+                displayPriceVi: product.price.displayPriceVi,
+                unitEn: product.price.unit && product.price.unit.en ? product.price.unit.en : this.parseDisplayUnit(product.price.displayPrice || ''),
+                unitVi: product.price.unit && product.price.unit.vi ? product.price.unit.vi : this.parseDisplayUnit(product.price.displayPriceVi || product.price.displayPrice || ''),
                 image: product.images && product.images.length > 0 ? product.images[0] : null
             });
         }
@@ -125,6 +152,13 @@ const Cart = {
         if (!text || typeof text !== 'string') return 0;
         const m = text.replace(/,/g, '').match(/(\d+(?:\.\d+)?)/);
         return m ? parseFloat(m[1]) : 0;
+    },
+
+    // Utility: parse unit text from display price like "£15 / 500g" -> "500g"
+    parseDisplayUnit(text) {
+        if (!text || typeof text !== 'string') return '';
+        const m = text.match(/\/\s*(.+)$/);
+        return m ? m[1].trim() : '';
     },
 
     // Calculate promotion (buy 10 get 1 free per product)

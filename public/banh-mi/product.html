@@ -345,24 +345,25 @@
 
             // Product info
             document.getElementById('product-name').textContent = name;
-            // Show units only for Banh Mi; others use numeric; hide placeholders
+            // Localized price display: prefer amount + unit if available; fallback to display strings
             (function () {
                 const amount = Number(currentProduct.price.amount || 0);
                 const currency = currentProduct.price.currency || 'GBP';
-                const display = currentProduct.price.displayPrice || '';
+                const unit = currentProduct.price.unit && (currentProduct.price.unit[currentLang] || currentProduct.price.unit.vi || currentProduct.price.unit.en);
+                const display = (currentLang === 'vi')
+                    ? (currentProduct.price.displayPriceVi || currentProduct.price.displayPrice || '')
+                    : (currentProduct.price.displayPrice || currentProduct.price.displayPriceVi || '');
                 const priceEl = document.getElementById('product-price');
                 const currencyEl = document.getElementById('product-currency');
-                const isUnitDisplay = ['banh-mi-sai-gon-half-baked','cha-bong'].includes(currentProduct.slug);
-
-                if (isUnitDisplay && display) {
-                    priceEl.textContent = display;
-                    currencyEl.textContent = '';
-                } else if (amount > 0) {
-                    const unit = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
-                    priceEl.textContent = unit;
+                if (amount > 0 && unit) {
+                    const money = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
+                    priceEl.textContent = `${money} / ${unit}`;
                     currencyEl.textContent = '';
                 } else if (display && !/contact for pricing/i.test(display)) {
                     priceEl.textContent = display;
+                    currencyEl.textContent = '';
+                } else if (amount > 0) {
+                    priceEl.textContent = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
                     currencyEl.textContent = '';
                 } else {
                     priceEl.textContent = '';

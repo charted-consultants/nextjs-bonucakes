@@ -201,10 +201,12 @@
                             <h3 class="text-lg font-bold text-espresso mb-1">${itemName}</h3>
                             <p class="text-terracotta font-semibold mb-2">
                                 ${(() => {
-                                    const showDisplay = ['banh-mi-sai-gon-half-baked','cha-bong'].includes(item.productSlug);
-                                    if (showDisplay && item.displayPrice) return `${item.displayPrice}`;
                                     const amount = Number(item.unitPrice || 0);
-                                    return amount > 0 ? `£${amount}` : (item.displayPrice || '');
+                                    const unit = currentLang === 'vi' ? (item.unitVi || Cart.parseDisplayUnit(item.displayPriceVi || item.displayPrice || '')) : (item.unitEn || Cart.parseDisplayUnit(item.displayPrice || item.displayPriceVi || ''));
+                                    if (amount > 0 && unit) return `£${amount} / ${unit}`;
+                                    const localizedDisplay = currentLang === 'vi' ? (item.displayPriceVi || item.displayPrice) : (item.displayPrice || item.displayPriceVi);
+                                    if (localizedDisplay) return `${localizedDisplay}`;
+                                    return amount > 0 ? `£${amount}` : '';
                                 })()}
                             </p>
                             ${freeItems > 0 ? `<p class="text-sm text-gold font-semibold mb-2">${currentLang === 'vi' ? 'Mua 10 tặng 1' : 'Buy 10 get 1 free'} (${currentLang === 'vi' ? 'thực tế' : 'actual'}: ${actualQuantity})</p>` : ''}
@@ -212,6 +214,7 @@
                             <div class="flex items-center gap-3">
                                 <button onclick="updateQuantity('${item.productId}', ${item.quantity - 1})" class="w-8 h-8 border border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold">-</button>
                                 <span class="w-12 text-center font-semibold">${item.quantity}</span>
+                                ${(() => { const u = currentLang === 'vi' ? (item.unitVi || Cart.parseDisplayUnit(item.displayPriceVi || item.displayPrice || '')) : (item.unitEn || Cart.parseDisplayUnit(item.displayPrice || item.displayPriceVi || '')); return u ? `<span class=\"text-sm text-coffee\">(${u})</span>` : ''; })()}
                                 <button onclick="updateQuantity('${item.productId}', ${item.quantity + 1})" class="w-8 h-8 border border-espresso/20 hover:bg-espresso/10 flex items-center justify-center font-bold">+</button>
                                 <button onclick="removeItem('${item.productId}')" class="ml-auto text-terracotta hover:text-terracotta/80 text-sm font-semibold" data-vi="Xóa" data-en="Remove">${currentLang === 'vi' ? 'Xóa' : 'Remove'}</button>
                             </div>

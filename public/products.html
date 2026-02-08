@@ -187,7 +187,12 @@
                                 ${(() => {
                                     const amount = Number(product.price.amount || 0);
                                     const currency = product.price.currency || 'GBP';
-                                    const display = product.price.displayPrice || '';
+                                    const unit = (product.price.unit && (product.price.unit[currentLang] || product.price.unit.vi || product.price.unit.en)) || '';
+                                    if (amount > 0 && unit) {
+                                        const money = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
+                                        return `${money} / ${unit}`;
+                                    }
+                                    const display = currentLang === 'vi' ? (product.price.displayPriceVi || product.price.displayPrice || '') : (product.price.displayPrice || product.price.displayPriceVi || '');
                                     if (display) return display;
                                     if (amount > 0) return currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
                                     return '';

@@ -243,16 +243,18 @@
                 return `
                     <div class="flex justify-between text-sm">
                         <div class="flex-grow">
-                            <p class="font-semibold text-espresso">${item.quantity}x ${itemName}</p>
+                            <p class="font-semibold text-espresso">${item.quantity}x ${itemName} ${(() => { const u = currentLang === 'vi' ? (item.unitVi || Cart.parseDisplayUnit(item.displayPriceVi || item.displayPrice || '')) : (item.unitEn || Cart.parseDisplayUnit(item.displayPrice || item.displayPriceVi || '')); return u ? `(${u})` : ''; })()}</p>
                             ${freeItems > 0 ? `<p class="text-xs text-gold">${currentLang === 'vi' ? 'Tặng' : 'Free'}: +${freeItems}</p>` : ''}
                         </div>
                         <div class="text-right">
                             <p class="font-semibold text-terracotta">
                                 ${(() => {
-                                    const showDisplay = ['banh-mi-sai-gon-half-baked','cha-bong'].includes(item.productSlug);
-                                    if (showDisplay && item.displayPrice) return item.displayPrice;
                                     const amount = Number(item.unitPrice || 0);
-                                    return amount > 0 ? `£${amount}` : (item.displayPrice || '');
+                                    const unit = currentLang === 'vi' ? (item.unitVi || Cart.parseDisplayUnit(item.displayPriceVi || item.displayPrice || '')) : (item.unitEn || Cart.parseDisplayUnit(item.displayPrice || item.displayPriceVi || ''));
+                                    if (amount > 0 && unit) return `£${amount} / ${unit}`;
+                                    const localizedDisplay = currentLang === 'vi' ? (item.displayPriceVi || item.displayPrice) : (item.displayPrice || item.displayPriceVi);
+                                    if (localizedDisplay) return localizedDisplay;
+                                    return amount > 0 ? `£${amount}` : '';
                                 })()}
                             </p>
                         </div>
