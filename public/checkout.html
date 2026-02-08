@@ -132,6 +132,10 @@
                                     <span data-vi="Tổng số lượng" data-en="Total Items">Tổng số lượng</span>
                                     <span id="checkout-count">0</span>
                                 </div>
+                                <div class="flex justify-between text-coffee">
+                                    <span data-vi="Phí giao hàng" data-en="Shipping">Phí giao hàng</span>
+                                    <span id="checkout-shipping">£0</span>
+                                </div>
                                 <div class="border-t border-espresso/10 pt-3">
                                     <div class="flex justify-between text-lg font-bold text-espresso">
                                         <span data-vi="Tổng cộng" data-en="Total">Tổng cộng</span>
@@ -251,9 +255,12 @@
 
             // Update totals
             const totalCount = Cart.getCartCount();
-            const totalPrice = Cart.getCartTotal();
+            const subtotal = Cart.getCartTotal();
+            const shipping = Cart.getShippingFee();
+            const grand = subtotal + shipping;
             document.getElementById('checkout-count').textContent = `${totalCount} ${currentLang === 'vi' ? 'sản phẩm' : 'items'}`;
-            document.getElementById('checkout-total').textContent = `£${totalPrice}`;
+            document.getElementById('checkout-shipping').textContent = `£${shipping}`;
+            document.getElementById('checkout-total').textContent = `£${grand}`;
 
             // Update promotions
             const promotions = Cart.calculatePromotions();

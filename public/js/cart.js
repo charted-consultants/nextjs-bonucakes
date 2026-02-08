@@ -1,6 +1,7 @@
 // Cart management using localStorage
 const Cart = {
     STORAGE_KEY: 'bonu_cart',
+    SHIPPING_FEE: 8,
 
     // Get current cart
     getCart() {
@@ -79,10 +80,21 @@ const Cart = {
         return cart.items.reduce((total, item) => total + item.quantity, 0);
     },
 
-    // Get total price
+    // Get merchandise subtotal
     getCartTotal() {
         const cart = this.getCart();
         return cart.items.reduce((total, item) => total + (item.quantity * item.unitPrice), 0);
+    },
+
+    // Flat shipping fee per order (applies if cart has items)
+    getShippingFee() {
+        const cart = this.getCart();
+        return cart.items && cart.items.length > 0 ? this.SHIPPING_FEE : 0;
+    },
+
+    // Grand total = subtotal + shipping
+    getGrandTotal() {
+        return this.getCartTotal() + this.getShippingFee();
     },
 
     // Calculate promotion (buy 10 get 1 free per product)
