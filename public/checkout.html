@@ -329,6 +329,7 @@
             const cart = Cart.getCart();
             const items = Cart.getCartForAPI();
             const shippingFee = Number((window.Cart && Cart.SHIPPING_FEE) || 8);
+            const subtotal = Cart.getCartTotal();
             const grandTotal = subtotal + shippingFee;
 
             const orderData = {
