@@ -201,8 +201,8 @@
                             <h3 class="text-lg font-bold text-espresso mb-1">${itemName}</h3>
                             <p class="text-terracotta font-semibold mb-2">
                                 ${(() => {
-                                    const isBanhMi = item.productSlug === 'banh-mi-sai-gon-half-baked';
-                                    if (isBanhMi && item.displayPrice) return `${item.displayPrice}`;
+                                    const showDisplay = ['banh-mi-sai-gon-half-baked','cha-bong'].includes(item.productSlug);
+                                    if (showDisplay && item.displayPrice) return `${item.displayPrice}`;
                                     const amount = Number(item.unitPrice || 0);
                                     return amount > 0 ? `£${amount}` : (item.displayPrice || '');
                                 })()}

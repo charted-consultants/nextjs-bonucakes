@@ -249,8 +249,8 @@
                         <div class="text-right">
                             <p class="font-semibold text-terracotta">
                                 ${(() => {
-                                    const isBanhMi = item.productSlug === 'banh-mi-sai-gon-half-baked';
-                                    if (isBanhMi && item.displayPrice) return item.displayPrice;
+                                    const showDisplay = ['banh-mi-sai-gon-half-baked','cha-bong'].includes(item.productSlug);
+                                    if (showDisplay && item.displayPrice) return item.displayPrice;
                                     const amount = Number(item.unitPrice || 0);
                                     return amount > 0 ? `£${amount}` : (item.displayPrice || '');
                                 })()}
