@@ -133,7 +133,7 @@
                                     <span id="checkout-count">0</span>
                                 </div>
                                 <div class="flex justify-between text-coffee">
-                                    <span data-vi="Phí giao hàng" data-en="Shipping">Phí giao hàng</span>
+                                    <span data-vi="Phí giao hàng (Nội địa UK)" data-en="Shipping (UK Mainland)">Phí giao hàng (Nội địa UK)</span>
                                     <span id="checkout-shipping">£0</span>
                                 </div>
                                 <div class="border-t border-espresso/10 pt-3">
@@ -309,6 +309,9 @@
 
             const cart = Cart.getCart();
             const items = Cart.getCartForAPI();
+            const subtotal = Cart.getCartTotal();
+            const shippingFee = Cart.getShippingFee();
+            const grandTotal = subtotal + shippingFee;
 
             const orderData = {
                 customerName: document.getElementById('customer-name').value.trim(),
@@ -317,7 +320,14 @@
                 deliveryAddress: document.getElementById('delivery-address').value.trim(),
                 deliveryDate: document.getElementById('delivery-date').value,
                 specialNotes: document.getElementById('special-notes').value.trim(),
-                items: items
+                items: items,
+                pricing: {
+                    currency: 'GBP',
+                    subtotal: subtotal,
+                    shippingFee: shippingFee,
+                    total: grandTotal,
+                    shippingLabel: 'UK Mainland'
+                }
             };
 
             try {
