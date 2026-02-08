@@ -68,15 +68,25 @@
 </head>
 <body class="bg-cream min-h-screen">
     <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-sm">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-sm" id="site-nav">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="/" class="text-3xl font-bold text-gold" style="font-family: 'Playfair Display', serif;">Bonu F&B</a>
             <div class="flex items-center gap-6">
-                <a href="/story.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Câu chuyện</a>
+                <a href="/story.html" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Câu chuyện" data-en="Story">Câu chuyện</a>
                 <a href="/products.html" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Sản phẩm" data-en="Products">Sản phẩm</a>
-                <a href="https://bonucakes.com/culinary-consultation.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Tư vấn</a>
+                <a href="/culinary-consultation.html" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Tư vấn" data-en="Services">Tư vấn</a>
                 <a href="/blog.html" class="text-cream/80 hover:text-white transition-colors hidden md:block">Blog</a>
-                <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block">Liên hệ</a>
+                <a href="/#contact" class="text-cream/80 hover:text-white transition-colors hidden md:block" data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
+                <a href="/cart.html" class="relative text-cream/80 hover:text-white transition-colors" id="cart-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-terracotta text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                </a>
+                <div class="flex bg-espresso border border-gold/30 rounded-full p-1">
+                    <button onclick="setLang('en')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white" id="btn-en">EN</button>
+                    <button onclick="setLang('vi')" class="lang-btn px-3 py-1 rounded-full text-sm text-cream/80 hover:text-white active" id="btn-vi">VI</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -322,6 +332,29 @@
         }
 
         loadPosts();
+    </script>
+    <script src="/js/cart.js"></script>
+    <script>
+        let currentLang = localStorage.getItem('lang') || 'vi';
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.textContent = lang === 'en' ? el.dataset.en : el.dataset.vi;
+            });
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
+            document.getElementById('btn-en').classList.toggle('bg-gold/20', lang === 'en');
+            document.getElementById('btn-vi').classList.toggle('bg-gold/20', lang === 'vi');
+        }
+        setLang(currentLang);
+        function updateCartBadge() {
+            const count = Cart.getCartCount();
+            const badge = document.getElementById('cart-badge');
+            if (badge) { badge.textContent = count; badge.classList.toggle('hidden', count === 0); }
+        }
+        updateCartBadge();
+        window.addEventListener('cartUpdated', updateCartBadge);
     </script>
 </body>
 </html>
