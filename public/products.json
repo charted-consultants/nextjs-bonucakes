@@ -645,6 +645,68 @@
       "available": true,
       "featured": false,
       "sortOrder": 9
+    },
+    {
+      "id": "cha-bong",
+      "slug": "cha-bong",
+      "name": {
+        "vi": "Chà Bông",
+        "en": "Pork Floss"
+      },
+      "shortDescription": {
+        "vi": "Chà bông heo tự làm, sợi bông, vị đậm vừa, ăn kèm cơm/cháo/bánh mì",
+        "en": "Homemade pork floss, light and savory, perfect with rice, congee, or banh mi"
+      },
+      "description": {
+        "vi": "Chà bông heo làm thủ công theo công thức truyền thống, sợi bông tơi, vị đậm vừa, phù hợp cho trẻ nhỏ và người lớn. Dùng kèm cơm, cháo, xôi, hoặc bánh mì.",
+        "en": "Handmade pork floss using a traditional recipe. Light, fluffy strands with balanced seasoning. Great with rice, congee, sticky rice, or banh mi."
+      },
+      "images": [
+        "/placeholder-product.webp"
+      ],
+      "price": {
+        "amount": 35,
+        "currency": "GBP",
+        "displayPrice": "£35 / 500g",
+        "displayPriceVi": "£35 / 500gr"
+      },
+      "ingredients": {
+        "vi": [
+          "Thịt heo tươi",
+          "Gia vị truyền thống"
+        ],
+        "en": [
+          "Fresh pork",
+          "Traditional seasonings"
+        ]
+      },
+      "packaging": {
+        "vi": "Đóng gói kín, đảm bảo vệ sinh và giữ độ khô bông",
+        "en": "Sealed packaging to preserve hygiene and fluffiness"
+      },
+      "usageInstructions": {
+        "storage": {
+          "vi": "Giữ kín, nơi khô mát. Ngon nhất trong 1–2 tuần.",
+          "en": "Keep sealed in a cool, dry place. Best within 1–2 weeks."
+        },
+        "preparation": {
+          "vi": [
+            "Dùng trực tiếp với cơm/cháo/xôi",
+            "Rắc lên bánh mì hoặc salad"
+          ],
+          "en": [
+            "Serve directly with rice/congee/sticky rice",
+            "Sprinkle on banh mi or salads"
+          ]
+        }
+      },
+      "deliveryInfo": {
+        "vi": "Đóng gói cẩn thận, giao nhanh qua DPD/DHL.",
+        "en": "Carefully packed, fast delivery via DPD/DHL."
+      },
+      "available": true,
+      "featured": false,
+      "sortOrder": 10
     }
   ]
 }
