@@ -423,8 +423,8 @@
       }
     ],
     "ctaText": {
-      "vi": "Xem chi tiết dịch vụ",
-      "en": "View service details"
+      "vi": "Chi tiết",
+      "en": "Details"
     },
     "ctaLink": "/culinary-consultation.html"
   },

@@ -517,7 +517,7 @@
                     const labelLevel = lang==='vi' ? 'Mức' : 'Level';
                     const labelDuration = lang==='vi' ? 'Thời lượng' : 'Duration';
                     const labelPrice = lang==='vi' ? 'Giá' : 'Price';
-                    const labelAction = lang==='vi' ? 'Xem chi tiết' : 'View';
+                    const labelAction = lang==='vi' ? 'Chi tiết' : 'View';
                     const linkFor = (slug) => slug === 'salted-egg-sponge-cake' ? '/landing/salted-egg-sponge-cake.html'
                         : slug === 'vietnamese-food-mastery' ? '/landing/vietnamese-food-mastery.html'
                         : slug === 'premium-recipe-consultation' ? '/landing/premium-recipe-consultation.html'
@@ -700,7 +700,7 @@
                                 <p class="text-coffee/80 text-sm line-clamp-2 mb-3">${desc}</p>
                                 <div class="mt-auto flex items-center justify-between">
                                     <span class="font-semibold text-terracotta">${priceText}</span>
-                                    <a href="/banh-mi/product.html?slug=${p.slug}" class="text-sm text-terracotta hover:underline" data-vi="Xem chi tiết" data-en="View details">${currentLang==='vi'?'Xem chi tiết':'View details'}</a>
+                                    <a href="/banh-mi/product.html?slug=${p.slug}" class="text-sm text-terracotta hover:underline" data-vi="Chi tiết" data-en="View details">${currentLang==='vi'?'Chi tiết':'View details'}</a>
                                 </div>
                             </div>
                         </article>`;
