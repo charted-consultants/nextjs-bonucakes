@@ -181,7 +181,7 @@
         "en": "Orders placed today will be prepared and shipped tomorrow. You will receive your order the day after. Shipping via DPD or DHL."
       },
       "available": true,
-      "featured": false,
+      "featured": true,
       "sortOrder": 2
     },
     {
@@ -247,7 +247,7 @@
         "en": "Orders placed today will be prepared and shipped tomorrow. You will receive your order the day after. Shipping via DPD or DHL."
       },
       "available": true,
-      "featured": false,
+      "featured": true,
       "sortOrder": 3
     },
     {
@@ -313,7 +313,7 @@
         "en": "Orders placed today will be prepared and shipped tomorrow. You will receive your order the day after. Shipping via DPD or DHL."
       },
       "available": true,
-      "featured": false,
+      "featured": true,
       "sortOrder": 4
     },
     {
@@ -380,7 +380,7 @@
         "en": "Orders placed today will be prepared and shipped tomorrow. You will receive your order the day after. Shipping via DPD or DHL."
       },
       "available": true,
-      "featured": false,
+      "featured": true,
       "sortOrder": 5
     },
     {
@@ -451,7 +451,7 @@
         "en": "Orders placed today will be prepared and shipped tomorrow. You will receive your order the day after. Shipping via DPD or DHL."
       },
       "available": true,
-      "featured": false,
+      "featured": true,
       "sortOrder": 6
     },
     {
