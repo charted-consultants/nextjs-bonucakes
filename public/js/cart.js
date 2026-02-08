@@ -194,7 +194,9 @@ const Cart = {
         return cart.items.map(item => ({
             productId: item.productId,
             productName: item.productName.vi || item.productName,
-            quantity: item.quantity
+            quantity: item.quantity,
+            unitPrice: Number(item.unitPrice || 0) || undefined,
+            unit: (item.unitEn || item.unitVi || this.parseDisplayUnit(item.displayPrice || item.displayPriceVi || '')) || undefined
         }));
     }
 };
