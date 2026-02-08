@@ -222,6 +222,16 @@
         // Get order ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const orderId = urlParams.get('orderId');
+        const codeParam = urlParams.get('code');
+
+        function shortCodeFrom(id) {
+            if (codeParam && /^[0-9]{4}$/.test(codeParam)) return codeParam;
+            if (!id) return '';
+            let h = 5381;
+            for (let i=0; i<id.length; i++) h = ((h<<5) + h) + id.charCodeAt(i);
+            const n = Math.abs(h >>> 0) % 10000;
+            return String(n).padStart(4,'0');
+        }
 
         // Language switcher
         function setLang(lang) {
@@ -241,8 +251,10 @@
             setLang(currentLang);
 
             if (orderId) {
-                document.getElementById('order-id').textContent = orderId;
-                document.getElementById('transfer-note').textContent = orderId;
+                const short = shortCodeFrom(orderId);
+                const display = short ? `#${short}` : orderId;
+                document.getElementById('order-id').textContent = display;
+                document.getElementById('transfer-note').textContent = display;
             } else {
                 document.getElementById('order-id').textContent = 'N/A';
                 document.getElementById('transfer-note').textContent = 'Please check your email';

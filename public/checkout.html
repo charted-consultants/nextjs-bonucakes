@@ -365,7 +365,14 @@
                     Cart.clearCart();
 
                     // Redirect to success page
-                    window.location.href = `/banh-mi/order-success.html?orderId=${result.orderId}`;
+                    const short = (function shortCodeFrom(id){
+                        if (!id) return String(Math.floor(Math.random()*10000)).padStart(4,'0');
+                        let h = 5381;
+                        for (let i=0; i<id.length; i++) h = ((h<<5) + h) + id.charCodeAt(i);
+                        const n = Math.abs(h >>> 0) % 10000;
+                        return String(n).padStart(4,'0');
+                    })(result.orderId);
+                    window.location.href = `/banh-mi/order-success.html?orderId=${encodeURIComponent(result.orderId)}&code=${short}`;
                 } else {
                     console.error('API error response:', result);
                     throw new Error(result.error || result.message || 'Order failed');
