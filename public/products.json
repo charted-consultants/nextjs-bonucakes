@@ -269,7 +269,7 @@
         "en": "Char siu marinated and roasted following traditional recipe. Can be eaten with noodles, rice, or bread. Separately packed for easy use."
       },
       "images": [
-        "/images/products/xa-xiu-v2.webp"
+        "/img/xa-xiu.webp"
       ],
       "price": {
         "amount": 16,
@@ -476,7 +476,7 @@
         "en": "Traditional Vietnamese ham made in-house. Can be used for banh mi, eaten with rice, or in other dishes."
       },
       "images": [
-        "/images/products/cha-lua-v2.webp"
+        "/img/cha-lua.webp"
       ],
       "price": {
         "amount": 12,
