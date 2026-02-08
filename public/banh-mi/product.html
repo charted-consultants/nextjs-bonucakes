@@ -345,7 +345,7 @@
 
             // Product info
             document.getElementById('product-name').textContent = name;
-            // Prefer numeric price; hide placeholder "Contact for pricing"
+            // Prefer displayPrice (shows units like /ổ, /500g); fallback to numeric; hide placeholder
             (function () {
                 const amount = Number(currentProduct.price.amount || 0);
                 const currency = currentProduct.price.currency || 'GBP';
@@ -353,18 +353,23 @@
                 const priceEl = document.getElementById('product-price');
                 const currencyEl = document.getElementById('product-currency');
 
-                if (amount > 0) {
-                    const unitDisplay = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
-                    priceEl.textContent = unitDisplay;
-                    currencyEl.textContent = '';
-                } else {
-                    // Remove marketing placeholder text
-                    if (display && /contact for pricing/i.test(display)) {
+                if (display) {
+                    // Use provided display with units
+                    // Hide generic placeholders like "Contact for pricing"
+                    if (/contact for pricing/i.test(display)) {
                         priceEl.textContent = '';
                         currencyEl.textContent = '';
                     } else {
                         priceEl.textContent = display;
+                        currencyEl.textContent = '';
                     }
+                } else if (amount > 0) {
+                    const unit = currency === 'GBP' ? `£${amount}` : `${amount.toLocaleString()}₫`;
+                    priceEl.textContent = unit;
+                    currencyEl.textContent = '';
+                } else {
+                    priceEl.textContent = '';
+                    currencyEl.textContent = '';
                 }
             })();
             document.getElementById('product-description').textContent = desc;
