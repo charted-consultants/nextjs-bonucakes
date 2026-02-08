@@ -49,15 +49,9 @@
         <div id="cms-section" class="hidden">
             <!-- Tabs -->
             <div class="flex flex-wrap gap-2 mb-6 bg-white p-3 rounded-lg shadow">
-                <button onclick="showTab('settings')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="settings">Settings</button>
-                <button onclick="showTab('hero')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="hero">Hero</button>
-                <button onclick="showTab('stats')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="stats">Stats</button>
-                <button onclick="showTab('mentor')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="mentor">Mentor</button>
-                <button onclick="showTab('dna')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="dna">DNA Steps</button>
-                <button onclick="showTab('roadmap')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="roadmap">Roadmap</button>
-                <button onclick="showTab('faq')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="faq">FAQ</button>
-                <button onclick="showTab('cta')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="cta">CTA</button>
+                <button onclick="showTab('hero')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="hero">Home</button>
                 <button onclick="showTab('blog')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="blog">Blog</button>
+                <button onclick="showTab('settings')" class="tab-btn px-4 py-2 rounded text-sm font-medium" data-tab="settings">Settings</button>
             </div>
 
             <!-- Settings Tab -->
@@ -92,10 +86,13 @@
                 <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Settings</button>
             </div>
 
-            <!-- Hero Tab -->
+            <!-- Home Tab (Hero + Mentor) -->
             <div id="tab-hero" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">Hero Section</h2>
-                <div class="space-y-4">
+                <h2 class="text-xl font-bold text-espresso mb-6">Home Page</h2>
+
+                <!-- Hero Section -->
+                <h3 class="text-lg font-semibold text-terracotta mb-4 border-b pb-2">Hero Section</h3>
+                <div class="space-y-4 mb-8">
                     <div class="field-group">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
                         <div class="lang-field">
@@ -143,20 +140,9 @@
                         <input type="text" id="hero-backgroundVideo" class="w-full border p-3 rounded">
                     </div>
                 </div>
-                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Hero</button>
-            </div>
 
-            <!-- Stats Tab -->
-            <div id="tab-stats" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">Stats</h2>
-                <div id="stats-list" class="space-y-4"></div>
-                <button onclick="addStat()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add Stat</button>
-                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save Stats</button>
-            </div>
-
-            <!-- Mentor Tab -->
-            <div id="tab-mentor" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">Mentor Section</h2>
+                <!-- Mentor Section -->
+                <h3 class="text-lg font-semibold text-terracotta mb-4 border-b pb-2">Mentor Section</h3>
                 <div class="space-y-4">
                     <div class="field-group">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
@@ -200,70 +186,9 @@
                         <input type="text" id="mentor-badges" class="w-full border p-3 rounded" placeholder="Le Cordon Bleu, F&B business mentor">
                     </div>
                 </div>
-                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Mentor</button>
-            </div>
 
-            <!-- DNA Tab -->
-            <div id="tab-dna" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">DNA Steps</h2>
-                <div class="space-y-4 mb-6">
-                    <div class="field-group">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Tagline</label>
-                        <div class="lang-field">
-                            <div><span class="lang-label">Vietnamese</span><input type="text" id="dna-tagline-vi" class="w-full border p-2 rounded"></div>
-                            <div><span class="lang-label">English</span><input type="text" id="dna-tagline-en" class="w-full border p-2 rounded"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
-                        <input type="text" id="dna-title" class="w-full border p-3 rounded">
-                    </div>
-                </div>
-                <h3 class="font-bold text-espresso mb-4">Steps</h3>
-                <div id="dna-steps-list" class="space-y-4"></div>
-                <button onclick="addDnaStep()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add Step</button>
-                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save DNA</button>
-            </div>
-
-            <!-- Roadmap Tab -->
-            <div id="tab-roadmap" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">Roadmap</h2>
-                <div class="space-y-4 mb-6">
-                    <div class="field-group">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Tagline</label>
-                        <div class="lang-field">
-                            <div><span class="lang-label">Vietnamese</span><input type="text" id="roadmap-tagline-vi" class="w-full border p-2 rounded"></div>
-                            <div><span class="lang-label">English</span><input type="text" id="roadmap-tagline-en" class="w-full border p-2 rounded"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
-                        <input type="text" id="roadmap-title" class="w-full border p-3 rounded">
-                    </div>
-                    <div class="field-group">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Section Subtitle</label>
-                        <div class="lang-field">
-                            <div><span class="lang-label">Vietnamese</span><textarea id="roadmap-subtitle-vi" rows="2" class="w-full border p-2 rounded"></textarea></div>
-                            <div><span class="lang-label">English</span><textarea id="roadmap-subtitle-en" rows="2" class="w-full border p-2 rounded"></textarea></div>
-                        </div>
-                    </div>
-                    <div class="field-group">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">CTA Button Text</label>
-                        <div class="lang-field">
-                            <div><span class="lang-label">Vietnamese</span><input type="text" id="roadmap-ctaText-vi" class="w-full border p-2 rounded"></div>
-                            <div><span class="lang-label">English</span><input type="text" id="roadmap-ctaText-en" class="w-full border p-2 rounded"></div>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="font-bold text-espresso mb-4">Phases</h3>
-                <div id="roadmap-phases-list" class="space-y-6"></div>
-                <button onclick="addRoadmapPhase()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add Phase</button>
-                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save Roadmap</button>
-            </div>
-
-            <!-- FAQ Tab -->
-            <div id="tab-faq" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">FAQ</h2>
+                <!-- FAQ Section -->
+                <h3 class="text-lg font-semibold text-terracotta mb-4 mt-8 border-b pb-2">FAQ Section</h3>
                 <div class="space-y-4 mb-6">
                     <div class="field-group">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
@@ -273,15 +198,12 @@
                         </div>
                     </div>
                 </div>
-                <h3 class="font-bold text-espresso mb-4">Questions</h3>
+                <h4 class="font-bold text-espresso mb-4">Questions</h4>
                 <div id="faq-list" class="space-y-4"></div>
                 <button onclick="addFaq()" class="mt-4 bg-gold text-espresso px-4 py-2 rounded">+ Add FAQ</button>
-                <button onclick="saveContent()" class="mt-4 ml-2 bg-terracotta text-white px-6 py-2 rounded">Save FAQ</button>
-            </div>
 
-            <!-- CTA Tab -->
-            <div id="tab-cta" class="tab-content hidden bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-bold text-espresso mb-6">Call to Action</h2>
+                <!-- CTA Section -->
+                <h3 class="text-lg font-semibold text-terracotta mb-4 mt-8 border-b pb-2">Call to Action</h3>
                 <div class="space-y-4">
                     <div class="field-group">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
@@ -312,7 +234,8 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save CTA</button>
+
+                <button onclick="saveContent()" class="mt-6 bg-terracotta text-white px-6 py-2 rounded">Save Home</button>
             </div>
 
             <!-- Blog Tab -->
@@ -418,7 +341,7 @@
             document.getElementById('cms-section').classList.remove('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
             await Promise.all([loadContent(), loadPosts()]);
-            showTab('settings');
+            showTab('hero');
         }
 
         // Load content.json
