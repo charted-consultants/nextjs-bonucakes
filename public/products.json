@@ -405,10 +405,10 @@
         "/images/products/nem-lui-4-v2.webp"
       ],
       "price": {
-        "amount": 0,
+        "amount": 15,
         "currency": "GBP",
-        "displayPrice": "Liên hệ",
-        "displayPriceVi": "Liên hệ để biết giá"
+        "displayPrice": "£15 / 500g",
+        "displayPriceVi": "£15 / 500gr"
       },
       "ingredients": {
         "vi": [
