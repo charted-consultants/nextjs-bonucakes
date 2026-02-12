@@ -101,10 +101,7 @@
                                     <textarea id="delivery-address" required rows="3" class="w-full border border-espresso/20 px-4 py-3 focus:outline-none focus:border-terracotta" data-vi="221B Baker Street, London NW1 6XE" data-en="221B Baker Street, London NW1 6XE" placeholder="221B Baker Street, London NW1 6XE"></textarea>
                                 </div>
 
-                                <div>
-                                    <label class="block text-coffee font-semibold mb-2" data-vi="Ngày giao hàng mong muốn" data-en="Preferred Delivery Date">Ngày giao hàng mong muốn <span class="text-terracotta">*</span></label>
-                                    <input type="date" id="delivery-date" required class="w-full border border-espresso/20 px-4 py-3 focus:outline-none focus:border-terracotta">
-                                </div>
+                                
 
                                 <div>
                                     <label class="block text-coffee font-semibold mb-2" data-vi="Ghi chú đặc biệt" data-en="Special Notes">Ghi chú đặc biệt</label>
@@ -305,13 +302,7 @@
             updateCartBadge();
         }
 
-        // Set minimum delivery date to tomorrow
-        function setMinDeliveryDate() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dateStr = tomorrow.toISOString().split('T')[0];
-            document.getElementById('delivery-date').setAttribute('min', dateStr);
-        }
+        
 
         // Handle form submission
         async function submitOrder(e) {
@@ -337,7 +328,7 @@
                 customerEmail: document.getElementById('customer-email').value.trim(),
                 customerPhone: document.getElementById('customer-phone').value.trim(),
                 deliveryAddress: document.getElementById('delivery-address').value.trim(),
-                deliveryDate: document.getElementById('delivery-date').value,
+                
                 specialNotes: document.getElementById('special-notes').value.trim(),
                 items: items,
                 pricing: {
@@ -396,7 +387,6 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             setLang(currentLang);
-            setMinDeliveryDate();
             renderOrderSummary();
 
             // Add form submit handler
