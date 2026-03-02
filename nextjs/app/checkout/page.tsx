@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/components/LanguageToggle';
 import { useCartStore, useCartItems, useCartTotals } from '@/lib/stores/cart-store';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import CheckoutForm, { type CheckoutFormData } from '@/components/CheckoutForm';
 import OrderSummary from '@/components/OrderSummary';
 
@@ -116,9 +118,11 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Hero Section */}
-      <header className="relative bg-warmwhite pt-32 pb-16 border-b border-espresso/10">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-cream">
+        {/* Hero Section */}
+        <header className="relative bg-warmwhite pt-32 pb-16 border-b border-espresso/10">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-espresso mb-4 font-serif">
             {translations.title[currentLang]}
@@ -180,6 +184,8 @@ export default function CheckoutPage() {
           )}
         </div>
       </section>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }
