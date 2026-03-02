@@ -73,7 +73,7 @@ export default function EventsPage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="flex-grow pt-20">
         <div className="bg-amber-50 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
