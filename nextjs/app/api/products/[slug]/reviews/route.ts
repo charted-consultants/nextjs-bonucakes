@@ -113,7 +113,7 @@ export async function GET(
       stats: {
         averageRating: avgRating._avg.rating || 0,
         totalReviews: total,
-        ratingDistribution: ratingDistribution.reduce((acc, curr) => {
+        ratingDistribution: ratingDistribution.reduce((acc: Record<number, number>, curr: any) => {
           acc[curr.rating] = curr._count.rating;
           return acc;
         }, {} as Record<number, number>),

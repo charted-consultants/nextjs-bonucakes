@@ -206,29 +206,39 @@ export const useCartStore = create<CartStore>()(
       // Data migration for old cart format
       migrate: (persistedState: any, version: number) => {
         const state = persistedState as CartStore;
-        let changed = false;
+
+        // Helper function to parse price from display string
+        const parseDisplayPrice = (text: string): number => {
+          if (!text || typeof text !== 'string') return 0;
+          const match = text.replace(/,/g, '').match(/(\d+(?:\.\d+)?)/);
+          return match ? parseFloat(match[1]) : 0;
+        };
+
+        // Helper function to parse unit from display string
+        const parseDisplayUnit = (text: string): string => {
+          if (!text || typeof text !== 'string') return '';
+          const match = text.match(/\/\s*(.+)$/);
+          return match ? match[1].trim() : '';
+        };
 
         state.items.forEach((item) => {
           const price = Number(item.unitPrice);
           if (!price || price <= 0) {
-            const parsed = get().parseDisplayPrice(item.displayPrice || '');
+            const parsed = parseDisplayPrice(item.displayPrice || '');
             if (parsed > 0) {
               item.unitPrice = parsed;
-              changed = true;
             }
           }
 
           // Backfill unit labels if missing
           if (!item.unitEn && (item.displayPrice || item.displayPriceVi)) {
-            const unitFromEn = get().parseDisplayUnit(item.displayPrice || '');
-            const unitFromVi = get().parseDisplayUnit(item.displayPriceVi || item.displayPrice || '');
+            const unitFromEn = parseDisplayUnit(item.displayPrice || '');
+            const unitFromVi = parseDisplayUnit(item.displayPriceVi || item.displayPrice || '');
             if (unitFromEn) {
               item.unitEn = unitFromEn;
-              changed = true;
             }
             if (unitFromVi) {
               item.unitVi = unitFromVi;
-              changed = true;
             }
           }
         });
