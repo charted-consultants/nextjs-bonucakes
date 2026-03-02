@@ -96,7 +96,7 @@ export async function GET(
     });
 
     // Get complementary products if specified
-    let complementaryProducts = [];
+    let complementaryProducts: any[] = [];
     if (product.complementaryProducts && product.complementaryProducts.length > 0) {
       complementaryProducts = await prisma.product.findMany({
         where: {
