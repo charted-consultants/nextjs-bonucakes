@@ -3,17 +3,30 @@
 import { useState, useEffect } from "react"
 import AdminSidebar from "@/components/admin/AdminSidebar"
 import AdminAuth from "@/components/admin/AdminAuth"
-import { Mail, Users, Search, Filter, Download } from "lucide-react"
+import { Mail, Users, Search, Filter, Download, Plus, Edit, Trash2, Check, X } from "lucide-react"
 
 interface Customer {
   id: number
   name: string
   email: string
   phone: string | null
+  marketingConsent: boolean
+  consentedAt: string | null
+  consentSource: string | null
+  tags: string[]
+  segment: string | null
+  notes: string | null
   orderCount: number
   totalSpent: number
   lastOrderDate: string | null
   createdAt: string
+}
+
+interface EmailTemplate {
+  id: number
+  name: string
+  displayName: string
+  subject: string
 }
 
 export default function CustomersPage() {
@@ -22,13 +35,29 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [showEmailModal, setShowEmailModal] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false)
   const [emailSubject, setEmailSubject] = useState("")
   const [emailContent, setEmailContent] = useState("")
   const [emailTemplate, setEmailTemplate] = useState("plain")
+  const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null)
+  const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>([])
   const [sending, setSending] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  // New customer form fields
+  const [newCustomer, setNewCustomer] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    marketingConsent: false,
+    tags: [] as string[],
+    segment: "",
+    notes: ""
+  })
 
   useEffect(() => {
     fetchCustomers()
+    fetchEmailTemplates()
   }, [])
 
   const fetchCustomers = async () => {
@@ -44,6 +73,19 @@ export default function CustomersPage() {
       console.error("Error fetching customers:", err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchEmailTemplates = async () => {
+    try {
+      const res = await fetch("/api/admin/email-templates")
+      const data = await res.json()
+
+      if (res.ok && data.templates) {
+        setEmailTemplates(data.templates.filter((t: any) => t.active))
+      }
+    } catch (err: any) {
+      console.error("Error fetching email templates:", err)
     }
   }
 
@@ -93,7 +135,8 @@ export default function CustomersPage() {
           recipients: selectedEmails,
           subject: emailSubject,
           content: emailContent,
-          template: emailTemplate,
+          template: selectedTemplateId ? undefined : emailTemplate, // Use fallback template only if no DB template selected
+          templateId: selectedTemplateId,
         }),
       })
 
@@ -113,13 +156,71 @@ export default function CustomersPage() {
     }
   }
 
+  const addCustomer = async () => {
+    if (!newCustomer.name || !newCustomer.email) {
+      alert("Please fill in name and email")
+      return
+    }
+
+    try {
+      setSaving(true)
+      const res = await fetch("/api/admin/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCustomer),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || "Failed to add customer")
+
+      alert("Customer added successfully")
+      setShowAddModal(false)
+      setNewCustomer({
+        name: "",
+        email: "",
+        phone: "",
+        marketingConsent: false,
+        tags: [],
+        segment: "",
+        notes: ""
+      })
+      fetchCustomers()
+    } catch (err: any) {
+      alert("Error adding customer: " + err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const deleteCustomer = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this customer?")) return
+
+    try {
+      const res = await fetch(`/api/admin/customers?id=${id}`, {
+        method: "DELETE",
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || "Failed to delete customer")
+      }
+
+      alert("Customer deleted successfully")
+      fetchCustomers()
+    } catch (err: any) {
+      alert("Error deleting customer: " + err.message)
+    }
+  }
+
   const exportCustomers = () => {
     const csv = [
-      ["Name", "Email", "Phone", "Orders", "Total Spent", "Last Order", "Joined"],
+      ["Name", "Email", "Phone", "Marketing Consent", "Orders", "Total Spent", "Last Order", "Joined"],
       ...filteredCustomers.map(c => [
         c.name,
         c.email,
         c.phone || "",
+        c.marketingConsent ? "Yes" : "No",
         c.orderCount,
         c.totalSpent,
         c.lastOrderDate ? new Date(c.lastOrderDate).toLocaleDateString() : "",
@@ -147,6 +248,13 @@ export default function CustomersPage() {
               </p>
             </div>
             <div className="flex gap-3">
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Customer
+              </button>
               <button
                 onClick={exportCustomers}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -210,6 +318,9 @@ export default function CustomersPage() {
                         Contact
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Marketing
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Orders
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -220,6 +331,9 @@ export default function CustomersPage() {
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Joined
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
                       </th>
                     </tr>
                   </thead>
@@ -243,6 +357,19 @@ export default function CustomersPage() {
                             <div className="text-sm text-gray-500">{customer.phone}</div>
                           )}
                         </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {customer.marketingConsent ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <Check className="h-3 w-3 mr-1" />
+                              Opted In
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              <X className="h-3 w-3 mr-1" />
+                              Not Opted
+                            </span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {customer.orderCount}
                         </td>
@@ -256,6 +383,15 @@ export default function CustomersPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {new Date(customer.createdAt).toLocaleDateString("en-GB")}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <button
+                            onClick={() => deleteCustomer(customer.id)}
+                            className="text-red-600 hover:text-red-900"
+                            title="Delete customer"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -281,14 +417,36 @@ export default function CustomersPage() {
                       Template
                     </label>
                     <select
-                      value={emailTemplate}
-                      onChange={(e) => setEmailTemplate(e.target.value)}
+                      value={selectedTemplateId || emailTemplate}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        if (value.startsWith("db-")) {
+                          const templateId = parseInt(value.replace("db-", ""))
+                          setSelectedTemplateId(templateId)
+                          const template = emailTemplates.find(t => t.id === templateId)
+                          if (template && template.subject) {
+                            setEmailSubject(template.subject)
+                          }
+                        } else {
+                          setSelectedTemplateId(null)
+                          setEmailTemplate(value)
+                        }
+                      }}
                       className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
                     >
-                      <option value="plain">Plain Text</option>
-                      <option value="newsletter">Newsletter</option>
-                      <option value="promotion">Promotion</option>
-                      <option value="announcement">Announcement</option>
+                      <optgroup label="Saved Templates">
+                        {emailTemplates.map(template => (
+                          <option key={template.id} value={`db-${template.id}`}>
+                            {template.displayName}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label="Basic Templates">
+                        <option value="plain">Plain Text</option>
+                        <option value="newsletter">Newsletter</option>
+                        <option value="promotion">Promotion</option>
+                        <option value="announcement">Announcement</option>
+                      </optgroup>
                     </select>
                   </div>
 
@@ -335,6 +493,119 @@ export default function CustomersPage() {
                     className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-50"
                   >
                     {sending ? "Sending..." : "Send Emails"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Customer Modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+              <div className="mt-3">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Add New Customer
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={newCustomer.name}
+                      onChange={(e) => setNewCustomer({...newCustomer, name: e.target.value})}
+                      placeholder="Customer name"
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      value={newCustomer.email}
+                      onChange={(e) => setNewCustomer({...newCustomer, email: e.target.value})}
+                      placeholder="customer@example.com"
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      value={newCustomer.phone}
+                      onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
+                      placeholder="+44 7XXX XXXXXX"
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={newCustomer.marketingConsent}
+                        onChange={(e) => setNewCustomer({...newCustomer, marketingConsent: e.target.checked})}
+                        className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-700">
+                        Marketing consent (customer has opted in to receive marketing emails)
+                      </span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Segment
+                    </label>
+                    <select
+                      value={newCustomer.segment}
+                      onChange={(e) => setNewCustomer({...newCustomer, segment: e.target.value})}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    >
+                      <option value="">None</option>
+                      <option value="vip">VIP</option>
+                      <option value="regular">Regular</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Notes
+                    </label>
+                    <textarea
+                      value={newCustomer.notes}
+                      onChange={(e) => setNewCustomer({...newCustomer, notes: e.target.value})}
+                      placeholder="Internal notes about this customer..."
+                      rows={3}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 flex justify-end gap-3">
+                  <button
+                    onClick={() => setShowAddModal(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={addCustomer}
+                    disabled={saving}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                  >
+                    {saving ? "Adding..." : "Add Customer"}
                   </button>
                 </div>
               </div>

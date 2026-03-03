@@ -808,3 +808,57 @@ model ContactSubmission {
   @@index([createdAt])
   @@map("contact_submissions")
 }
+
+// ============================================================================
+// Customer Management & Email Marketing
+// ============================================================================
+
+model Customer {
+  id                Int       @id @default(autoincrement())
+  name              String
+  email             String    @unique
+  phone             String?
+  // Marketing consent
+  marketingConsent  Boolean   @default(false) @map("marketing_consent")
+  consentedAt       DateTime? @map("consented_at")
+  consentSource     String?   @map("consent_source") // website, admin, order, import
+  // Customer segmentation
+  tags              String[]  @default([])
+  segment           String?   // vip, regular, inactive
+  notes             String?   @db.Text
+  // Purchase history (derived from orders)
+  totalOrders       Int       @default(0) @map("total_orders")
+  totalSpent        Decimal   @default(0) @db.Decimal(10, 2) @map("total_spent")
+  lastOrderDate     DateTime? @map("last_order_date")
+  // Timestamps
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@index([email])
+  @@index([marketingConsent])
+  @@index([segment])
+  @@map("customers")
+}
+
+model EmailTemplate {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // newsletter, promotion, announcement, custom-xyz
+  displayName String   @map("display_name") // "Newsletter Template", "Promotion Email"
+  description String?  @db.Text
+  subject     String?  @default("") // Default subject line (can be overridden)
+  htmlContent String   @db.Text @map("html_content") // Full HTML template
+  // Template variables
+  variables   String[] @default([]) // ["name", "firstName", "email", "customField"]
+  // Metadata
+  category    String?  // marketing, transactional, notification
+  active      Boolean  @default(true)
+  isDefault   Boolean  @default(false) @map("is_default")
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([name])
+  @@index([active])
+  @@index([category])
+  @@map("email_templates")
+}

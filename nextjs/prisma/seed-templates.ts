@@ -1,22 +1,16 @@
-import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
-import { Resend } from "resend"
-import prisma from "@/lib/prisma"
+import { PrismaClient } from '@prisma/client'
 
-function getResendClient() {
-  if (!process.env.RESEND_API_KEY) {
-    throw new Error("RESEND_API_KEY is not configured")
-  }
-  return new Resend(process.env.RESEND_API_KEY)
-}
+const prisma = new PrismaClient()
 
-// Fallback templates for backward compatibility
-const fallbackTemplates = {
-  plain: (content: string, name: string) => content.replace(/{name}/g, name),
-
-  newsletter: (content: string, name: string) => `
-    <!DOCTYPE html>
+const templates = [
+  {
+    name: 'newsletter',
+    displayName: 'Newsletter Template',
+    description: 'Clean and professional newsletter template with Bonu Cakes branding',
+    subject: 'Your Monthly Newsletter from Bonu Cakes',
+    category: 'marketing',
+    variables: ['name', 'content'],
+    htmlContent: `<!DOCTYPE html>
     <html>
       <head>
         <meta charset="utf-8">
@@ -37,10 +31,10 @@ const fallbackTemplates = {
                 <tr>
                   <td style="padding: 40px;">
                     <p style="margin: 0 0 20px; font-size: 16px; color: #333333; line-height: 1.6;">
-                      Hello ${name},
+                      Hello {name},
                     </p>
                     <div style="font-size: 16px; color: #333333; line-height: 1.6;">
-                      ${content.replace(/{name}/g, name)}
+                      {content}
                     </div>
                   </td>
                 </tr>
@@ -60,11 +54,18 @@ const fallbackTemplates = {
           </tr>
         </table>
       </body>
-    </html>
-  `,
-
-  promotion: (content: string, name: string) => `
-    <!DOCTYPE html>
+    </html>`,
+    active: true,
+    isDefault: true
+  },
+  {
+    name: 'promotion',
+    displayName: 'Promotion Email',
+    description: 'Eye-catching promotional template with gradient header and call-to-action button',
+    subject: 'Special Offer Just for You!',
+    category: 'marketing',
+    variables: ['name', 'content'],
+    htmlContent: `<!DOCTYPE html>
     <html>
       <head>
         <meta charset="utf-8">
@@ -86,10 +87,10 @@ const fallbackTemplates = {
                 <tr>
                   <td style="padding: 40px;">
                     <p style="margin: 0 0 20px; font-size: 18px; color: #D97706; font-weight: bold;">
-                      Hi ${name}!
+                      Hi {name}!
                     </p>
                     <div style="font-size: 16px; color: #333333; line-height: 1.8;">
-                      ${content.replace(/{name}/g, name)}
+                      {content}
                     </div>
                     <div style="margin-top: 30px; text-align: center;">
                       <a href="https://bonucakes.co.uk" style="display: inline-block; padding: 15px 40px; background-color: #D97706; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
@@ -114,11 +115,18 @@ const fallbackTemplates = {
           </tr>
         </table>
       </body>
-    </html>
-  `,
-
-  announcement: (content: string, name: string) => `
-    <!DOCTYPE html>
+    </html>`,
+    active: true,
+    isDefault: false
+  },
+  {
+    name: 'announcement',
+    displayName: 'Announcement Email',
+    description: 'Professional announcement template for important news and updates',
+    subject: 'Important Announcement from Bonu Cakes',
+    category: 'notification',
+    variables: ['name', 'content'],
+    htmlContent: `<!DOCTYPE html>
     <html>
       <head>
         <meta charset="utf-8">
@@ -147,10 +155,10 @@ const fallbackTemplates = {
                 <tr>
                   <td style="padding: 40px;">
                     <p style="margin: 0 0 20px; font-size: 16px; color: #333333;">
-                      Dear ${name},
+                      Dear {name},
                     </p>
                     <div style="font-size: 16px; color: #333333; line-height: 1.6;">
-                      ${content.replace(/{name}/g, name)}
+                      {content}
                     </div>
                   </td>
                 </tr>
@@ -170,112 +178,38 @@ const fallbackTemplates = {
           </tr>
         </table>
       </body>
-    </html>
-  `,
-}
-
-// Helper function to replace template variables
-function replaceVariables(template: string, variables: Record<string, string>): string {
-  let result = template
-  for (const [key, value] of Object.entries(variables)) {
-    result = result.replace(new RegExp(`{${key}}`, 'g'), value)
+    </html>`,
+    active: true,
+    isDefault: false
   }
-  return result
-}
+]
 
-export async function POST(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
+async function main() {
+  console.log('Seeding email templates...')
 
-    if (!session || session.user.role !== "admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const { recipients, subject, content, template, templateId } = await request.json()
-
-    if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
-      return NextResponse.json(
-        { error: "Recipients required" },
-        { status: 400 }
-      )
-    }
-
-    if (!subject || !content) {
-      return NextResponse.json(
-        { error: "Subject and content required" },
-        { status: 400 }
-      )
-    }
-
-    let htmlContent: string
-
-    // Try to fetch template from database first
-    if (templateId) {
-      const dbTemplate = await prisma.emailTemplate.findUnique({
-        where: { id: templateId }
-      })
-
-      if (dbTemplate) {
-        htmlContent = dbTemplate.htmlContent
-      } else {
-        return NextResponse.json(
-          { error: "Template not found" },
-          { status: 404 }
-        )
-      }
-    }
-    // Fallback to hardcoded templates for backward compatibility
-    else if (template) {
-      const templateFn = fallbackTemplates[template as keyof typeof fallbackTemplates] || fallbackTemplates.plain
-      // For fallback templates, we still need to wrap content in template
-      htmlContent = templateFn(content, "{name}") // Will be replaced per recipient
-    }
-    // Plain content
-    else {
-      htmlContent = content
-    }
-
-    let sent = 0
-    const errors: string[] = []
-
-    // Send emails in batches to avoid rate limits
-    const resend = getResendClient()
-
-    for (const recipient of recipients) {
-      try {
-        // Replace variables for this specific recipient
-        const personalizedHtml = replaceVariables(htmlContent, {
-          name: recipient.name || recipient.email,
-          email: recipient.email,
-        })
-
-        // Also replace content placeholder if it exists
-        const finalHtml = personalizedHtml.replace(/{content}/g, content)
-
-        await resend.emails.send({
-          from: "Bonu Cakes <noreply@bonucakes.co.uk>",
-          to: recipient.email,
-          subject: subject,
-          html: finalHtml,
-        })
-
-        sent++
-      } catch (error: any) {
-        console.error(`Failed to send to ${recipient.email}:`, error)
-        errors.push(`${recipient.email}: ${error.message}`)
-      }
-    }
-
-    return NextResponse.json({
-      sent,
-      total: recipients.length,
-      errors: errors.length > 0 ? errors : undefined,
+  for (const template of templates) {
+    const existing = await prisma.emailTemplate.findUnique({
+      where: { name: template.name }
     })
-  } catch (error) {
-    console.error("Error sending bulk email:", error)
-    return NextResponse.json(
-      { error: "Failed to send emails" },
-      { status: 500 }
-    )
+
+    if (existing) {
+      console.log(`Template "${template.name}" already exists, skipping...`)
+    } else {
+      await prisma.emailTemplate.create({
+        data: template
+      })
+      console.log(`Created template: ${template.name}`)
+    }
   }
+
+  console.log('Seeding completed!')
 }
+
+main()
+  .catch((e) => {
+    console.error('Error seeding templates:', e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
