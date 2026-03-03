@@ -1,0 +1,347 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import AdminSidebar from "@/components/admin/AdminSidebar"
+import AdminAuth from "@/components/admin/AdminAuth"
+import { Mail, Users, Search, Filter, Download } from "lucide-react"
+
+interface Customer {
+  id: number
+  name: string
+  email: string
+  phone: string | null
+  orderCount: number
+  totalSpent: number
+  lastOrderDate: string | null
+  createdAt: string
+}
+
+export default function CustomersPage() {
+  const [customers, setCustomers] = useState<Customer[]>([])
+  const [selectedCustomers, setSelectedCustomers] = useState<number[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [emailSubject, setEmailSubject] = useState("")
+  const [emailContent, setEmailContent] = useState("")
+  const [emailTemplate, setEmailTemplate] = useState("plain")
+  const [sending, setSending] = useState(false)
+
+  useEffect(() => {
+    fetchCustomers()
+  }, [])
+
+  const fetchCustomers = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch("/api/admin/customers")
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || "Failed to fetch customers")
+
+      setCustomers(data.customers)
+    } catch (err: any) {
+      console.error("Error fetching customers:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const toggleSelectAll = () => {
+    if (selectedCustomers.length === filteredCustomers.length) {
+      setSelectedCustomers([])
+    } else {
+      setSelectedCustomers(filteredCustomers.map(c => c.id))
+    }
+  }
+
+  const toggleSelectCustomer = (id: number) => {
+    if (selectedCustomers.includes(id)) {
+      setSelectedCustomers(selectedCustomers.filter(cId => cId !== id))
+    } else {
+      setSelectedCustomers([...selectedCustomers, id])
+    }
+  }
+
+  const filteredCustomers = customers.filter(customer =>
+    customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    customer.email.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const sendBulkEmail = async () => {
+    if (selectedCustomers.length === 0) {
+      alert("Please select at least one customer")
+      return
+    }
+
+    if (!emailSubject || !emailContent) {
+      alert("Please fill in subject and content")
+      return
+    }
+
+    try {
+      setSending(true)
+
+      const selectedEmails = customers
+        .filter(c => selectedCustomers.includes(c.id))
+        .map(c => ({ email: c.email, name: c.name }))
+
+      const res = await fetch("/api/admin/send-bulk-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipients: selectedEmails,
+          subject: emailSubject,
+          content: emailContent,
+          template: emailTemplate,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || "Failed to send emails")
+
+      alert(`Successfully sent ${data.sent} emails`)
+      setShowEmailModal(false)
+      setEmailSubject("")
+      setEmailContent("")
+      setSelectedCustomers([])
+    } catch (err: any) {
+      alert("Error sending emails: " + err.message)
+    } finally {
+      setSending(false)
+    }
+  }
+
+  const exportCustomers = () => {
+    const csv = [
+      ["Name", "Email", "Phone", "Orders", "Total Spent", "Last Order", "Joined"],
+      ...filteredCustomers.map(c => [
+        c.name,
+        c.email,
+        c.phone || "",
+        c.orderCount,
+        c.totalSpent,
+        c.lastOrderDate ? new Date(c.lastOrderDate).toLocaleDateString() : "",
+        new Date(c.createdAt).toLocaleDateString(),
+      ])
+    ].map(row => row.join(",")).join("\n")
+
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `customers-${new Date().toISOString().split("T")[0]}.csv`
+    a.click()
+  }
+
+  return (
+    <AdminAuth>
+      <AdminSidebar>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
+              <p className="mt-1 text-sm text-gray-500">
+                Manage customers and send bulk emails
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={exportCustomers}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export CSV
+              </button>
+              {selectedCustomers.length > 0 && (
+                <button
+                  onClick={() => setShowEmailModal(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email Selected ({selectedCustomers.length})
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Search and filters */}
+          <div className="bg-white shadow rounded-lg p-4">
+            <div className="flex items-center gap-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by name or email..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Customers table */}
+          <div className="bg-white shadow rounded-lg overflow-hidden">
+            {loading ? (
+              <div className="p-6 text-center text-gray-500">Loading customers...</div>
+            ) : filteredCustomers.length === 0 ? (
+              <div className="p-6 text-center text-gray-500">
+                {searchQuery ? "No customers found matching your search" : "No customers yet"}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left">
+                        <input
+                          type="checkbox"
+                          checked={selectedCustomers.length === filteredCustomers.length}
+                          onChange={toggleSelectAll}
+                          className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                        />
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Contact
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Orders
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Total Spent
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Last Order
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Joined
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {filteredCustomers.map((customer) => (
+                      <tr key={customer.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <input
+                            type="checkbox"
+                            checked={selectedCustomers.includes(customer.id)}
+                            onChange={() => toggleSelectCustomer(customer.id)}
+                            className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                          />
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">{customer.name}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">{customer.email}</div>
+                          {customer.phone && (
+                            <div className="text-sm text-gray-500">{customer.phone}</div>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {customer.orderCount}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          £{customer.totalSpent.toFixed(2)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {customer.lastOrderDate
+                            ? new Date(customer.lastOrderDate).toLocaleDateString("en-GB")
+                            : "Never"}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(customer.createdAt).toLocaleDateString("en-GB")}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Email Modal */}
+        {showEmailModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+              <div className="mt-3">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Send Email to {selectedCustomers.length} Customer(s)
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Template
+                    </label>
+                    <select
+                      value={emailTemplate}
+                      onChange={(e) => setEmailTemplate(e.target.value)}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    >
+                      <option value="plain">Plain Text</option>
+                      <option value="newsletter">Newsletter</option>
+                      <option value="promotion">Promotion</option>
+                      <option value="announcement">Announcement</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      value={emailSubject}
+                      onChange={(e) => setEmailSubject(e.target.value)}
+                      placeholder="Email subject..."
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Message
+                    </label>
+                    <textarea
+                      value={emailContent}
+                      onChange={(e) => setEmailContent(e.target.value)}
+                      placeholder="Email content..."
+                      rows={10}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500 font-mono text-sm"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      You can use HTML tags. Use {"{name}"} to personalize with customer name.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex justify-end gap-3">
+                  <button
+                    onClick={() => setShowEmailModal(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={sendBulkEmail}
+                    disabled={sending}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-50"
+                  >
+                    {sending ? "Sending..." : "Send Emails"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </AdminSidebar>
+    </AdminAuth>
+  )
+}
