@@ -745,28 +745,30 @@ model SocialPost {
 // ============================================================================
 
 model Event {
-  id                Int      @id @default(autoincrement())
-  titleVi           String   @map("title_vi")
-  titleEn           String   @map("title_en")
-  descriptionVi     String   @db.Text @map("description_vi")
-  descriptionEn     String   @db.Text @map("description_en")
-  slug              String   @unique
-  image             String?
-  eventDate         DateTime @map("event_date")
-  eventTime         String?  @map("event_time")
-  locationVi        String?  @map("location_vi")
-  locationEn        String?  @map("location_en")
-  addressVi         String?  @db.Text @map("address_vi")
-  addressEn         String?  @db.Text @map("address_en")
-  maxAttendees      Int?     @map("max_attendees")
-  currentAttendees  Int      @default(0) @map("current_attendees")
-  price             Decimal? @db.Decimal(10, 2)
-  category          String?
-  featured          Boolean  @default(false)
-  published         Boolean  @default(false)
-  registrationUrl   String?  @map("registration_url")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+  id                 Int                  @id @default(autoincrement())
+  titleVi            String               @map("title_vi")
+  titleEn            String               @map("title_en")
+  descriptionVi      String               @db.Text @map("description_vi")
+  descriptionEn      String               @db.Text @map("description_en")
+  slug               String               @unique
+  image              String?
+  eventDate          DateTime             @map("event_date")
+  eventTime          String?              @map("event_time")
+  locationVi         String?              @map("location_vi")
+  locationEn         String?              @map("location_en")
+  addressVi          String?              @db.Text @map("address_vi")
+  addressEn          String?              @db.Text @map("address_en")
+  maxAttendees       Int?                 @map("max_attendees")
+  currentAttendees   Int                  @default(0) @map("current_attendees")
+  price              Decimal?             @db.Decimal(10, 2)
+  category           String?
+  featured           Boolean              @default(false)
+  published          Boolean              @default(false)
+  registrationUrl    String?              @map("registration_url")
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+  // Relations
+  eventRegistrations EventRegistration[]
 
   @@index([eventDate])
   @@index([published])
@@ -814,25 +816,29 @@ model ContactSubmission {
 // ============================================================================
 
 model Customer {
-  id                Int       @id @default(autoincrement())
-  name              String
-  email             String    @unique
-  phone             String?
+  id                      Int                       @id @default(autoincrement())
+  name                    String
+  email                   String                    @unique
+  phone                   String?
   // Marketing consent
-  marketingConsent  Boolean   @default(false) @map("marketing_consent")
-  consentedAt       DateTime? @map("consented_at")
-  consentSource     String?   @map("consent_source") // website, admin, order, import
+  marketingConsent        Boolean                   @default(false) @map("marketing_consent")
+  consentedAt             DateTime?                 @map("consented_at")
+  consentSource           String?                   @map("consent_source") // website, admin, order, import
   // Customer segmentation
-  tags              String[]  @default([])
-  segment           String?   // vip, regular, inactive
-  notes             String?   @db.Text
+  tags                    String[]                  @default([])
+  segment                 String?                   // vip, regular, inactive
+  notes                   String?                   @db.Text
   // Purchase history (derived from orders)
-  totalOrders       Int       @default(0) @map("total_orders")
-  totalSpent        Decimal   @default(0) @db.Decimal(10, 2) @map("total_spent")
-  lastOrderDate     DateTime? @map("last_order_date")
+  totalOrders             Int                       @default(0) @map("total_orders")
+  totalSpent              Decimal                   @default(0) @db.Decimal(10, 2) @map("total_spent")
+  lastOrderDate           DateTime?                 @map("last_order_date")
   // Timestamps
-  createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime  @updatedAt @map("updated_at")
+  createdAt               DateTime                  @default(now()) @map("created_at")
+  updatedAt               DateTime                  @updatedAt @map("updated_at")
+  // Relations
+  workshopRegistrations   WorkshopRegistration[]
+  eventRegistrations      EventRegistration[]
+  emailCampaignRecipients EmailCampaignRecipient[]
 
   @@index([email])
   @@index([marketingConsent])
@@ -861,4 +867,99 @@ model EmailTemplate {
   @@index([active])
   @@index([category])
   @@map("email_templates")
+}
+
+// ============================================================================
+// Workshop & Event Registrations
+// ============================================================================
+
+model WorkshopRegistration {
+  id                  Int       @id @default(autoincrement())
+  customerId          Int?      @map("customer_id")
+  workshopName        String    @map("workshop_name")
+  workshopDate        DateTime? @map("workshop_date")
+  registrationDate    DateTime  @default(now()) @map("registration_date")
+  // Workshop-specific data
+  age                 String?
+  location            String?
+  phone               String?
+  facebookLink        String?   @map("facebook_link")
+  fbExperience        String?   @map("fb_experience") // "Hoàn toàn không có", "Đã có", etc.
+  barriers            String[]  @default([]) // ["Không biết bắt đầu", "Lo sợ vốn", etc.]
+  goals               String?   @db.Text // "Thu nhập thêm", "Thay thế công việc", etc.
+  specificQuestions   String?   @db.Text @map("specific_questions")
+  availability        String?   @db.Text // Time preference for workshop
+  referralSource      String?   @map("referral_source") // How they heard about workshop
+  otherNotes          String?   @db.Text @map("other_notes")
+  // Attendance tracking
+  attended            Boolean   @default(false)
+  attendanceDate      DateTime? @map("attendance_date")
+  // Timestamps
+  createdAt           DateTime  @default(now()) @map("created_at")
+  customer            Customer? @relation(fields: [customerId], references: [id])
+
+  @@index([customerId])
+  @@index([workshopName])
+  @@index([workshopDate])
+  @@index([attended])
+  @@map("workshop_registrations")
+}
+
+model EventRegistration {
+  id               Int       @id @default(autoincrement())
+  customerId       Int?      @map("customer_id")
+  eventId          Int       @map("event_id")
+  registrationDate DateTime  @default(now()) @map("registration_date")
+  ticketType       String?   @map("ticket_type")
+  attended         Boolean   @default(false)
+  attendanceDate   DateTime? @map("attendance_date")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  customer         Customer? @relation(fields: [customerId], references: [id])
+  event            Event     @relation(fields: [eventId], references: [id])
+
+  @@index([customerId])
+  @@index([eventId])
+  @@index([attended])
+  @@map("event_registrations")
+}
+
+// ============================================================================
+// Email Campaign Management
+// ============================================================================
+
+model EmailCampaign {
+  id              Int                       @id @default(autoincrement())
+  name            String
+  category        String // "reminder", "announcement", "promotion", "newsletter"
+  subject         String
+  htmlTemplate    String                    @db.Text @map("html_template")
+  // Filters used (stored as JSON for history)
+  filters         Json?
+  // Stats
+  totalRecipients Int                       @default(0) @map("total_recipients")
+  sentAt          DateTime?                 @map("sent_at")
+  createdBy       String?                   @map("created_by")
+  createdAt       DateTime                  @default(now()) @map("created_at")
+  recipients      EmailCampaignRecipient[]
+
+  @@index([category])
+  @@index([sentAt])
+  @@map("email_campaigns")
+}
+
+model EmailCampaignRecipient {
+  id          Int           @id @default(autoincrement())
+  campaignId  Int           @map("campaign_id")
+  customerId  Int           @map("customer_id")
+  sentAt      DateTime      @default(now()) @map("sent_at")
+  opened      Boolean       @default(false)
+  clicked     Boolean       @default(false)
+  campaign    EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  customer    Customer      @relation(fields: [customerId], references: [id])
+
+  @@index([campaignId])
+  @@index([customerId])
+  @@index([opened])
+  @@index([clicked])
+  @@map("email_campaign_recipients")
 }
