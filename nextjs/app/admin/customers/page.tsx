@@ -43,6 +43,7 @@ export default function CustomersPage() {
   const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>([])
   const [sending, setSending] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [importing, setImporting] = useState(false)
 
   // New customer form fields
   const [newCustomer, setNewCustomer] = useState({
@@ -213,6 +214,38 @@ export default function CustomersPage() {
     }
   }
 
+  const importFromResend = async () => {
+    if (!confirm("This will import customer email addresses from previously sent Resend emails. Continue?")) {
+      return
+    }
+
+    try {
+      setImporting(true)
+      const res = await fetch("/api/admin/import-customers-from-resend", {
+        method: "POST",
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || "Failed to import customers")
+
+      alert(
+        `Import complete!\n\n` +
+        `Total emails fetched: ${data.totalEmailsFetched}\n` +
+        `Bonu emails found: ${data.bonuEmailsFound}\n` +
+        `Unique customers: ${data.uniqueCustomers}\n` +
+        `Created: ${data.created}\n` +
+        `Skipped (already exist): ${data.skipped}`
+      )
+
+      fetchCustomers()
+    } catch (err: any) {
+      alert("Error importing customers: " + err.message)
+    } finally {
+      setImporting(false)
+    }
+  }
+
   const exportCustomers = () => {
     const csv = [
       ["Name", "Email", "Phone", "Marketing Consent", "Orders", "Total Spent", "Last Order", "Joined"],
@@ -248,6 +281,14 @@ export default function CustomersPage() {
               </p>
             </div>
             <div className="flex gap-3">
+              <button
+                onClick={importFromResend}
+                disabled={importing}
+                className="inline-flex items-center px-4 py-2 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 disabled:opacity-50"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                {importing ? "Importing..." : "Import from Resend"}
+              </button>
               <button
                 onClick={() => setShowAddModal(true)}
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
