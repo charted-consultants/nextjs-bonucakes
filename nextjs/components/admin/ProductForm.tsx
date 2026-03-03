@@ -76,18 +76,56 @@ export default function ProductForm({ initialData, productId, onSubmit, isLoadin
 
   const nameVi = watch('nameVi')
   const nameEn = watch('nameEn')
+  const slug = watch('slug')
 
   // Auto-generate slug from Vietnamese name
   useEffect(() => {
     if (nameVi && !productId) {
-      const slug = nameVi
+      // Import slugify function inline to avoid async import issues
+      const vietnameseMap: Record<string, string> = {
+        'à': 'a', 'á': 'a', 'ạ': 'a', 'ả': 'a', 'ã': 'a',
+        'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ậ': 'a', 'ẩ': 'a', 'ẫ': 'a',
+        'ă': 'a', 'ằ': 'a', 'ắ': 'a', 'ặ': 'a', 'ẳ': 'a', 'ẵ': 'a',
+        'è': 'e', 'é': 'e', 'ẹ': 'e', 'ẻ': 'e', 'ẽ': 'e',
+        'ê': 'e', 'ề': 'e', 'ế': 'e', 'ệ': 'e', 'ể': 'e', 'ễ': 'e',
+        'ì': 'i', 'í': 'i', 'ị': 'i', 'ỉ': 'i', 'ĩ': 'i',
+        'ò': 'o', 'ó': 'o', 'ọ': 'o', 'ỏ': 'o', 'õ': 'o',
+        'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ộ': 'o', 'ổ': 'o', 'ỗ': 'o',
+        'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ợ': 'o', 'ở': 'o', 'ỡ': 'o',
+        'ù': 'u', 'ú': 'u', 'ụ': 'u', 'ủ': 'u', 'ũ': 'u',
+        'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ự': 'u', 'ử': 'u', 'ữ': 'u',
+        'ỳ': 'y', 'ý': 'y', 'ỵ': 'y', 'ỷ': 'y', 'ỹ': 'y',
+        'đ': 'd',
+        'À': 'A', 'Á': 'A', 'Ạ': 'A', 'Ả': 'A', 'Ã': 'A',
+        'Â': 'A', 'Ầ': 'A', 'Ấ': 'A', 'Ậ': 'A', 'Ẩ': 'A', 'Ẫ': 'A',
+        'Ă': 'A', 'Ằ': 'A', 'Ắ': 'A', 'Ặ': 'A', 'Ẳ': 'A', 'Ẵ': 'A',
+        'È': 'E', 'É': 'E', 'Ẹ': 'E', 'Ẻ': 'E', 'Ẽ': 'E',
+        'Ê': 'E', 'Ề': 'E', 'Ế': 'E', 'Ệ': 'E', 'Ể': 'E', 'Ễ': 'E',
+        'Ì': 'I', 'Í': 'I', 'Ị': 'I', 'Ỉ': 'I', 'Ĩ': 'I',
+        'Ò': 'O', 'Ó': 'O', 'Ọ': 'O', 'Ỏ': 'O', 'Õ': 'O',
+        'Ô': 'O', 'Ồ': 'O', 'Ố': 'O', 'Ộ': 'O', 'Ổ': 'O', 'Ỗ': 'O',
+        'Ơ': 'O', 'Ờ': 'O', 'Ớ': 'O', 'Ợ': 'O', 'Ở': 'O', 'Ỡ': 'O',
+        'Ù': 'U', 'Ú': 'U', 'Ụ': 'U', 'Ủ': 'U', 'Ũ': 'U',
+        'Ư': 'U', 'Ừ': 'U', 'Ứ': 'U', 'Ự': 'U', 'Ử': 'U', 'Ữ': 'U',
+        'Ỳ': 'Y', 'Ý': 'Y', 'Ỵ': 'Y', 'Ỷ': 'Y', 'Ỹ': 'Y',
+        'Đ': 'D',
+      };
+
+      let generatedSlug = nameVi.trim();
+
+      // Replace Vietnamese characters
+      for (const [viet, ascii] of Object.entries(vietnameseMap)) {
+        generatedSlug = generatedSlug.replace(new RegExp(viet, 'g'), ascii);
+      }
+
+      // Convert to lowercase and clean
+      generatedSlug = generatedSlug
         .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-      setValue('slug', slug)
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/[\s-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+      setValue('slug', generatedSlug)
     }
   }, [nameVi, productId, setValue])
 
@@ -148,14 +186,31 @@ export default function ProductForm({ initialData, productId, onSubmit, isLoadin
           {/* Slug */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Slug *
+              Slug (URL) *
             </label>
             <input
-              {...register('slug', { required: 'Slug is required' })}
+              {...register('slug', {
+                required: 'Slug is required',
+                pattern: {
+                  value: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+                  message: 'Slug must contain only lowercase letters, numbers, and hyphens'
+                }
+              })}
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm font-mono text-xs"
+              placeholder="banh-mi-dac-biet"
             />
             {errors.slug && <p className="mt-1 text-sm text-red-600">{errors.slug.message}</p>}
+            {!errors.slug && slug && (
+              <p className="mt-1 text-xs text-gray-500">
+                URL: /products/{slug}
+              </p>
+            )}
+            {!productId && (
+              <p className="mt-1 text-xs text-gray-500">
+                Auto-generated from Vietnamese name. You can edit it manually.
+              </p>
+            )}
           </div>
 
           {/* SKU */}

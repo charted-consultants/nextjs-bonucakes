@@ -86,7 +86,7 @@ export default function CheckoutPage() {
         },
       };
 
-      const response = await fetch('https://api.chartedconsultants.com/api/orders/banh-mi', {
+      const response = await fetch('/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,8 +100,8 @@ export default function CheckoutPage() {
         // Clear cart
         clearCart();
 
-        // Generate short code for display
-        const shortCode = shortCodeFrom(result.orderId);
+        // Use orderCode from response if available, otherwise generate from orderId
+        const shortCode = result.orderCode || shortCodeFrom(result.orderId);
 
         // Redirect to success page
         router.push(`/order-success?orderId=${encodeURIComponent(result.orderId)}&code=${shortCode}`);
@@ -176,6 +176,7 @@ export default function CheckoutPage() {
                 <OrderSummary
                   showCheckoutButton={false}
                   showContinueShopping={false}
+                  showItems={true}
                   isSubmitting={isSubmitting}
                   checkoutFormId="checkout-form"
                 />

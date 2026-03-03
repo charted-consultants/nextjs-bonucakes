@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ShoppingCart, Check } from 'lucide-react';
 import { useLanguage } from './LanguageToggle';
+import { useCartStore } from '@/lib/stores/cart-store';
 import ProductBadge from './ProductBadge';
 
 export interface Product {
@@ -39,12 +41,15 @@ export interface Product {
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (productId: string) => void;
+  onAddToCart?: (productId: string) => void;
 }
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
   const currentLang = useLanguage();
   const [imageError, setImageError] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+  const addItem = useCartStore((state) => state.addItem);
 
   const name = product.name[currentLang] || product.name.vi;
   const shortDesc = product.shortDescription[currentLang] || product.shortDescription.vi;
@@ -72,12 +77,46 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
     return '';
   };
 
-  const handleAddToCart = () => {
-    if (!product.available) {
-      alert(currentLang === 'vi' ? 'Sản phẩm tạm hết hàng.' : 'Item is out of stock.');
+  const handleAddToCart = async () => {
+    if (!product.available || isAdding) {
       return;
     }
-    onAddToCart(product.id);
+
+    try {
+      setIsAdding(true);
+
+      // Add to cart using Zustand store
+      addItem({
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        price: {
+          amount: product.price.amount,
+          currency: product.price.currency,
+          displayPrice: product.price.displayPrice || '',
+          displayPriceVi: product.price.displayPriceVi,
+          unit: product.price.unit,
+        },
+        images: product.images.length > 0 ? [{ url: product.images[0], alt: product.name.en }] : undefined,
+      }, 1);
+
+      // Show success state
+      setJustAdded(true);
+
+      // Call optional callback
+      if (onAddToCart) {
+        onAddToCart(product.id);
+      }
+
+      // Reset success state after 2 seconds
+      setTimeout(() => {
+        setJustAdded(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   return (
@@ -135,9 +174,20 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         {product.available ? (
           <button
             onClick={handleAddToCart}
-            className="w-full bg-terracotta text-white px-6 py-3 font-semibold hover:bg-terracotta/90 transition-colors mb-2"
+            disabled={isAdding}
+            className="w-full bg-terracotta text-white px-6 py-3 font-semibold hover:bg-terracotta/90 transition-all mb-2 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {currentLang === 'vi' ? 'Thêm vào giỏ hàng' : 'Add to Cart'}
+            {justAdded ? (
+              <>
+                <Check className="h-5 w-5" />
+                <span>{currentLang === 'vi' ? 'Đã thêm!' : 'Added!'}</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="h-5 w-5" />
+                <span>{currentLang === 'vi' ? 'Thêm vào giỏ hàng' : 'Add to Cart'}</span>
+              </>
+            )}
           </button>
         ) : (
           <button

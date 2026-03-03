@@ -13,6 +13,7 @@ import {
   paginatedResponse,
   withNoCacheHeaders
 } from '@/lib/api-helpers';
+import { generateUniqueSlug, isValidSlugFormat } from '@/lib/utils/slug';
 
 export const dynamic = 'force-dynamic';
 
@@ -142,8 +143,8 @@ export async function POST(request: NextRequest) {
       return badRequestResponse(`Missing required multilingual fields: ${multilingualValidation.missing?.join(', ')}`);
     }
 
-    // Validate other required fields
-    const validation = validateRequiredFields(body, ['slug', 'price', 'category']);
+    // Validate other required fields (slug is optional, will be auto-generated)
+    const validation = validateRequiredFields(body, ['price', 'category']);
     if (!validation.valid) {
       return badRequestResponse(`Missing required fields: ${validation.missing?.join(', ')}`);
     }
@@ -162,7 +163,7 @@ export async function POST(request: NextRequest) {
       ingredientsEn,
       howToUseEn,
       // Common fields
-      slug,
+      slug: providedSlug,
       sku,
       price,
       compareAtPrice,
@@ -195,13 +196,36 @@ export async function POST(request: NextRequest) {
       metaDescription,
     } = body;
 
-    // Check if slug already exists
-    const existingProduct = await prisma.product.findUnique({
-      where: { slug },
-    });
+    // Generate or validate slug
+    let slug: string;
 
-    if (existingProduct) {
-      return badRequestResponse('A product with this slug already exists');
+    if (providedSlug) {
+      // Validate provided slug format
+      if (!isValidSlugFormat(providedSlug)) {
+        return badRequestResponse('Invalid slug format. Slug must contain only lowercase letters, numbers, and hyphens.');
+      }
+
+      // Check if provided slug already exists
+      const existingProduct = await prisma.product.findUnique({
+        where: { slug: providedSlug },
+      });
+
+      if (existingProduct) {
+        return badRequestResponse('A product with this slug already exists');
+      }
+
+      slug = providedSlug;
+    } else {
+      // Auto-generate unique slug from Vietnamese name
+      if (!nameVi) {
+        return badRequestResponse('Vietnamese name is required to generate slug');
+      }
+
+      try {
+        slug = await generateUniqueSlug(nameVi);
+      } catch (error: any) {
+        return badRequestResponse(`Failed to generate slug: ${error.message}`);
+      }
     }
 
     // Check if SKU already exists (if provided)

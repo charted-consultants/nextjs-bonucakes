@@ -7,11 +7,12 @@
 
 import Link from 'next/link';
 import { useLanguage } from './LanguageToggle';
-import { useCartTotals, useCartPromotions } from '@/lib/stores/cart-store';
+import { useCartItems, useCartTotals, useCartPromotions } from '@/lib/stores/cart-store';
 
 interface OrderSummaryProps {
   showCheckoutButton?: boolean;
   showContinueShopping?: boolean;
+  showItems?: boolean;
   onSubmit?: () => void;
   isSubmitting?: boolean;
   submitButtonText?: string;
@@ -21,12 +22,14 @@ interface OrderSummaryProps {
 export default function OrderSummary({
   showCheckoutButton = true,
   showContinueShopping = true,
+  showItems = false,
   onSubmit,
   isSubmitting = false,
   submitButtonText,
   checkoutFormId,
 }: OrderSummaryProps) {
   const currentLang = useLanguage();
+  const items = useCartItems();
   const { subtotal, shipping, total } = useCartTotals();
   const promotions = useCartPromotions();
 
@@ -49,6 +52,49 @@ export default function OrderSummary({
   return (
     <div className="bg-white border border-espresso/10 p-6 sticky top-24">
       <h2 className="text-2xl font-bold text-espresso mb-6">{title[currentLang]}</h2>
+
+      {/* Order Items List (only show in checkout) */}
+      {showItems && items.length > 0 && (
+        <div className="space-y-4 mb-6 pb-6 border-b border-espresso/10">
+          {items.map((item) => {
+            const itemName = currentLang === 'vi' ? item.productName.vi : item.productName.en;
+            const unit = currentLang === 'vi' ? item.unitVi : item.unitEn;
+            const freeItems = Math.floor(item.quantity / 10);
+
+            // Format price display
+            const formatPrice = () => {
+              const amount = Number(item.unitPrice || 0);
+              if (amount > 0 && unit) {
+                return `£${amount} / ${unit}`;
+              }
+              const localizedDisplay =
+                currentLang === 'vi'
+                  ? item.displayPriceVi || item.displayPrice
+                  : item.displayPrice || item.displayPriceVi;
+              if (localizedDisplay) return localizedDisplay;
+              return amount > 0 ? `£${amount}` : '';
+            };
+
+            return (
+              <div key={item.productId} className="flex justify-between text-sm">
+                <div className="flex-grow">
+                  <p className="font-semibold text-espresso">
+                    {item.quantity}x {itemName} {unit && `(${unit})`}
+                  </p>
+                  {freeItems > 0 && (
+                    <p className="text-xs text-gold">
+                      {currentLang === 'vi' ? 'Tặng' : 'Free'}: +{freeItems}
+                    </p>
+                  )}
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold text-terracotta">{formatPrice()}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Totals */}
       <div className="space-y-4 mb-6">

@@ -281,39 +281,7 @@ export default function ProductsPage() {
     setFilteredProducts(filtered);
   }, [availabilityFilter, categoryFilter]);
 
-  const handleAddToCart = (productId: string) => {
-    const product = mockProducts.find((p) => p.id === productId);
-    if (product) {
-      // Get existing cart from localStorage
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-      // Check if product already in cart
-      const existingItemIndex = cart.findIndex((item: any) => item.id === productId);
-
-      if (existingItemIndex > -1) {
-        // Update quantity
-        cart[existingItemIndex].quantity += 1;
-      } else {
-        // Add new item
-        cart.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          quantity: 1,
-          image: product.images[0],
-        });
-      }
-
-      // Save to localStorage
-      localStorage.setItem('cart', JSON.stringify(cart));
-
-      // Dispatch event for cart update
-      window.dispatchEvent(new Event('cartUpdated'));
-
-      // Show success message
-      alert(currentLang === 'vi' ? 'Đã thêm vào giỏ hàng!' : 'Added to cart!');
-    }
-  };
+  // This function is no longer needed as ProductCard now handles add to cart via Zustand
 
   return (
     <div className="min-h-screen bg-cream">
@@ -354,7 +322,6 @@ export default function ProductsPage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onAddToCart={handleAddToCart}
                 />
               ))}
             </div>

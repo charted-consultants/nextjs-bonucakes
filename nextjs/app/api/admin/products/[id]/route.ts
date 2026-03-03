@@ -11,6 +11,7 @@ import {
   parseIntId,
   withNoCacheHeaders
 } from '@/lib/api-helpers';
+import { generateUniqueSlug, isValidSlugFormat } from '@/lib/utils/slug';
 
 export const dynamic = 'force-dynamic';
 
@@ -136,7 +137,7 @@ export async function PUT(
       ingredientsEn,
       howToUseEn,
       // Common fields
-      slug,
+      slug: providedSlug,
       sku,
       price,
       compareAtPrice,
@@ -169,14 +170,32 @@ export async function PUT(
       metaDescription,
     } = body;
 
-    // If slug is being changed, check if it's already taken
+    // Handle slug update
+    let slug = providedSlug;
+
+    // If slug is being changed, validate and check uniqueness
     if (slug && slug !== existingProduct.slug) {
+      // Validate slug format
+      if (!isValidSlugFormat(slug)) {
+        return badRequestResponse('Invalid slug format. Slug must contain only lowercase letters, numbers, and hyphens.');
+      }
+
+      // Check if slug is already taken by another product
       const slugExists = await prisma.product.findUnique({
         where: { slug },
       });
 
       if (slugExists) {
         return badRequestResponse('A product with this slug already exists');
+      }
+    }
+
+    // If Vietnamese name is being changed and slug is not provided, regenerate slug
+    if (nameVi && nameVi !== existingProduct.nameVi && !providedSlug) {
+      try {
+        slug = await generateUniqueSlug(nameVi, id);
+      } catch (error: any) {
+        return badRequestResponse(`Failed to generate slug: ${error.message}`);
       }
     }
 
