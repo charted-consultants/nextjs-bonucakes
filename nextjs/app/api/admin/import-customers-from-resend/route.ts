@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
     let skipped = 0
     const errors: string[] = []
 
-    for (const [email, data] of importedEmails) {
+    for (const [email, data] of Array.from(importedEmails.entries())) {
       try {
         // Check if customer already exists
         const existing = await prisma.customer.findUnique({
