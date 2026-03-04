@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
     const orderId = generateOrderId();
     const orderCode = generateShortCode(orderId);
 
-    // Helper: Extract numeric product ID from variant IDs like "variant-123"
+    // Helper: Extract numeric product ID from slugs, variant IDs, or numeric IDs
     const extractProductId = async (id: string | number): Promise<number | null> => {
       if (typeof id === 'number') return id;
       if (typeof id === 'string') {
@@ -155,6 +155,19 @@ export async function POST(request: NextRequest) {
         // Try parsing as regular number
         const parsed = parseInt(id);
         if (!isNaN(parsed)) return parsed;
+
+        // Handle product slugs - lookup product by slug
+        if (id.includes('-') || id.length > 3) { // Likely a slug
+          try {
+            const product = await prisma.product.findUnique({
+              where: { slug: id },
+              select: { id: true },
+            });
+            if (product) return product.id;
+          } catch (error) {
+            console.error(`Failed to lookup product slug ${id}:`, error);
+          }
+        }
       }
       return null;
     };
