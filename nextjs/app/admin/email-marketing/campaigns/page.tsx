@@ -46,6 +46,11 @@ export default function EmailCampaignsPage() {
   const [campaignName, setCampaignName] = useState("")
   const [customSubject, setCustomSubject] = useState("")
 
+  // Test mode
+  const [testMode, setTestMode] = useState(false)
+  const [testEmail, setTestEmail] = useState("")
+  const [showRecipientList, setShowRecipientList] = useState(false)
+
   // Available filter options
   const [availableTags, setAvailableTags] = useState<string[]>([])
   const [availableLocations, setAvailableLocations] = useState<string[]>([])
@@ -158,13 +163,22 @@ export default function EmailCampaignsPage() {
       return
     }
 
-    if (recipientCount === 0) {
-      alert("No recipients match your filters")
-      return
-    }
-
-    if (!confirm(`Send campaign to ${recipientCount} recipients?`)) {
-      return
+    if (testMode) {
+      if (!testEmail) {
+        alert("Please enter a test email address")
+        return
+      }
+      if (!confirm(`Send test email to ${testEmail}?`)) {
+        return
+      }
+    } else {
+      if (recipientCount === 0) {
+        alert("No recipients match your filters")
+        return
+      }
+      if (!confirm(`Send campaign to ${recipientCount} recipients?\n\nEmails will be sent in batches to respect rate limits. This may take a few minutes.`)) {
+        return
+      }
     }
 
     try {
@@ -179,6 +193,8 @@ export default function EmailCampaignsPage() {
           subject: customSubject || selectedTemplate.subject,
           filters,
           customerIds: matchedCustomers.map(c => c.id),
+          testMode,
+          testEmail: testMode ? testEmail : undefined,
         }),
       })
 
@@ -186,7 +202,11 @@ export default function EmailCampaignsPage() {
 
       if (!res.ok) throw new Error(data.error || "Failed to send campaign")
 
-      alert(`Campaign sent successfully to ${recipientCount} recipients!`)
+      if (testMode) {
+        alert(`Test email sent successfully to ${testEmail}!`)
+      } else {
+        alert(`Campaign sent successfully!\nSent: ${data.sent}\nFailed: ${data.failed || 0}\nTotal: ${data.total}`)
+      }
 
       // Reset form
       setSelectedTemplate(null)
@@ -390,6 +410,47 @@ export default function EmailCampaignsPage() {
                 </div>
                 <p className="text-3xl font-bold text-gray-900">{recipientCount}</p>
                 <p className="text-sm text-gray-500 mt-1">customers will receive this email</p>
+
+                {recipientCount > 0 && (
+                  <button
+                    onClick={() => setShowRecipientList(!showRecipientList)}
+                    className="mt-3 text-sm text-amber-600 hover:text-amber-700 font-medium"
+                  >
+                    {showRecipientList ? "Hide" : "Show"} recipient list
+                  </button>
+                )}
+              </div>
+
+              {/* Test Mode */}
+              <div className="bg-white shadow rounded-lg p-6">
+                <div className="flex items-center mb-3">
+                  <input
+                    type="checkbox"
+                    checked={testMode}
+                    onChange={(e) => setTestMode(e.target.checked)}
+                    className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                  />
+                  <label className="ml-2 text-sm font-medium text-gray-700">
+                    Test Mode
+                  </label>
+                </div>
+                {testMode && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Test Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={testEmail}
+                      onChange={(e) => setTestEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                    />
+                    <p className="mt-2 text-xs text-gray-500">
+                      Test mode will send only to this email address
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Actions */}
@@ -405,11 +466,11 @@ export default function EmailCampaignsPage() {
 
                 <button
                   onClick={sendCampaign}
-                  disabled={!selectedTemplate || !campaignName || recipientCount === 0 || sending}
+                  disabled={!selectedTemplate || !campaignName || (!testMode && recipientCount === 0) || (testMode && !testEmail) || sending}
                   className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="h-4 w-4 mr-2" />
-                  {sending ? "Sending..." : "Send Campaign"}
+                  {sending ? "Sending..." : testMode ? "Send Test Email" : "Send Campaign"}
                 </button>
               </div>
 
@@ -434,6 +495,74 @@ export default function EmailCampaignsPage() {
             </div>
           </div>
         </div>
+
+        {/* Recipient List Modal */}
+        {showRecipientList && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white my-10">
+              <div className="mt-3">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Recipients ({recipientCount})
+                  </h3>
+                  <button
+                    onClick={() => setShowRecipientList(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+
+                <div className="max-h-96 overflow-y-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Email
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Tags
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {matchedCustomers.map((customer) => (
+                        <tr key={customer.id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {customer.name}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {customer.email}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-500">
+                            <div className="flex flex-wrap gap-1">
+                              {customer.tags.slice(0, 3).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                              {customer.tags.length > 3 && (
+                                <span className="text-xs text-gray-400">
+                                  +{customer.tags.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Preview Modal */}
         {showPreview && selectedTemplate && (
