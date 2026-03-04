@@ -30,7 +30,7 @@ const navigation = [
   { name: "Products", href: "/admin/products", icon: Package },
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { name: "Customers", href: "/admin/customers", icon: User },
-  { name: "Email Templates", href: "/admin/email-templates", icon: Mail },
+  { name: "Email Marketing", href: "/admin/email-templates", icon: Mail },
   { name: "Courses", href: "/admin/courses", icon: BookOpen },
   { name: "Events", href: "/admin/events", icon: Calendar },
   { name: "Blog Posts", href: "/admin/blog", icon: FileText },
