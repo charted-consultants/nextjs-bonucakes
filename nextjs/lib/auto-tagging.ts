@@ -33,7 +33,7 @@ export function generateOrderTags(totalOrders: number, totalSpent: number): stri
   }
 
   // Spending level tags
-  const spentAmount = typeof totalSpent === 'number' ? totalSpent : parseFloat(totalSpent?.toString() || '0');
+  const spentAmount = typeof totalSpent === 'number' ? totalSpent : parseFloat(String(totalSpent || 0));
 
   if (spentAmount > 100) {
     tags.push('high_value');
@@ -160,7 +160,7 @@ export function calculateSegment(
     : Infinity;
 
   // VIP: High value and recent activity
-  const spentAmount = typeof totalSpent === 'number' ? totalSpent : parseFloat(totalSpent?.toString() || '0');
+  const spentAmount = typeof totalSpent === 'number' ? totalSpent : parseFloat(String(totalSpent || 0));
 
   if (spentAmount > 250 && daysSinceLastOrder < 60) {
     return 'vip';
