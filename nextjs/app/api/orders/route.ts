@@ -33,7 +33,7 @@ const BANK_DETAILS: BankDetails = {
 
 // Email configuration
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bonu F&B <noreply@chartedconsultants.com>';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'bonucakes@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'bonucakes6@gmail.com';
 
 // Order item interface for request
 interface OrderItemRequest {
@@ -54,6 +54,7 @@ interface OrderRequest {
   deliveryAddress: string;
   deliveryDate?: string;
   specialNotes?: string;
+  paymentMethod?: 'bank_transfer' | 'stripe';
   items: OrderItemRequest[];
   pricing: {
     currency: string;
@@ -222,7 +223,7 @@ export async function POST(request: NextRequest) {
         currency: pricing.currency || 'GBP',
         status: 'pending',
         paymentStatus: 'pending',
-        paymentMethod: 'bank_transfer',
+        paymentMethod: body.paymentMethod || 'bank_transfer',
         shippingMethod: pricing.shippingLabel || 'UK Mainland',
         customerNote: body.specialNotes || null,
         items: {

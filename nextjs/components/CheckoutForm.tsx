@@ -14,6 +14,7 @@ export interface CheckoutFormData {
   customerPhone: string;
   deliveryAddress: string;
   specialNotes?: string;
+  paymentMethod: 'bank_transfer' | 'stripe';
 }
 
 interface CheckoutFormProps {
@@ -29,7 +30,11 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CheckoutFormData>();
+  } = useForm<CheckoutFormData>({
+    defaultValues: {
+      paymentMethod: 'stripe',
+    },
+  });
 
   const translations = {
     title: { vi: 'Thông tin khách hàng', en: 'Customer Information' },
@@ -52,6 +57,9 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
     required: { vi: 'Trường này là bắt buộc', en: 'This field is required' },
     invalidEmail: { vi: 'Email không hợp lệ', en: 'Invalid email address' },
     processing: { vi: 'Đang xử lý đơn hàng...', en: 'Processing order...' },
+    paymentMethod: { vi: 'Phương thức thanh toán', en: 'Payment Method' },
+    stripe: { vi: 'Thanh toán bằng thẻ (Stripe)', en: 'Card Payment (Stripe)' },
+    bankTransfer: { vi: 'Chuyển khoản ngân hàng', en: 'Bank Transfer' },
   };
 
   return (
@@ -147,6 +155,35 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
           {errors.deliveryAddress && (
             <p className="text-terracotta text-sm mt-1">{errors.deliveryAddress.message}</p>
           )}
+        </div>
+
+        {/* Payment Method */}
+        <div>
+          <label className="block text-coffee font-semibold mb-2">
+            {translations.paymentMethod[currentLang]} <span className="text-terracotta">*</span>
+          </label>
+          <div className="space-y-3">
+            <label className="flex items-center p-4 border border-espresso/20 cursor-pointer hover:bg-cream transition-colors">
+              <input
+                type="radio"
+                value="stripe"
+                {...register('paymentMethod', { required: true })}
+                className="mr-3"
+                disabled={isSubmitting}
+              />
+              <span className="text-espresso">{translations.stripe[currentLang]}</span>
+            </label>
+            <label className="flex items-center p-4 border border-espresso/20 cursor-pointer hover:bg-cream transition-colors">
+              <input
+                type="radio"
+                value="bank_transfer"
+                {...register('paymentMethod', { required: true })}
+                className="mr-3"
+                disabled={isSubmitting}
+              />
+              <span className="text-espresso">{translations.bankTransfer[currentLang]}</span>
+            </label>
+          </div>
         </div>
 
         {/* Special Notes */}

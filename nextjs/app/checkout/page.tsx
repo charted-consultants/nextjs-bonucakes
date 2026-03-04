@@ -76,6 +76,7 @@ export default function CheckoutPage() {
         customerPhone: formData.customerPhone,
         deliveryAddress: formData.deliveryAddress,
         specialNotes: formData.specialNotes || '',
+        paymentMethod: formData.paymentMethod,
         items: cartItems,
         pricing: {
           currency: 'GBP',
@@ -103,8 +104,13 @@ export default function CheckoutPage() {
         // Use orderCode from response if available, otherwise generate from orderId
         const shortCode = result.orderCode || shortCodeFrom(result.orderId);
 
-        // Redirect to success page
-        router.push(`/order-success?orderId=${encodeURIComponent(result.orderId)}&code=${shortCode}`);
+        // If payment method is Stripe, redirect to payment page
+        if (formData.paymentMethod === 'stripe') {
+          router.push(`/payment?orderId=${encodeURIComponent(result.orderId)}&code=${shortCode}`);
+        } else {
+          // For bank transfer, redirect directly to success page
+          router.push(`/order-success?orderId=${encodeURIComponent(result.orderId)}&code=${shortCode}`);
+        }
       } else {
         console.error('API error response:', result);
         throw new Error(result.error || result.message || 'Order failed');
