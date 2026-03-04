@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import LanguageToggle, { useLanguage } from './LanguageToggle';
 import { useCartStore } from '@/lib/stores/cart-store';
@@ -22,8 +22,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const currentLang = useLanguage();
-  const items = useCartStore((state) => state.items);
-  const cartCount = items.reduce((total, item) => total + item.quantity, 0);
+  const cartCount = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0)
+  );
 
   useEffect(() => {
     setMounted(true);
