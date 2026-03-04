@@ -39,7 +39,7 @@ async function sendEmailsInBatches(
 
         // Send email via Resend
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || 'noreply@bonucakes.com',
+          from: process.env.RESEND_FROM_EMAIL || 'noreply@chartedconsultants.com',
           to: customer.email,
           subject: subject,
           html: personalizedHtml,
@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
           .replace(/{email}/g, testEmail);
 
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || 'noreply@bonucakes.com',
+          from: process.env.RESEND_FROM_EMAIL || 'noreply@chartedconsultants.com',
           to: testEmail,
           subject: `[TEST] ${subject || template.subject}`,
           html: personalizedHtml,
