@@ -27,7 +27,10 @@ export async function POST(
       const existingIntent = await stripe.paymentIntents.retrieve(
         order.stripePaymentIntentId
       );
-      return NextResponse.json({ clientSecret: existingIntent.client_secret });
+      return NextResponse.json({
+        clientSecret: existingIntent.client_secret,
+        total: Number(order.total),
+      });
     }
 
     // Convert total amount to pence (smallest currency unit)
@@ -58,7 +61,10 @@ export async function POST(
       },
     });
 
-    return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+    return NextResponse.json({
+      clientSecret: paymentIntent.client_secret,
+      total: Number(order.total),
+    });
   } catch (error) {
     console.error('Failed to create payment intent:', error);
     return NextResponse.json(

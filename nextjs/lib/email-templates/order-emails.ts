@@ -24,6 +24,7 @@ export interface OrderEmailData {
   deliveryAddress: string;
   deliveryDate?: string;
   specialNotes?: string;
+  paymentMethod?: 'bank_transfer' | 'stripe';
   items: OrderItem[];
   pricing: {
     currency: string;
@@ -129,8 +130,8 @@ export function generateAdminEmail(data: OrderEmailData, submissionDate: string)
 }
 
 // Generate customer confirmation email
-export function generateCustomerEmail(data: OrderEmailData, bankDetails: BankDetails): string {
-  const { orderCode, customerName, items, pricing, deliveryDate } = data;
+export function generateCustomerEmail(data: OrderEmailData, bankDetails?: BankDetails): string {
+  const { orderCode, customerName, items, pricing, deliveryDate, paymentMethod = 'bank_transfer' } = data;
   const { currency, subtotal, shippingFee, total, shippingLabel } = pricing;
 
   const orderItemsHtml = items.map(item => {
@@ -189,16 +190,23 @@ export function generateCustomerEmail(data: OrderEmailData, bankDetails: BankDet
               <p style="margin: 8px 0 0 0; font-size: 1.1em;">Tổng cộng: <strong>${formatMoney(total, currency)}</strong></p>
             </div>
 
-            <h2 style="color: #3D2314; margin-top: 30px;">THANH TOÁN</h2>
-            <p>Vui lòng chuyển khoản theo thông tin dưới đây:</p>
-            <div class="order-box">
-              <p style="margin: 0 0 8px 0;"><strong>Ngân hàng:</strong> ${bankDetails.bankName}</p>
-              <p style="margin: 0 0 8px 0;"><strong>Tên tài khoản:</strong> ${bankDetails.accountName}</p>
-              <p style="margin: 0 0 8px 0;"><strong>Sort Code:</strong> ${bankDetails.sortCode}</p>
-              <p style="margin: 0 0 8px 0;"><strong>Số tài khoản:</strong> ${bankDetails.accountNumber}</p>
-              <p style="margin: 0; padding-top: 10px; border-top: 1px solid #C4704A;"><strong>Nội dung chuyển khoản:</strong> <span style="color: #C4704A; font-size: 1.1em;">#${orderCode}</span></p>
-            </div>
-            <p style="color: #666; font-size: 0.9em;">Chúng tôi sẽ xác nhận đơn hàng sau khi nhận được thanh toán.</p>
+            ${paymentMethod === 'stripe' ? `
+              <div style="background: #E8F5E9; padding: 15px; border-left: 4px solid #4CAF50; margin: 20px 0; border-radius: 4px;">
+                <p style="margin: 0 0 5px 0; color: #2E7D32; font-weight: bold; font-size: 1.1em;">✓ THANH TOÁN THÀNH CÔNG</p>
+                <p style="margin: 0; color: #4A3728;">Thanh toán của bạn đã được xử lý thành công qua Stripe. Đơn hàng của bạn đã được xác nhận và sẽ sớm được chuẩn bị.</p>
+              </div>
+            ` : bankDetails ? `
+              <h2 style="color: #3D2314; margin-top: 30px;">THANH TOÁN</h2>
+              <p>Vui lòng chuyển khoản theo thông tin dưới đây:</p>
+              <div class="order-box">
+                <p style="margin: 0 0 8px 0;"><strong>Ngân hàng:</strong> ${bankDetails.bankName}</p>
+                <p style="margin: 0 0 8px 0;"><strong>Tên tài khoản:</strong> ${bankDetails.accountName}</p>
+                <p style="margin: 0 0 8px 0;"><strong>Sort Code:</strong> ${bankDetails.sortCode}</p>
+                <p style="margin: 0 0 8px 0;"><strong>Số tài khoản:</strong> ${bankDetails.accountNumber}</p>
+                <p style="margin: 0; padding-top: 10px; border-top: 1px solid #C4704A;"><strong>Nội dung chuyển khoản:</strong> <span style="color: #C4704A; font-size: 1.1em;">#${orderCode}</span></p>
+              </div>
+              <p style="color: #666; font-size: 0.9em;">Chúng tôi sẽ xác nhận đơn hàng sau khi nhận được thanh toán.</p>
+            ` : ''}
 
             <div class="warning">
               <p style="margin: 0 0 10px 0; font-weight: bold; color: #F57C00;">LƯU Ý QUAN TRỌNG</p>

@@ -130,9 +130,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate order ID and code
-    const orderId = generateOrderId();
-    const orderCode = generateShortCode(orderId);
+    // Generate order number and code
+    const orderNumber = generateOrderId();
+    const orderCode = generateShortCode(orderNumber);
 
     // Helper: Extract numeric product ID from slugs, variant IDs, or numeric IDs
     const extractProductId = async (id: string | number): Promise<number | null> => {
@@ -269,13 +269,14 @@ export async function POST(request: NextRequest) {
     // Prepare email data
     const emailData: OrderEmailData = {
       orderCode,
-      orderId,
+      orderId: orderNumber,
       customerName,
       customerEmail,
       customerPhone,
       deliveryAddress,
       deliveryDate: body.deliveryDate,
       specialNotes: body.specialNotes,
+      paymentMethod: body.paymentMethod || 'bank_transfer',
       items: processedItems,
       pricing,
     };
@@ -343,11 +344,12 @@ export async function POST(request: NextRequest) {
       // Don't fail the order if customer update fails
     }
 
-    console.log(`[bonucakes] Order ${orderId} (code: ${orderCode}) processed successfully`);
+    console.log(`[bonucakes] Order ${orderNumber} (code: ${orderCode}) processed successfully`);
 
     return NextResponse.json({
       success: true,
-      orderId,
+      orderId: order.id, // Return database ID for payment processing
+      orderNumber, // Return order number for display
       orderCode,
       message: 'Đơn hàng đã được ghi nhận. Chúng tôi sẽ liên hệ với bạn sớm nhất.',
     });

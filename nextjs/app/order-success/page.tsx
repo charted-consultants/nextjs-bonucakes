@@ -16,6 +16,8 @@ function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const [orderId, setOrderId] = useState<string>('');
   const [displayCode, setDisplayCode] = useState<string>('');
+  const [paymentMethod, setPaymentMethod] = useState<string>('bank_transfer');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const id = searchParams.get('orderId');
@@ -30,8 +32,24 @@ function OrderSuccessContent() {
         const generated = shortCodeFrom(id);
         setDisplayCode(`#${generated}`);
       }
+
+      // Fetch order details to check payment method
+      fetch(`/api/orders/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.paymentMethod) {
+            setPaymentMethod(data.paymentMethod);
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to fetch order:', err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setDisplayCode('N/A');
+      setLoading(false);
     }
   }, [searchParams]);
 
@@ -56,6 +74,15 @@ function OrderSuccessContent() {
     confirmationText: {
       vi: 'Bếp Bà Bo đã gửi email xác nhận đơn hàng và hướng dẫn thanh toán đến địa chỉ email của bạn.',
       en: 'We have sent an order confirmation email and payment instructions to your email address.',
+    },
+    confirmationTextStripe: {
+      vi: 'Bếp Bà Bo đã gửi email xác nhận đơn hàng đến địa chỉ email của bạn.',
+      en: 'We have sent an order confirmation email to your email address.',
+    },
+    paymentSuccess: { vi: 'Thanh toán thành công!', en: 'Payment Successful!' },
+    paymentSuccessText: {
+      vi: 'Thanh toán của bạn đã được xử lý thành công. Đơn hàng của bạn đã được xác nhận và sẽ sớm được chuẩn bị.',
+      en: 'Your payment has been processed successfully. Your order is confirmed and will be prepared soon.',
     },
     paymentInstructions: { vi: 'Hướng dẫn thanh toán', en: 'Payment Instructions' },
     bank: { vi: 'Ngân hàng', en: 'Bank' },
@@ -146,12 +173,32 @@ function OrderSuccessContent() {
               <h3 className="text-lg font-semibold text-espresso mb-3">
                 {translations.confirmationSent[currentLang]}
               </h3>
-              <p className="text-coffee">{translations.confirmationText[currentLang]}</p>
+              <p className="text-coffee">
+                {paymentMethod === 'stripe'
+                  ? translations.confirmationTextStripe[currentLang]
+                  : translations.confirmationText[currentLang]}
+              </p>
             </div>
           </div>
 
-          {/* Payment Instructions */}
-          <div className="bg-gold/10 border-2 border-gold/50 p-8 mb-8">
+          {/* Payment Success Message (Stripe) */}
+          {paymentMethod === 'stripe' && (
+            <div className="bg-green-50 border-2 border-green-500 p-8 mb-8">
+              <div className="flex items-start gap-3">
+                <CheckCircle className="w-8 h-8 text-green-600 flex-shrink-0" />
+                <div>
+                  <h2 className="text-2xl font-bold text-green-900 mb-3 font-serif">
+                    {translations.paymentSuccess[currentLang]}
+                  </h2>
+                  <p className="text-green-800">{translations.paymentSuccessText[currentLang]}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Payment Instructions (Bank Transfer) */}
+          {paymentMethod === 'bank_transfer' && (
+            <div className="bg-gold/10 border-2 border-gold/50 p-8 mb-8">
             <h2 className="text-2xl font-bold text-espresso mb-6 font-serif">
               {translations.paymentInstructions[currentLang]}
             </h2>
@@ -185,7 +232,8 @@ function OrderSuccessContent() {
                 {translations.noteText[currentLang]}
               </p>
             </div>
-          </div>
+            </div>
+          )}
 
           {/* What Happens Next */}
           <div className="bg-warmwhite border border-espresso/10 p-8 mb-8">
@@ -194,12 +242,19 @@ function OrderSuccessContent() {
             </h2>
 
             <div className="space-y-6">
-              {[
-                { title: translations.step1Title, text: translations.step1Text },
-                { title: translations.step2Title, text: translations.step2Text },
-                { title: translations.step3Title, text: translations.step3Text },
-                { title: translations.step4Title, text: translations.step4Text },
-              ].map((step, index) => (
+              {(paymentMethod === 'stripe'
+                ? [
+                    { title: translations.step2Title, text: translations.step2Text },
+                    { title: translations.step3Title, text: translations.step3Text },
+                    { title: translations.step4Title, text: translations.step4Text },
+                  ]
+                : [
+                    { title: translations.step1Title, text: translations.step1Text },
+                    { title: translations.step2Title, text: translations.step2Text },
+                    { title: translations.step3Title, text: translations.step3Text },
+                    { title: translations.step4Title, text: translations.step4Text },
+                  ]
+              ).map((step, index) => (
                 <div key={index} className="flex gap-4">
                   <div className="flex-shrink-0 w-10 h-10 bg-terracotta text-white rounded-full flex items-center justify-center font-bold">
                     {index + 1}

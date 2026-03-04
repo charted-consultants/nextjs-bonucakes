@@ -74,7 +74,7 @@ function PaymentContent() {
       setStripe(stripeInstance);
     });
 
-    // Create payment intent
+    // Create payment intent and get order total
     fetch(`/api/orders/${orderId}/payment`, {
       method: 'POST',
     })
@@ -84,6 +84,10 @@ function PaymentContent() {
           setClientSecret(data.clientSecret);
         } else {
           throw new Error('Failed to create payment intent');
+        }
+
+        if (data.total) {
+          setTotalAmount(Number(data.total));
         }
       })
       .catch((err) => {
