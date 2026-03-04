@@ -23,7 +23,7 @@ import type {
   CartAPIItem,
 } from '@/types/cart';
 
-const SHIPPING_FEE = 8;
+const SHIPPING_FEE = 10;
 
 export const useCartStore = create<CartStore>()(
   persist(

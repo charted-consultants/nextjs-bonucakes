@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import LanguageToggle, { useLanguage } from './LanguageToggle';
+import { useCartStore } from '@/lib/stores/cart-store';
 
 interface NavItem {
   href: string;
@@ -19,10 +20,13 @@ const navItems: NavItem[] = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const currentLang = useLanguage();
+  const cartCount = useCartStore((state) => state.getCartCount());
 
   useEffect(() => {
+    setMounted(true);
+
     // Handle scroll effect
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -31,25 +35,8 @@ export default function Navbar() {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Load cart count from localStorage (matches HTML cart.js)
-    const updateCartCount = () => {
-      try {
-        const cart = JSON.parse(localStorage.getItem('bonu_cart') || '[]');
-        const total = cart.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0);
-        setCartCount(total);
-      } catch {
-        setCartCount(0);
-      }
-    };
-
-    updateCartCount();
-
-    // Listen for cart updates
-    window.addEventListener('cartUpdated', updateCartCount);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('cartUpdated', updateCartCount);
     };
   }, []);
 
@@ -95,7 +82,7 @@ export default function Navbar() {
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
               />
             </svg>
-            {cartCount > 0 && (
+            {mounted && cartCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-terracotta text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                 {cartCount}
               </span>
