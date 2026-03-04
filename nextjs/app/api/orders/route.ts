@@ -189,7 +189,10 @@ export async function POST(request: NextRequest) {
     );
 
     // Validate that all items have valid product IDs
-    const invalidItems = processedItems.filter(item => !item.productId || item.productId <= 0);
+    const invalidItems = processedItems.filter(item => {
+      const id = typeof item.productId === 'number' ? item.productId : 0;
+      return !id || id <= 0;
+    });
     if (invalidItems.length > 0) {
       console.error('Invalid product IDs:', invalidItems.map(i => ({ name: i.productName, id: i.productId })));
       return NextResponse.json(
@@ -237,9 +240,10 @@ export async function POST(request: NextRequest) {
             };
 
             // Only connect product if we have a valid numeric ID
-            if (item.productId && item.productId > 0) {
+            const numericId = typeof item.productId === 'number' ? item.productId : 0;
+            if (numericId > 0) {
               orderItemData.product = {
-                connect: { id: item.productId }
+                connect: { id: numericId }
               };
             }
 
