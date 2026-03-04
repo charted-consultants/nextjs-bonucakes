@@ -14,6 +14,7 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { useShallow } from 'zustand/react/shallow';
 import type {
   CartStore,
   CartItem,
@@ -256,35 +257,39 @@ export const useCartCount = () =>
   useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));
 
 export const useCartTotals = () =>
-  useCartStore((state) => {
-    const subtotal = state.items.reduce((total, item) => {
-      const qty = Number(item.quantity || 0);
-      let price = Number(item.unitPrice || 0);
-      if (!price || price <= 0) {
-        price = state.parseDisplayPrice(item.displayPrice || '');
-      }
-      if (!price || !qty) return total;
-      return total + qty * price;
-    }, 0);
-    const shipping = state.items.length > 0 ? 10 : 0;
-    const total = subtotal + shipping;
-    const itemCount = state.items.reduce((total, item) => total + item.quantity, 0);
-    return { subtotal, shipping, total, itemCount };
-  });
+  useCartStore(
+    useShallow((state) => {
+      const subtotal = state.items.reduce((total, item) => {
+        const qty = Number(item.quantity || 0);
+        let price = Number(item.unitPrice || 0);
+        if (!price || price <= 0) {
+          price = state.parseDisplayPrice(item.displayPrice || '');
+        }
+        if (!price || !qty) return total;
+        return total + qty * price;
+      }, 0);
+      const shipping = state.items.length > 0 ? 10 : 0;
+      const total = subtotal + shipping;
+      const itemCount = state.items.reduce((total, item) => total + item.quantity, 0);
+      return { subtotal, shipping, total, itemCount };
+    })
+  );
 
 export const useCartPromotions = () =>
-  useCartStore((state) => {
-    const promotions: CartPromotion[] = [];
-    state.items.forEach((item) => {
-      const freeItems = Math.floor(item.quantity / 10);
-      if (freeItems > 0) {
-        promotions.push({
-          productId: item.productId,
-          productName: item.productName,
-          freeItems,
-          message: `Buy 10 get 1 free (actually ${item.quantity + freeItems} items)`,
-        });
-      }
-    });
-    return promotions;
-  });
+  useCartStore(
+    useShallow((state) => {
+      const promotions: CartPromotion[] = [];
+      state.items.forEach((item) => {
+        const freeItems = Math.floor(item.quantity / 10);
+        if (freeItems > 0) {
+          promotions.push({
+            productId: item.productId,
+            productName: item.productName,
+            freeItems,
+            message: `Buy 10 get 1 free (actually ${item.quantity + freeItems} items)`,
+          });
+        }
+      });
+      return promotions;
+    })
+  );
