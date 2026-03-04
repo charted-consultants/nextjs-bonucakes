@@ -193,7 +193,7 @@ export function generateCustomerEmail(data: OrderEmailData, bankDetails?: BankDe
             ${paymentMethod === 'stripe' ? `
               <div style="background: #E8F5E9; padding: 15px; border-left: 4px solid #4CAF50; margin: 20px 0; border-radius: 4px;">
                 <p style="margin: 0 0 5px 0; color: #2E7D32; font-weight: bold; font-size: 1.1em;">✓ THANH TOÁN THÀNH CÔNG</p>
-                <p style="margin: 0; color: #4A3728;">Thanh toán của bạn đã được xử lý thành công qua Stripe. Đơn hàng của bạn đã được xác nhận và sẽ sớm được chuẩn bị.</p>
+                <p style="margin: 0; color: #4A3728;">Thanh toán của bạn đã được xử lý thành công. Đơn hàng của bạn đã được xác nhận và sẽ sớm được chuẩn bị.</p>
               </div>
             ` : bankDetails ? `
               <h2 style="color: #3D2314; margin-top: 30px;">THANH TOÁN</h2>

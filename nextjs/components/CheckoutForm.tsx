@@ -58,7 +58,7 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
     invalidEmail: { vi: 'Email không hợp lệ', en: 'Invalid email address' },
     processing: { vi: 'Đang xử lý đơn hàng...', en: 'Processing order...' },
     paymentMethod: { vi: 'Phương thức thanh toán', en: 'Payment Method' },
-    stripe: { vi: 'Thanh toán bằng thẻ (Stripe)', en: 'Card Payment (Stripe)' },
+    stripe: { vi: 'Thanh toán bằng thẻ', en: 'Card Payment' },
     bankTransfer: { vi: 'Chuyển khoản ngân hàng', en: 'Bank Transfer' },
   };
 
