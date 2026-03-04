@@ -133,18 +133,57 @@ export async function POST(request: NextRequest) {
     const orderId = generateOrderId();
     const orderCode = generateShortCode(orderId);
 
-    // Process items with free item calculations
-    const processedItems: EmailOrderItem[] = items.map(item => {
-      const freeItems = calculateFreeItems(item.quantity);
-      const unitPrice = item.unitPrice || 0;
-      return {
-        ...item,
-        productId: typeof item.productId === 'string' ? parseInt(item.productId) : item.productId,
-        unitPrice,
-        freeItems,
-        actualQuantity: item.quantity + freeItems,
-      };
-    });
+    // Helper: Extract numeric product ID from variant IDs like "variant-123"
+    const extractProductId = async (id: string | number): Promise<number | null> => {
+      if (typeof id === 'number') return id;
+      if (typeof id === 'string') {
+        // Handle variant IDs like "variant-123" - lookup parent product
+        if (id.startsWith('variant-')) {
+          const variantId = parseInt(id.replace('variant-', ''));
+          if (!isNaN(variantId)) {
+            try {
+              const variant = await prisma.productVariant.findUnique({
+                where: { id: variantId },
+                select: { productId: true },
+              });
+              if (variant) return variant.productId;
+            } catch (error) {
+              console.error(`Failed to lookup variant ${variantId}:`, error);
+            }
+          }
+        }
+        // Try parsing as regular number
+        const parsed = parseInt(id);
+        if (!isNaN(parsed)) return parsed;
+      }
+      return null;
+    };
+
+    // Process items with free item calculations (async to handle variant lookups)
+    const processedItems: EmailOrderItem[] = await Promise.all(
+      items.map(async (item) => {
+        const freeItems = calculateFreeItems(item.quantity);
+        const unitPrice = item.unitPrice || 0;
+        const productId = await extractProductId(item.productId);
+        return {
+          ...item,
+          productId: productId || 0,
+          unitPrice,
+          freeItems,
+          actualQuantity: item.quantity + freeItems,
+        };
+      })
+    );
+
+    // Validate that all items have valid product IDs
+    const invalidItems = processedItems.filter(item => !item.productId || item.productId <= 0);
+    if (invalidItems.length > 0) {
+      console.error('Invalid product IDs:', invalidItems.map(i => ({ name: i.productName, id: i.productId })));
+      return NextResponse.json(
+        { error: 'Some products in your cart are no longer available. Please refresh and try again.' },
+        { status: 400 }
+      );
+    }
 
     // Save order to database
     const shippingAddress = {
@@ -171,20 +210,28 @@ export async function POST(request: NextRequest) {
         shippingMethod: pricing.shippingLabel || 'UK Mainland',
         customerNote: body.specialNotes || null,
         items: {
-          create: processedItems.map(item => ({
-            product: {
-              connect: { id: Number(item.productId) }
-            },
-            productName: item.productName,
-            quantity: item.quantity,
-            price: item.unitPrice,
-            subtotal: item.unitPrice * item.quantity,
-            variant: item.freeItems ? {
-              freeItems: item.freeItems,
-              actualQuantity: item.actualQuantity,
-              promotion: 'Buy 10 Get 1 Free',
-            } : undefined,
-          })),
+          create: processedItems.map(item => {
+            const orderItemData: any = {
+              productName: item.productName,
+              quantity: item.quantity,
+              price: item.unitPrice,
+              subtotal: item.unitPrice * item.quantity,
+              variant: item.freeItems ? {
+                freeItems: item.freeItems,
+                actualQuantity: item.actualQuantity,
+                promotion: 'Buy 10 Get 1 Free',
+              } : undefined,
+            };
+
+            // Only connect product if we have a valid numeric ID
+            if (item.productId && item.productId > 0) {
+              orderItemData.product = {
+                connect: { id: item.productId }
+              };
+            }
+
+            return orderItemData;
+          }),
         },
       },
       include: {
