@@ -27,6 +27,18 @@ export function PaymentForm({
   const translations = {
     payButton: { vi: 'Thanh toán', en: 'Pay' },
     processing: { vi: 'Đang xử lý...', en: 'Processing...' },
+    cardDeclined: {
+      vi: 'Thẻ của bạn đã bị từ chối. Vui lòng kiểm tra thông tin thẻ hoặc thử thẻ khác.',
+      en: 'Your card was declined. Please check your card details or try a different card.'
+    },
+    insufficientFunds: {
+      vi: 'Thẻ của bạn không đủ số dư. Vui lòng thử thẻ khác.',
+      en: 'Your card has insufficient funds. Please try a different card.'
+    },
+    paymentFailed: {
+      vi: 'Thanh toán không thành công. Vui lòng thử lại hoặc liên hệ ngân hàng.',
+      en: 'Payment failed. Please try again or contact your bank.'
+    },
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +59,16 @@ export function PaymentForm({
     });
 
     if (error) {
-      onError(error.message || 'Payment failed');
+      // Simplify error messages for customers
+      let friendlyMessage = translations.paymentFailed[currentLang];
+
+      if (error.code === 'card_declined' || error.message?.includes('declined')) {
+        friendlyMessage = translations.cardDeclined[currentLang];
+      } else if (error.code === 'insufficient_funds' || error.message?.includes('insufficient')) {
+        friendlyMessage = translations.insufficientFunds[currentLang];
+      }
+
+      onError(friendlyMessage);
       setIsProcessing(false);
     } else {
       onSuccess();
