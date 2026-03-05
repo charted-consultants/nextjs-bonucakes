@@ -191,6 +191,10 @@ function PaymentContent() {
                         borderRadius: '4px',
                       },
                     },
+                    wallets: {
+                      applePay: 'auto',
+                      googlePay: 'auto',
+                    },
                   }}
                 >
                   <PaymentForm
