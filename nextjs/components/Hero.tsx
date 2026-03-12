@@ -55,9 +55,6 @@ export default function Hero() {
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-[#083121]/50"></div>
-
       {/* Content */}
       <div className="relative max-w-6xl mx-auto px-6 text-center">
         <p className="text-[#fcc56c] uppercase tracking-widest text-sm mb-4 font-medium">
