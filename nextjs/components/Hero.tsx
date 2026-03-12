@@ -44,16 +44,12 @@ export default function Hero() {
 
   return (
     <header className="relative text-white pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden fade-in">
-      {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+      {/* Hero Background Image */}
+      <img
+        src="/z7597844504702_2c8a3b34e8638e0d40d0d4daa73bb466.jpg"
+        alt="Bonucakes hero"
         className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src="/hero-video.mp4" type="video/mp4" />
-      </video>
+      />
 
       {/* Content */}
       <div className="relative max-w-6xl mx-auto px-6 text-center">
