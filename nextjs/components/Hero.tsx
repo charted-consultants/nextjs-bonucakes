@@ -46,7 +46,7 @@ export default function Hero() {
     <header className="relative text-white pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden fade-in">
       {/* Hero Background Image */}
       <img
-        src="https://static.bonucakes.com/z7597844504702_2c8a3b34e8638e0d40d0d4daa73bb466.jpg"
+        src="/z7597844504702_2c8a3b34e8638e0d40d0d4daa73bb466.jpg"
         alt="Bonucakes hero"
         className="absolute inset-0 w-full h-full object-cover"
       />
