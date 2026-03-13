@@ -52,7 +52,7 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative max-w-6xl mx-auto px-6 text-center">
+      <div className="relative max-w-6xl mx-auto px-6 text-center [text-shadow:0_1px_3px_rgba(0,0,0,0.3)]">
         <p className="text-[#fcc56c] uppercase tracking-widest text-sm mb-4 font-medium">
           {heroContent.tagline[currentLang]}
         </p>
