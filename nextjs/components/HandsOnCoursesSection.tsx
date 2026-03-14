@@ -2,8 +2,8 @@
 
 import { useLanguage } from './LanguageToggle';
 
-// R2 CDN base URL for course PDFs
-const R2_BASE_URL = 'https://static.bonucakes.com';
+// Local path for course PDFs
+const PDF_BASE_URL = '';
 
 interface HandsOnCourse {
   id: string;
@@ -31,8 +31,8 @@ const handsOnCourses: HandsOnCourse[] = [
       vi: ['8 loại nhân thịt', '5 loại sốt', 'Vận hành & đóng gói'],
       en: ['8 protein fillings', '5 signature sauces', 'Operations & packaging'],
     },
-    pdfEn: `${R2_BASE_URL}/downloads/courses/course-banh-mi.pdf`,
-    pdfVi: `${R2_BASE_URL}/downloads/courses/course-banh-mi-vi.pdf`,
+    pdfEn: '/downloads/courses/course-banh-mi.pdf',
+    pdfVi: '/downloads/courses/course-banh-mi-vi.pdf',
   },
   {
     id: 'tra-sua',
@@ -49,8 +49,8 @@ const handsOnCourses: HandsOnCourse[] = [
       vi: ['30+ loại đồ uống', 'Trân châu tự làm', 'Cheese foam độc quyền'],
       en: ['30+ drink recipes', 'Homemade tapioca', 'Signature cheese foam'],
     },
-    pdfEn: `${R2_BASE_URL}/downloads/courses/course-tra-sua.pdf`,
-    pdfVi: `${R2_BASE_URL}/downloads/courses/course-tra-sua-vi.pdf`,
+    pdfEn: '/downloads/courses/course-tra-sua.pdf',
+    pdfVi: '/downloads/courses/course-tra-sua-vi.pdf',
   },
   {
     id: 'pho',
@@ -67,8 +67,8 @@ const handsOnCourses: HandsOnCourse[] = [
       vi: ['Nước dùng chuẩn vị', 'Cắt thịt chuyên nghiệp', 'Quy trình phục vụ'],
       en: ['Authentic broth', 'Professional meat cuts', 'Service flow'],
     },
-    pdfEn: `${R2_BASE_URL}/downloads/courses/course-pho.pdf`,
-    pdfVi: `${R2_BASE_URL}/downloads/courses/course-pho-vi.pdf`,
+    pdfEn: '/downloads/courses/course-pho.pdf',
+    pdfVi: '/downloads/courses/course-pho-vi.pdf',
   },
   {
     id: 'bun-bo-hue',
@@ -85,8 +85,8 @@ const handsOnCourses: HandsOnCourse[] = [
       vi: ['Nước dùng sả đặc trưng', 'Sate tự làm', 'Chả cua Huế'],
       en: ['Signature lemongrass broth', 'Homemade sate paste', 'Huế crab cake'],
     },
-    pdfEn: `${R2_BASE_URL}/downloads/courses/course-bun-bo-hue.pdf`,
-    pdfVi: `${R2_BASE_URL}/downloads/courses/course-bun-bo-hue-vi.pdf`,
+    pdfEn: '/downloads/courses/course-bun-bo-hue.pdf',
+    pdfVi: '/downloads/courses/course-bun-bo-hue-vi.pdf',
   },
   {
     id: 'banh-bao',
@@ -103,8 +103,8 @@ const handsOnCourses: HandsOnCourse[] = [
       vi: ['Công thức bột độc quyền', 'Nhân thịt truyền thống', 'Đông lạnh & bán online'],
       en: ['Proprietary flour blend', 'Traditional pork filling', 'Freezing & online sales'],
     },
-    pdfEn: `${R2_BASE_URL}/downloads/courses/course-banh-bao.pdf`,
-    pdfVi: `${R2_BASE_URL}/downloads/courses/course-banh-bao-vi.pdf`,
+    pdfEn: '/downloads/courses/course-banh-bao.pdf',
+    pdfVi: '/downloads/courses/course-banh-bao-vi.pdf',
   },
 ];
 
@@ -136,7 +136,7 @@ export default function HandsOnCoursesSection() {
         {/* Download Catalogue Button */}
         <div className="text-center mb-10">
           <a
-            href={`${R2_BASE_URL}/downloads/courses/course-catalogue.pdf`}
+            href="/downloads/courses/course-catalogue.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-secondary text-primary px-6 py-3 font-semibold hover:bg-secondary/90 transition-colors"
