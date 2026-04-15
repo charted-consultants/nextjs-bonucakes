@@ -34,7 +34,7 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
     formState: { errors },
   } = useForm<CheckoutFormData>({
     defaultValues: {
-      paymentMethod: 'stripe',
+      paymentMethod: 'bank_transfer',
     },
   });
 
@@ -65,6 +65,7 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
     processing: { vi: 'Đang xử lý đơn hàng...', en: 'Processing order...' },
     paymentMethod: { vi: 'Phương thức thanh toán', en: 'Payment Method' },
     stripe: { vi: 'Thanh toán bằng thẻ', en: 'Card Payment' },
+    stripeUnavailable: { vi: 'Sắp có', en: 'Coming soon' },
     bankTransfer: { vi: 'Chuyển khoản ngân hàng', en: 'Bank Transfer' },
   };
 
@@ -200,15 +201,19 @@ export default function CheckoutForm({ onSubmit, isSubmitting, formId = 'checkou
             {translations.paymentMethod[currentLang]} <span className="text-secondary">*</span>
           </label>
           <div className="space-y-3">
-            <label className="flex items-center p-4 border border-primary/20 cursor-pointer hover:bg-light transition-colors">
-              <input
-                type="radio"
-                value="stripe"
-                {...register('paymentMethod', { required: true })}
-                className="mr-3"
-                disabled={isSubmitting}
-              />
-              <span className="text-primary">{translations.stripe[currentLang]}</span>
+            <label className="flex items-center justify-between p-4 border border-primary/10 bg-primary/5 cursor-not-allowed opacity-50 select-none">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  value="stripe"
+                  className="mr-3"
+                  disabled={true}
+                />
+                <span className="text-primary/60">{translations.stripe[currentLang]}</span>
+              </div>
+              <span className="text-xs text-muted border border-primary/20 px-2 py-0.5 rounded">
+                {translations.stripeUnavailable[currentLang]}
+              </span>
             </label>
             <label className="flex items-center p-4 border border-primary/20 cursor-pointer hover:bg-light transition-colors">
               <input

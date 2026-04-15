@@ -34,6 +34,7 @@ const BANK_DETAILS: BankDetails = {
 // Email configuration
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bonu F&B <noreply@chartedconsultants.com>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'bonucakes6@gmail.com';
+const INFO_EMAIL = 'info@bonucakes.com';
 
 // Order item interface for request
 interface OrderItemRequest {
@@ -289,12 +290,34 @@ export async function POST(request: NextRequest) {
       year: 'numeric',
     });
 
-    // NOTE: Emails are sent ONLY after payment confirmation (via webhook)
-    // No emails sent here to avoid sending before payment is confirmed
-    console.log(`[bonucakes] Order ${orderCode} created, waiting for payment confirmation`);
+    // Send emails immediately for bank transfer orders
+    const submissionDateStr = submissionDate; // alias kept for clarity
+    try {
+      const resend = getResendClient();
+      const adminHtml = generateAdminEmail(emailData, submissionDateStr);
+      const customerHtml = generateCustomerEmail(emailData, BANK_DETAILS);
 
-    // TODO: If needed, we can send admin notification here, but NOT customer confirmation
-    // Customer confirmation email should only be sent after payment succeeds
+      // Send admin notification to both info@ and the backup admin email
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: [INFO_EMAIL, ADMIN_EMAIL],
+        subject: `New Order #${orderCode} - ${customerName}`,
+        html: adminHtml,
+      });
+
+      // Send customer confirmation
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: customerEmail,
+        subject: `Order Received #${orderCode} - Bonu F&B`,
+        html: customerHtml,
+      });
+
+      console.log(`[bonucakes] Order ${orderCode} emails sent to admin (${INFO_EMAIL}) and customer (${customerEmail})`);
+    } catch (emailError) {
+      console.error('[bonucakes] Failed to send order emails:', emailError);
+      // Don't fail the order if emails fail
+    }
 
     // Update or create customer record
     try {
