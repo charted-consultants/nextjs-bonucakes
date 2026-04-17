@@ -29,7 +29,7 @@ jobs:
           host: ${{ secrets.VPS_STAGING_HOST }}
           username: ${{ secrets.VPS_STAGING_USER }}
           key: ${{ secrets.VPS_STAGING_SSH_KEY }}
-          source: "nextjs/bonucakes-staging.tar.gz,nextjs/docker-compose.yml"
+          source: "nextjs/bonucakes-staging.tar.gz,nextjs/docker-compose.staging.yml"
           target: "/root/docker-images/bonucakes-staging/"
           strip_components: 1
 
@@ -42,9 +42,9 @@ jobs:
           script: |
             cd /root/docker-images/bonucakes-staging
             docker load < bonucakes-staging.tar.gz
-            docker compose down --remove-orphans 2>/dev/null || true
-            docker compose up -d
+            docker compose -f docker-compose.staging.yml --env-file .env down --remove-orphans 2>/dev/null || true
+            docker compose -f docker-compose.staging.yml --env-file .env up -d
             echo "Waiting for database..."
-            until docker compose exec -T db pg_isready -U bonucakes_user > /dev/null 2>&1; do sleep 2; done
-            docker compose exec -T app npx prisma migrate deploy
+            until docker compose -f docker-compose.staging.yml exec -T db pg_isready -U bonucakes_user > /dev/null 2>&1; do sleep 2; done
+            docker compose -f docker-compose.staging.yml exec -T app npx prisma migrate deploy
             docker ps --filter name=bonucakes --format 'table {{.Names}}\t{{.Status}}'
