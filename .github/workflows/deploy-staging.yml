@@ -44,4 +44,7 @@ jobs:
             docker load < bonucakes-staging.tar.gz
             docker compose down --remove-orphans 2>/dev/null || true
             docker compose up -d
+            echo "Waiting for database..."
+            until docker compose exec -T db pg_isready -U bonucakes_user > /dev/null 2>&1; do sleep 2; done
+            docker compose exec -T app npx prisma migrate deploy
             docker ps --filter name=bonucakes --format 'table {{.Names}}\t{{.Status}}'
