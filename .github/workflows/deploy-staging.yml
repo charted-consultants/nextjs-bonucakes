@@ -48,3 +48,5 @@ jobs:
             until docker compose -f docker-compose.staging.yml exec -T db pg_isready -U bonucakes_user > /dev/null 2>&1; do sleep 2; done
             docker compose -f docker-compose.staging.yml exec -T app npx prisma migrate deploy
             docker ps --filter name=bonucakes --format 'table {{.Names}}\t{{.Status}}'
+            rm -f *.tar.gz
+            docker image prune -f
