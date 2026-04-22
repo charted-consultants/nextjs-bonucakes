@@ -12,6 +12,7 @@
  * - localStorage persistence
  */
 
+import { useMemo } from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { useShallow } from 'zustand/react/shallow';
@@ -275,21 +276,21 @@ export const useCartTotals = () =>
     })
   );
 
-export const useCartPromotions = () =>
-  useCartStore(
-    useShallow((state) => {
-      const promotions: CartPromotion[] = [];
-      state.items.forEach((item) => {
-        const freeItems = Math.floor(item.quantity / 10);
-        if (freeItems > 0) {
-          promotions.push({
-            productId: item.productId,
-            productName: item.productName,
-            freeItems,
-            message: `Buy 10 get 1 free (actually ${item.quantity + freeItems} items)`,
-          });
-        }
-      });
-      return promotions;
-    })
-  );
+export const useCartPromotions = () => {
+  const items = useCartItems();
+  return useMemo(() => {
+    const promotions: CartPromotion[] = [];
+    items.forEach((item) => {
+      const freeItems = Math.floor(item.quantity / 10);
+      if (freeItems > 0) {
+        promotions.push({
+          productId: item.productId,
+          productName: item.productName,
+          freeItems,
+          message: `Buy 10 get 1 free (actually ${item.quantity + freeItems} items)`,
+        });
+      }
+    });
+    return promotions;
+  }, [items]);
+};
