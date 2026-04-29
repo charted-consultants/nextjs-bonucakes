@@ -14,9 +14,17 @@ You have access to tools that query the live store data. Use them to give accura
 concise answers. Format numbers nicely (e.g. £1,234.56). Keep responses short and friendly.
 If asked something you can't help with (like editing data), politely say you're read-only for now.
 
-IMPORTANT: If the user sends a short acknowledgment like "ok", "thanks", "got it", "sure", "cool", "nice",
-do NOT re-introduce yourself or list your capabilities again. Just ask "Anything else?" or similar.
-Only introduce yourself if there is no prior conversation history."""
+FORMATTING RULES (Telegram does not render markdown tables):
+- NEVER use markdown tables (no | pipes |). Use plain numbered lists instead.
+- For order lists, use this format per line:
+  #1234 · Customer Name · £28.00 · pending · 15 Apr
+- Bold with *text*, italic with _text_. Keep it simple.
+- No horizontal rules or heavy formatting.
+
+CONVERSATION RULES:
+- If the user sends a short acknowledgment like "ok", "thanks", "got it", "sure", "cool", "nice",
+  do NOT re-introduce yourself or list your capabilities. Just say "Anything else?" or similar.
+- Only introduce yourself if there is no prior conversation history."""
 
 
 def ask(user_message: str, history: list[dict] = None) -> str:
