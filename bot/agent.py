@@ -29,39 +29,60 @@ CONVERSATION RULES:
 - Only introduce yourself if there is no prior conversation history."""
 
 
-def ask(user_message: str, history: list[dict] = None) -> str:
-    """Run a single-turn agentic loop with optional conversation history."""
-    messages = list(history or []) + [{"role": "user", "content": user_message}]
+SONNET = "claude-sonnet-4-6"
+HAIKU = "claude-haiku-4-5-20251001"
 
-    for _ in range(5):  # max 5 tool-call rounds
+
+def ask(user_message: str, history: list[dict] = None) -> str:
+    """Agentic loop: Sonnet decides which tools to call, Haiku writes the final answer."""
+    messages = list(history or []) + [{"role": "user", "content": user_message}]
+    had_tool_calls = False
+
+    for _ in range(5):
         response = client.messages.create(
-            model="claude-opus-4-7",
+            model=SONNET,
             max_tokens=1024,
             system=SYSTEM_PROMPT,
             tools=TOOL_DEFINITIONS,
             messages=messages,
         )
 
-        if response.stop_reason == "end_turn":
+        if response.stop_reason == "tool_use":
+            had_tool_calls = True
+            tool_results = []
             for block in response.content:
+                if block.type == "tool_use":
+                    result = call_tool(block.name, block.input)
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": json.dumps(result),
+                    })
+            messages.append({"role": "assistant", "content": response.content})
+            messages.append({"role": "user", "content": tool_results})
+            continue
+
+        if response.stop_reason == "end_turn":
+            if not had_tool_calls:
+                # Pure conversation — Sonnet's answer is fine
+                for block in response.content:
+                    if hasattr(block, "text"):
+                        return block.text
+                return "Done."
+
+            # Tool calls were made — use Haiku to write the final answer
+            messages.append({"role": "assistant", "content": response.content})
+            final = client.messages.create(
+                model=HAIKU,
+                max_tokens=1024,
+                system=SYSTEM_PROMPT,
+                messages=messages,
+            )
+            for block in final.content:
                 if hasattr(block, "text"):
                     return block.text
             return "Done."
 
-        if response.stop_reason != "tool_use":
-            break
-
-        tool_results = []
-        for block in response.content:
-            if block.type == "tool_use":
-                result = call_tool(block.name, block.input)
-                tool_results.append({
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": json.dumps(result),
-                })
-
-        messages.append({"role": "assistant", "content": response.content})
-        messages.append({"role": "user", "content": tool_results})
+        break
 
     return "Sorry, I couldn't get that information right now."
