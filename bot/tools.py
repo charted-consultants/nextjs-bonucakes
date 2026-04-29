@@ -26,7 +26,7 @@ def get_orders_summary(period: str = "week") -> dict:
     return _get("/orders/summary", {"period": period})
 
 
-def get_orders(status: str = None, limit: int = 20, page: int = 1) -> dict:
+def get_orders(status: str = None, limit: int = 50, page: int = 1) -> dict:
     params = {"limit": limit, "page": page}
     if status:
         params["status"] = status
@@ -84,7 +84,11 @@ TOOL_DEFINITIONS = [
     },
     {
         "name": "get_orders",
-        "description": "List recent orders with optional status filter. Returns customer name, total, items, and status.",
+        "description": (
+            "List recent orders with optional status filter. Returns customer name, total, items, and status. "
+            "Default limit is 50. If get_orders_summary shows more orders than the limit, use page=2 etc to get the rest. "
+            "Always fetch enough to cover the full count shown in the summary."
+        ),
         "input_schema": {
             "type": "object",
             "properties": {
@@ -93,7 +97,7 @@ TOOL_DEFINITIONS = [
                     "enum": ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "refunded"],
                     "description": "Filter by order status.",
                 },
-                "limit": {"type": "integer", "description": "Number of orders to return (default 20, max 100)."},
+                "limit": {"type": "integer", "description": "Number of orders to return (default 50, max 100)."},
                 "page": {"type": "integer", "description": "Page number for pagination."},
             },
             "required": [],

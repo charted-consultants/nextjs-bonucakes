@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   const status = searchParams.get('status');
   const from = searchParams.get('from');
   const to = searchParams.get('to');
-  const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
+  const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100);
 
   const where: any = {};
   if (status) where.status = status;

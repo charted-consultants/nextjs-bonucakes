@@ -41,7 +41,7 @@ def ask(user_message: str, history: list[dict] = None) -> str:
     for _ in range(5):
         response = client.messages.create(
             model=SONNET,
-            max_tokens=1024,
+            max_tokens=4096,
             system=SYSTEM_PROMPT,
             tools=TOOL_DEFINITIONS,
             messages=messages,
@@ -74,7 +74,7 @@ def ask(user_message: str, history: list[dict] = None) -> str:
             messages.append({"role": "assistant", "content": response.content})
             final = client.messages.create(
                 model=HAIKU,
-                max_tokens=1024,
+                max_tokens=4096,
                 system=SYSTEM_PROMPT,
                 messages=messages,
             )
