@@ -24,3 +24,11 @@ services:
       - .env
     ports:
       - "0.0.0.0:${PORT:-3019}:3000"
+
+  bonucakes_admin_bot:
+    image: bonucakes_admin_bot:staging
+    restart: unless-stopped
+    depends_on:
+      - app
+    env_file:
+      - .env.bot

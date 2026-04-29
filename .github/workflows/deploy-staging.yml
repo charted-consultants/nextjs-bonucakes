@@ -18,18 +18,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Build Docker images
         run: |
           docker buildx build --platform linux/amd64 -t bonucakes:staging --load .
           docker save bonucakes:staging | gzip > bonucakes-staging.tar.gz
+          docker buildx build --platform linux/amd64 -t bonucakes_admin_bot:staging --load ../bot
+          docker save bonucakes_admin_bot:staging | gzip > bonucakes-admin-bot-staging.tar.gz
 
-      - name: Copy image to VPS
+      - name: Copy images to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_STAGING_HOST }}
           username: ${{ secrets.VPS_STAGING_USER }}
           key: ${{ secrets.VPS_STAGING_SSH_KEY }}
-          source: "nextjs/bonucakes-staging.tar.gz,nextjs/docker-compose.staging.yml"
+          source: "nextjs/bonucakes-staging.tar.gz,nextjs/bonucakes-admin-bot-staging.tar.gz,nextjs/docker-compose.staging.yml"
           target: "/root/docker-images/bonucakes-staging/"
           strip_components: 1
 
@@ -42,6 +44,7 @@ jobs:
           script: |
             cd /root/docker-images/bonucakes-staging
             docker load < bonucakes-staging.tar.gz
+            docker load < bonucakes-admin-bot-staging.tar.gz
             docker compose -f docker-compose.staging.yml --env-file .env down --remove-orphans 2>/dev/null || true
             docker compose -f docker-compose.staging.yml --env-file .env up -d
             echo "Waiting for database..."
@@ -49,4 +52,4 @@ jobs:
             docker compose -f docker-compose.staging.yml exec -T app npx prisma migrate deploy
             docker ps --filter name=bonucakes --format 'table {{.Names}}\t{{.Status}}'
             rm -f *.tar.gz
-            docker image prune -f
+            docker image prune -f || true
