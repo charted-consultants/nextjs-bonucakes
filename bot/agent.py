@@ -76,10 +76,9 @@ def ask(user_message: str, history: list[dict] = None) -> str:
                 return "Done."
 
             # Tool calls were made — messages now ends with tool results.
-            # Ask Haiku to synthesise the final answer from those results.
-            # (tools passed so the API accepts tool_use/tool_result blocks in history)
+            # Use Sonnet (not Haiku) for the final answer — Haiku misreads Vietnamese diacritics.
             final = client.messages.create(
-                model=HAIKU,
+                model=SONNET,
                 max_tokens=4096,
                 system=SYSTEM_PROMPT,
                 tools=TOOL_DEFINITIONS,
