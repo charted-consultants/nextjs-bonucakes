@@ -34,15 +34,16 @@ export async function GET(request: NextRequest) {
       id: true,
       orderNumber: true,
       status: true,
-      totalAmount: true,
+      total: true,
       currency: true,
+      customerName: true,
+      customerEmail: true,
       createdAt: true,
-      customer: { select: { firstName: true, lastName: true, email: true } },
-      orderItems: {
+      items: {
         select: {
           quantity: true,
-          unitPrice: true,
-          product: { select: { nameEn: true, nameVi: true } },
+          price: true,
+          productName: true,
         },
       },
     },

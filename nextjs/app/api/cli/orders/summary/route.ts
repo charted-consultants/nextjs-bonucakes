@@ -37,14 +37,14 @@ export async function GET(request: NextRequest) {
     }),
     prisma.order.aggregate({
       where,
-      _sum: { totalAmount: true },
+      _sum: { total: true },
     }),
   ]);
 
   return NextResponse.json({
     period,
     totalOrders: total,
-    totalRevenue: revenue._sum.totalAmount ?? 0,
+    totalRevenue: revenue._sum.total ?? 0,
     byStatus: Object.fromEntries(byStatus.map((s) => [s.status, s._count.id])),
   });
 }
