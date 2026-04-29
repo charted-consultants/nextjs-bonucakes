@@ -317,7 +317,7 @@ export default function ProductForm({ initialData, productId, onSubmit, isLoadin
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Price (VND) *
+              Price (£) *
             </label>
             <input
               {...register('price', { required: 'Price is required' })}
@@ -331,7 +331,7 @@ export default function ProductForm({ initialData, productId, onSubmit, isLoadin
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Compare at Price (VND)
+              Compare at Price (£)
             </label>
             <input
               {...register('compareAtPrice')}
@@ -344,7 +344,7 @@ export default function ProductForm({ initialData, productId, onSubmit, isLoadin
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Cost (VND)
+              Cost (£)
             </label>
             <input
               {...register('cost')}
