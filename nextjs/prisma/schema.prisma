@@ -991,3 +991,18 @@ model EmailCampaignRecipient {
   @@index([clicked])
   @@map("email_campaign_recipients")
 }
+
+// ============================================================================
+// Telegram Bot
+// ============================================================================
+
+model BotMessage {
+  id             Int      @id @default(autoincrement())
+  telegramUserId BigInt   @map("telegram_user_id")
+  role           String   // "user" or "assistant"
+  content        String   @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([telegramUserId, createdAt])
+  @@map("bot_messages")
+}

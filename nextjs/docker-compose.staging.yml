@@ -29,6 +29,9 @@ services:
     image: bonucakes_admin_bot:staging
     restart: unless-stopped
     depends_on:
+      - db
       - app
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-bonucakes_user}:${POSTGRES_PASSWORD:-bonucakes2026_staging}@db:5432/${POSTGRES_DB:-bonucakes_staging}
     env_file:
       - .env.bot

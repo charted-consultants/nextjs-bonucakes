@@ -15,9 +15,9 @@ concise answers. Format numbers nicely (e.g. £1,234.56). Keep responses short a
 If asked something you can't help with (like editing data), politely say you're read-only for now."""
 
 
-def ask(user_message: str) -> str:
-    """Run a single-turn agentic loop: user message → Claude → tool calls → final answer."""
-    messages = [{"role": "user", "content": user_message}]
+def ask(user_message: str, history: list[dict] = None) -> str:
+    """Run a single-turn agentic loop with optional conversation history."""
+    messages = list(history or []) + [{"role": "user", "content": user_message}]
 
     for _ in range(5):  # max 5 tool-call rounds
         response = client.messages.create(
@@ -29,7 +29,6 @@ def ask(user_message: str) -> str:
         )
 
         if response.stop_reason == "end_turn":
-            # Extract text from the final response
             for block in response.content:
                 if hasattr(block, "text"):
                     return block.text
@@ -38,7 +37,6 @@ def ask(user_message: str) -> str:
         if response.stop_reason != "tool_use":
             break
 
-        # Process all tool calls in this response
         tool_results = []
         for block in response.content:
             if block.type == "tool_use":
@@ -49,7 +47,6 @@ def ask(user_message: str) -> str:
                     "content": json.dumps(result),
                 })
 
-        # Append assistant response + tool results and continue
         messages.append({"role": "assistant", "content": response.content})
         messages.append({"role": "user", "content": tool_results})
 
