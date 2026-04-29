@@ -5,7 +5,7 @@ import ProductCard, { Product } from '@/components/ProductCard';
 import ProductFilters, { AvailabilityFilter, CategoryFilter } from '@/components/ProductFilters';
 import { useLanguage } from '@/components/LanguageToggle';
 
-// Mock product data (based on products.json)
+// Mock product data (based on products.json) - updated 2026-04-29
 const mockProducts: Product[] = [
   {
     id: 'banh-mi-saigon',
