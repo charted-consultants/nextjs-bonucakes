@@ -64,18 +64,20 @@ def ask(user_message: str, history: list[dict] = None) -> str:
 
         if response.stop_reason == "end_turn":
             if not had_tool_calls:
-                # Pure conversation — Sonnet's answer is fine
+                # Pure conversation — return Sonnet's answer directly
                 for block in response.content:
                     if hasattr(block, "text"):
                         return block.text
                 return "Done."
 
-            # Tool calls were made — use Haiku to write the final answer
-            messages.append({"role": "assistant", "content": response.content})
+            # Tool calls were made — messages now ends with tool results.
+            # Ask Haiku to synthesise the final answer from those results.
+            # (tools passed so the API accepts tool_use/tool_result blocks in history)
             final = client.messages.create(
                 model=HAIKU,
                 max_tokens=4096,
                 system=SYSTEM_PROMPT,
+                tools=TOOL_DEFINITIONS,
                 messages=messages,
             )
             for block in final.content:
