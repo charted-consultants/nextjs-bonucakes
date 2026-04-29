@@ -108,8 +108,9 @@ export async function DELETE(
   try {
     const id = parseInt(params.id)
 
-    await prisma.event.delete({
+    await prisma.event.update({
       where: { id },
+      data: { deletedAt: new Date() },
     })
 
     return NextResponse.json({ message: "Event deleted successfully" })

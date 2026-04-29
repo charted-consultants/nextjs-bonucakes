@@ -108,7 +108,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       return NextResponse.json({ error: 'FAQ not found' }, { status: 404 });
     }
 
-    await prisma.faq.delete({ where: { id } });
+    await prisma.faq.update({ where: { id }, data: { deletedAt: new Date() } });
 
     return NextResponse.json({ message: 'FAQ deleted successfully' });
   } catch (error) {

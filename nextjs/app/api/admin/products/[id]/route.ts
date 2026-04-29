@@ -303,44 +303,17 @@ export async function DELETE(
       return notFoundResponse('Product');
     }
 
-    const { searchParams } = new URL(request.url);
-    const hardDelete = searchParams.get('hard') === 'true';
+    // Soft delete
+    await prisma.product.update({
+      where: { id },
+      data: { available: false, deletedAt: new Date() },
+    });
 
-    if (hardDelete) {
-      // Check if product has any orders
-      const orderCount = await prisma.orderItem.count({
-        where: { productId: id },
-      });
-
-      if (orderCount > 0) {
-        return badRequestResponse(
-          'Cannot permanently delete product with existing orders. Use soft delete instead.'
-        );
-      }
-
-      // Hard delete - permanently remove product and related data
-      await prisma.product.delete({
-        where: { id },
-      });
-
-      return successResponse(
-        { id },
-        200,
-        'Product permanently deleted successfully'
-      );
-    } else {
-      // Soft delete - set available to false
-      await prisma.product.update({
-        where: { id },
-        data: { available: false },
-      });
-
-      return successResponse(
-        { id, available: false },
-        200,
-        'Product deactivated successfully'
-      );
-    }
+    return successResponse(
+      { id, available: false },
+      200,
+      'Product deactivated successfully'
+    );
   } catch (error) {
     return handleApiError(error, 'delete product');
   }

@@ -213,9 +213,9 @@ export async function DELETE(
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    // Delete the post
-    await prisma.blogPost.delete({
+    await prisma.blogPost.update({
       where: { id: postId },
+      data: { deletedAt: new Date() },
     });
 
     return NextResponse.json({

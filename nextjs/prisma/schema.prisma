@@ -171,6 +171,7 @@ model Product {
   // Timestamps
   createdAt             DateTime              @default(now()) @map("created_at")
   updatedAt             DateTime              @updatedAt @map("updated_at")
+  deletedAt             DateTime?             @map("deleted_at")
   // Relations
   reviews               Review[]
   orderItems            OrderItem[]
@@ -184,6 +185,7 @@ model Product {
   @@index([available])
   @@index([featured])
   @@index([stockStatus])
+  @@index([deletedAt])
   @@map("products")
 }
 
@@ -300,6 +302,7 @@ model Course {
   // Timestamps
   createdAt          DateTime    @default(now()) @map("created_at")
   updatedAt          DateTime    @updatedAt @map("updated_at")
+  deletedAt          DateTime?   @map("deleted_at")
   // Relations
   reviews            Review[]
   courseFaqs         CourseFaq[]
@@ -309,6 +312,7 @@ model Course {
   @@index([level])
   @@index([published])
   @@index([featured])
+  @@index([deletedAt])
   @@map("courses")
 }
 
@@ -347,15 +351,17 @@ model Review {
   verified   Boolean  @default(false)
   approved   Boolean  @default(false)
   helpful    Int      @default(0)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  product    Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  course     Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  product    Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  course     Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([productId])
   @@index([courseId])
   @@index([approved])
   @@index([rating])
+  @@index([deletedAt])
   @@map("reviews")
 }
 
@@ -393,12 +399,14 @@ model BlogPost {
   // Timestamps
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
 
   @@index([slug])
   @@index([published])
   @@index([featured])
   @@index([publishedAt])
   @@index([category])
+  @@index([deletedAt])
   @@map("blog_posts")
 }
 
@@ -413,13 +421,15 @@ model Faq {
   questionEn   String   @map("question_en")
   answerVi     String   @db.Text @map("answer_vi")
   answerEn     String   @db.Text @map("answer_en")
-  displayOrder Int      @default(0) @map("display_order")
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  displayOrder Int       @default(0) @map("display_order")
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
 
   @@index([category])
   @@index([active])
+  @@index([deletedAt])
   @@map("faqs")
 }
 
@@ -464,6 +474,7 @@ model Order {
   updatedAt             DateTime        @updatedAt @map("updated_at")
   paidAt                DateTime?       @map("paid_at")
   cancelledAt           DateTime?       @map("cancelled_at")
+  deletedAt             DateTime?       @map("deleted_at")
   // Relations
   user                  User?           @relation(fields: [userId], references: [id])
   items                 OrderItem[]
@@ -475,6 +486,7 @@ model Order {
   @@index([status])
   @@index([paymentStatus])
   @@index([createdAt])
+  @@index([deletedAt])
   @@map("orders")
 }
 
@@ -531,6 +543,7 @@ model Discount {
   minPurchaseAmount    Decimal?                      @db.Decimal(10, 2) @map("min_purchase_amount")
   createdAt            DateTime                      @default(now()) @map("created_at")
   updatedAt            DateTime                      @updatedAt @map("updated_at")
+  deletedAt            DateTime?                     @map("deleted_at")
   applications         DiscountApplication[]
   auditLogs            DiscountAuditLog[]
   codes                DiscountCode[]
@@ -540,6 +553,7 @@ model Discount {
 
   @@index([status])
   @@index([startDate, endDate])
+  @@index([deletedAt])
   @@map("discounts")
 }
 
@@ -644,8 +658,9 @@ model Media {
   fileSize     Int?     @map("file_size")
   altText      String?  @map("alt_text")
   caption      String?
-  storageType  String   @default("local") @map("storage_type")
-  uploadedAt   DateTime @default(now()) @map("uploaded_at")
+  storageType  String    @default("local") @map("storage_type")
+  uploadedAt   DateTime  @default(now()) @map("uploaded_at")
+  deletedAt    DateTime? @map("deleted_at")
 
   @@map("media")
 }
@@ -658,10 +673,11 @@ model Testimonial {
   contentVi String   @db.Text @map("content_vi")
   contentEn String   @db.Text @map("content_en")
   rating    Int      @default(5)
-  featured  Boolean  @default(false)
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  featured  Boolean   @default(false)
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
   @@map("testimonials")
 }
@@ -769,6 +785,7 @@ model Event {
   registrationUrl    String?              @map("registration_url")
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
+  deletedAt          DateTime?            @map("deleted_at")
   // Relations
   eventRegistrations EventRegistration[]
 
@@ -776,6 +793,7 @@ model Event {
   @@index([published])
   @@index([featured])
   @@index([slug])
+  @@index([deletedAt])
   @@map("events")
 }
 
@@ -804,12 +822,14 @@ model ContactSubmission {
   phone     String?
   subject   String?
   message   String   @db.Text
-  status    String   @default("new") // new, in_progress, resolved
+  status      String    @default("new") // new, in_progress, resolved
   respondedAt DateTime? @map("responded_at")
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  deletedAt   DateTime? @map("deleted_at")
 
   @@index([status])
   @@index([createdAt])
+  @@index([deletedAt])
   @@map("contact_submissions")
 }
 
@@ -837,6 +857,7 @@ model Customer {
   // Timestamps
   createdAt               DateTime                  @default(now()) @map("created_at")
   updatedAt               DateTime                  @updatedAt @map("updated_at")
+  deletedAt               DateTime?                 @map("deleted_at")
   // Relations
   workshopRegistrations   WorkshopRegistration[]
   eventRegistrations      EventRegistration[]
@@ -845,6 +866,7 @@ model Customer {
   @@index([email])
   @@index([marketingConsent])
   @@index([segment])
+  @@index([deletedAt])
   @@map("customers")
 }
 
@@ -859,15 +881,17 @@ model EmailTemplate {
   variables   String[] @default([]) // ["name", "firstName", "email", "customField"]
   // Metadata
   category    String?  // marketing, transactional, notification
-  active      Boolean  @default(true)
-  isDefault   Boolean  @default(false) @map("is_default")
+  active      Boolean   @default(true)
+  isDefault   Boolean   @default(false) @map("is_default")
   // Timestamps
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
 
   @@index([name])
   @@index([active])
   @@index([category])
+  @@index([deletedAt])
   @@map("email_templates")
 }
 
@@ -898,12 +922,14 @@ model WorkshopRegistration {
   attendanceDate      DateTime? @map("attendance_date")
   // Timestamps
   createdAt           DateTime  @default(now()) @map("created_at")
+  deletedAt           DateTime? @map("deleted_at")
   customer            Customer? @relation(fields: [customerId], references: [id])
 
   @@index([customerId])
   @@index([workshopName])
   @@index([workshopDate])
   @@index([attended])
+  @@index([deletedAt])
   @@map("workshop_registrations")
 }
 

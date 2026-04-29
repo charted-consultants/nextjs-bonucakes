@@ -109,7 +109,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       return NextResponse.json({ error: 'Testimonial not found' }, { status: 404 });
     }
 
-    await prisma.testimonial.delete({ where: { id } });
+    await prisma.testimonial.update({ where: { id }, data: { deletedAt: new Date() } });
 
     return NextResponse.json({ message: 'Testimonial deleted successfully' });
   } catch (error) {
