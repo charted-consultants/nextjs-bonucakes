@@ -13,6 +13,20 @@ services:
     networks:
       - bonucakes_network
 
+  bonucakes_admin_bot:
+    image: bonucakes_admin_bot:latest
+    container_name: bonucakes_admin_bot
+    restart: unless-stopped
+    depends_on:
+      - db
+      - app
+    environment:
+      DATABASE_URL: postgresql://bonucakes_user:${DB_PASSWORD}@db:5432/bonucakes_db
+    env_file:
+      - .env.bot
+    networks:
+      - bonucakes_network
+
   db:
     image: postgres:14
     container_name: bonucakes_postgres
