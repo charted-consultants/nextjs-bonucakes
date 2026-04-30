@@ -192,8 +192,9 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    await prisma.customer.delete({
-      where: { id: parseInt(id) }
+    await prisma.customer.update({
+      where: { id: parseInt(id) },
+      data: { deletedAt: new Date() },
     })
 
     return NextResponse.json({ success: true })

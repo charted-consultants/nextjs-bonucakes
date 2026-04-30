@@ -168,8 +168,9 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    await prisma.emailTemplate.delete({
-      where: { id: parseInt(id) }
+    await prisma.emailTemplate.update({
+      where: { id: parseInt(id) },
+      data: { deletedAt: new Date() },
     })
 
     return NextResponse.json({ success: true })

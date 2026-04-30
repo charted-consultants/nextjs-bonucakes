@@ -132,8 +132,9 @@ export async function DELETE(
       );
     }
 
-    await prisma.workshopRegistration.delete({
+    await prisma.workshopRegistration.update({
       where: { id },
+      data: { deletedAt: new Date() },
     });
 
     return NextResponse.json({ message: 'Registration deleted successfully' });

@@ -61,8 +61,9 @@ export async function DELETE(
   try {
     const id = parseInt(params.id)
 
-    await prisma.review.delete({
+    await prisma.review.update({
       where: { id },
+      data: { deletedAt: new Date() },
     })
 
     return NextResponse.json({ message: "Review deleted successfully" })

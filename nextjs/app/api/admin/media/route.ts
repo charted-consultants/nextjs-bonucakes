@@ -125,9 +125,9 @@ export async function DELETE(request: NextRequest) {
       }
     }
 
-    // Delete from database
-    await prisma.media.delete({
+    await prisma.media.update({
       where: { id },
+      data: { deletedAt: new Date() },
     });
 
     return NextResponse.json({

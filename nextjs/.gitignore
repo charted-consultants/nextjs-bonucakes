@@ -37,5 +37,5 @@ yarn-error.log*
 next-env.d.ts
 
 # prisma
-/prisma/migrations/
+# migrations must be committed so prisma migrate deploy works on the server
 STRIPE_PROD_KEYS.txt
