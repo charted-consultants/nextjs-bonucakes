@@ -98,6 +98,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           unit: product.price.unit,
         },
         images: product.images.length > 0 ? [{ url: product.images[0], alt: product.name.en }] : undefined,
+        hasPromo: !!(product.promotion),
       }, 1);
 
       // Show success state

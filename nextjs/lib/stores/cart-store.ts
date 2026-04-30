@@ -84,6 +84,7 @@ export const useCartStore = create<CartStore>()(
                 product.price.unit?.vi ||
                 get().parseDisplayUnit(product.price.displayPriceVi || product.price.displayPrice || ''),
               image: product.images && product.images.length > 0 ? product.images[0] : null,
+              hasPromo: product.hasPromo ?? false,
             };
 
             return {
@@ -175,6 +176,7 @@ export const useCartStore = create<CartStore>()(
         const promotions: CartPromotion[] = [];
 
         state.items.forEach((item) => {
+          if (!item.hasPromo) return;
           const freeItems = Math.floor(item.quantity / 10);
           if (freeItems > 0) {
             promotions.push({
@@ -281,6 +283,7 @@ export const useCartPromotions = () => {
   return useMemo(() => {
     const promotions: CartPromotion[] = [];
     items.forEach((item) => {
+      if (!item.hasPromo) return;
       const freeItems = Math.floor(item.quantity / 10);
       if (freeItems > 0) {
         promotions.push({

@@ -34,6 +34,7 @@ export interface CartItem {
   unitEn: string;
   unitVi: string;
   image: CartItemImage | null;
+  hasPromo?: boolean;
 }
 
 export interface CartPromotion {
@@ -87,6 +88,7 @@ export interface AddToCartProduct {
   };
   price: ProductPrice;
   images?: CartItemImage[];
+  hasPromo?: boolean;
 }
 
 export interface CartAPIItem {

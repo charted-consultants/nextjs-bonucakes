@@ -141,6 +141,7 @@ export default function ProductDetailPage() {
         : product.imageSrc
         ? [{ url: product.imageSrc, alt: product.imageAlt || product.nameEn }]
         : undefined,
+      hasPromo: !!(product.promoTitle),
     }, quantity);
 
     // Show success message or redirect to cart

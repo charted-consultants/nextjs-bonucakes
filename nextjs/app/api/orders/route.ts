@@ -179,9 +179,14 @@ export async function POST(request: NextRequest) {
     // Process items with free item calculations (async to handle variant lookups)
     const processedItems: EmailOrderItem[] = await Promise.all(
       items.map(async (item) => {
-        const freeItems = calculateFreeItems(item.quantity);
-        const unitPrice = item.unitPrice || 0;
         const productId = await extractProductId(item.productId);
+        const product = productId ? await prisma.product.findUnique({
+          where: { id: productId },
+          select: { promoTitle: true },
+        }) : null;
+        const hasPromo = !!(product?.promoTitle);
+        const freeItems = hasPromo ? calculateFreeItems(item.quantity) : 0;
+        const unitPrice = item.unitPrice || 0;
         return {
           ...item,
           productId: productId || 0,
