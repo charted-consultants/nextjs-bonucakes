@@ -29,7 +29,7 @@ const orders = [
     paymentStatus: "pending",
     orderStatus: "pending",
     orderDate: new Date("2026-02-24T20:40:50Z"),
-    notes: "Thanh toán chuyển khoản HSBC - N M U NGUYEN (40-20-16, 22101505)"
+    notes: "Thanh toán chuyển khoản Tide - Bonu Cakes Ltd (04-06-05, 18828806)"
   },
   {
     orderNumber: "0970",

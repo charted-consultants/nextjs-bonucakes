@@ -205,19 +205,19 @@ function OrderSuccessContent() {
             <div className="space-y-4 text-muted">
               <div className="flex justify-between border-b border-secondary/30 pb-3">
                 <span className="font-semibold">{translations.bank[currentLang]}</span>
-                <span className="text-right">HSBC</span>
+                <span className="text-right">Tide (Business Account)</span>
               </div>
               <div className="flex justify-between border-b border-secondary/30 pb-3">
                 <span className="font-semibold">{translations.accountName[currentLang]}</span>
-                <span className="text-right">N M U NGUYEN</span>
+                <span className="text-right">Bonu Cakes Ltd</span>
               </div>
               <div className="flex justify-between border-b border-secondary/30 pb-3">
                 <span className="font-semibold">{translations.sortCode[currentLang]}</span>
-                <span className="text-right font-mono">40-20-16</span>
+                <span className="text-right font-mono">04-06-05</span>
               </div>
               <div className="flex justify-between border-b border-secondary/30 pb-3">
                 <span className="font-semibold">{translations.accountNumber[currentLang]}</span>
-                <span className="text-right font-mono">22101505</span>
+                <span className="text-right font-mono">18828806</span>
               </div>
               <div className="flex justify-between border-b border-secondary/30 pb-3">
                 <span className="font-semibold">{translations.transferNote[currentLang]}</span>

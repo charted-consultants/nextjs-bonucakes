@@ -25,10 +25,10 @@ function getResendClient() {
 
 // Bank details configuration
 const BANK_DETAILS: BankDetails = {
-  bankName: 'HSBC',
-  accountName: 'N M U NGUYEN',
-  sortCode: '40-20-16',
-  accountNumber: '22101505',
+  bankName: 'Tide (Business Account)',
+  accountName: 'Bonu Cakes Ltd',
+  sortCode: '04-06-05',
+  accountNumber: '18828806',
 };
 
 // Email configuration
