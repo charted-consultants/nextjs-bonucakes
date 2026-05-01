@@ -26,6 +26,7 @@ interface ProductData {
   images: string[];
   featured: boolean;
   available: boolean;
+  promoTitle?: string;
   stock: number;
   stockStatus: string;
   ingredientsVi?: string;
