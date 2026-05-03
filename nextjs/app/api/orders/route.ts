@@ -13,6 +13,7 @@ import {
   type OrderItem as EmailOrderItem,
   type BankDetails,
 } from '@/lib/email-templates/order-emails';
+import { getOrderTemplate, renderTemplate } from '@/lib/email-templates/render-template';
 
 // Initialize Resend
 function getResendClient() {
@@ -281,7 +282,7 @@ export async function POST(request: NextRequest) {
       customerName,
       customerEmail,
       customerPhone,
-      deliveryAddress,
+      deliveryAddress: [deliveryAddress, body.deliveryCity, body.deliveryPostcode].filter(Boolean).join(', '),
       deliveryDate: body.deliveryDate,
       specialNotes: body.specialNotes,
       paymentMethod: body.paymentMethod || 'bank_transfer',
@@ -296,25 +297,112 @@ export async function POST(request: NextRequest) {
     });
 
     // Send emails immediately for bank transfer orders
-    const submissionDateStr = submissionDate; // alias kept for clarity
+    const submissionDateStr = submissionDate;
     try {
       const resend = getResendClient();
-      const adminHtml = generateAdminEmail(emailData, submissionDateStr);
-      const customerHtml = generateCustomerEmail(emailData, BANK_DETAILS);
 
-      // Send admin notification to both info@ and the backup admin email
+      // Build shared order items HTML
+      const orderItemsHtml = emailData.items.map(item => {
+        const uPrice = Number(item.unitPrice) || 0;
+        const lineTotal = uPrice * item.quantity;
+        const unitLabel = item.unitVi || item.unit || '';
+        const priceStr = emailData.pricing.currency === 'GBP'
+          ? `£${uPrice.toFixed(2)}`
+          : `${uPrice.toLocaleString('vi-VN')}đ`;
+        const lineTotalStr = emailData.pricing.currency === 'GBP'
+          ? `£${lineTotal.toFixed(2)}`
+          : `${lineTotal.toLocaleString('vi-VN')}đ`;
+        return `<div style="background:#f8faf9;padding:12px;border:2px solid #fcc56c;border-radius:4px;margin:16px 0;">
+          <p style="margin:0 0 6px 0;font-size:1.1em;"><strong>${item.quantity}x ${item.productName}</strong></p>
+          ${uPrice > 0 ? `<p style="margin:0 0 6px 0;color:#4a5c52;">${priceStr}${unitLabel ? ' / ' + unitLabel : ''} × ${item.quantity} = <strong>${lineTotalStr}</strong></p>` : ''}
+          ${item.freeItems && item.freeItems > 0 ? `<p style="margin:0;color:#083121;font-weight:bold;">Mua 10 tặng 1 (thực tế ${item.actualQuantity} ổ)</p>` : ''}
+        </div>`;
+      }).join('');
+
+      const fmt = (n: number) => emailData.pricing.currency === 'GBP' ? `£${n.toFixed(2)}` : `${n.toLocaleString('vi-VN')}đ`;
+
+      // Bank transfer payment section HTML
+      const paymentSectionHtml = `
+        <h2 style="color:#083121;margin-top:30px;">THANH TOAN</h2>
+        <p>Vui long chuyen khoan theo thong tin duoi day:</p>
+        <div style="background:#f8faf9;padding:12px;border:2px solid #fcc56c;border-radius:4px;margin:16px 0;">
+          <p style="margin:0 0 8px 0;"><strong>Ngan hang:</strong> ${BANK_DETAILS.bankName}</p>
+          <p style="margin:0 0 8px 0;"><strong>Ten tai khoan:</strong> ${BANK_DETAILS.accountName}</p>
+          <p style="margin:0 0 8px 0;"><strong>Sort Code:</strong> ${BANK_DETAILS.sortCode}</p>
+          <p style="margin:0 0 8px 0;"><strong>So tai khoan:</strong> ${BANK_DETAILS.accountNumber}</p>
+          <p style="margin:0;padding-top:10px;border-top:1px solid #fcc56c;"><strong>Noi dung chuyen khoan:</strong> <span style="color:#083121;font-size:1.1em;">#${orderCode}</span></p>
+        </div>
+        <div style="background:#FFF3E0;padding:12px;border-left:4px solid #F57C00;margin:16px 0;border-radius:4px;">
+          <p style="margin:0;color:#F57C00;font-weight:bold;">DON HANG DANG CHO THANH TOAN</p>
+          <p style="margin:8px 0 0 0;color:#4a5c52;">Don hang se duoc xac nhan sau khi chung toi nhan duoc thanh toan.</p>
+        </div>`;
+
+      const commonVars = {
+        orderCode,
+        customerName,
+        orderItemsHtml,
+        subtotal: fmt(emailData.pricing.subtotal),
+        shippingFee: fmt(emailData.pricing.shippingFee),
+        shippingLabel: emailData.pricing.shippingLabel,
+        total: fmt(emailData.pricing.total),
+        deliveryDate: emailData.deliveryDate
+          ? `<p style="margin:10px 0 0 0;"><strong>Ngay giao du kien:</strong> ${emailData.deliveryDate}</p>`
+          : '',
+      };
+
+      // --- Admin email ---
+      const adminTemplate = await getOrderTemplate('order-admin');
+      let adminHtml: string;
+      let adminSubject = `New Order #${orderCode} - ${customerName}`;
+      if (adminTemplate) {
+        adminHtml = renderTemplate(adminTemplate.html, {
+          ...commonVars,
+          customerEmail,
+          customerPhone: emailData.customerPhone,
+          deliveryAddress: emailData.deliveryAddress,
+          submissionDate: submissionDateStr,
+          specialNotes: emailData.specialNotes
+            ? `<h2 style="color:#083121;margin-top:30px;">GHI CHÚ</h2><p style="background:#f8faf9;padding:12px;border-radius:4px;color:#4a5c52;">${emailData.specialNotes}</p>`
+            : '',
+          paymentSectionHtml: '',
+        });
+        if (adminTemplate.subject) adminSubject = renderTemplate(adminTemplate.subject, { orderCode, customerName });
+      } else {
+        adminHtml = generateAdminEmail(emailData, submissionDateStr);
+      }
+
+      // --- Customer email ---
+      const customerTemplate = await getOrderTemplate('order-customer');
+      let customerHtml: string;
+      let customerSubject = `Order Received #${orderCode} - Bonu F&B`;
+      if (customerTemplate) {
+        customerHtml = renderTemplate(customerTemplate.html, {
+          ...commonVars,
+          emailTitle: 'Đơn hàng đã nhận',
+          emailIntro: 'Cảm ơn bạn đã đặt hàng tại Bonu Cakes! Chúng tôi đã nhận được đơn hàng và đang chờ thanh toán.',
+          paymentSectionHtml,
+          customerEmail: '',
+          customerPhone: '',
+          deliveryAddress: '',
+          submissionDate: '',
+          specialNotes: '',
+        });
+        if (customerTemplate.subject) customerSubject = renderTemplate(customerTemplate.subject, { orderCode });
+      } else {
+        customerHtml = generateCustomerEmail(emailData, BANK_DETAILS);
+      }
+
       await resend.emails.send({
         from: FROM_EMAIL,
         to: [INFO_EMAIL, ADMIN_EMAIL],
-        subject: `New Order #${orderCode} - ${customerName}`,
+        subject: adminSubject,
         html: adminHtml,
       });
 
-      // Send customer confirmation
       await resend.emails.send({
         from: FROM_EMAIL,
         to: customerEmail,
-        subject: `Order Received #${orderCode} - Bonu F&B`,
+        subject: customerSubject,
         html: customerHtml,
       });
 
