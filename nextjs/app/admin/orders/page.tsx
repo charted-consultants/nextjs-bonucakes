@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import AdminSidebar from "@/components/admin/AdminSidebar"
 import AdminAuth from "@/components/admin/AdminAuth"
-import { Package, Clock, CheckCircle, XCircle, Truck, Eye, CreditCard, Banknote, RotateCcw } from 'lucide-react'
+import { Package, Clock, CheckCircle, XCircle, Truck, Eye, CreditCard, Banknote, RotateCcw, ImageIcon } from 'lucide-react'
 
 interface Order {
   id: string
@@ -28,6 +28,8 @@ interface Order {
   shippingStatus: string | null
   trackingNumber?: string | null
   createdAt: string
+  paymentProofUrl?: string | null
+  paymentProofUploadedAt?: string | null
   items: Array<{
     productName: string
     quantity: number
@@ -69,6 +71,10 @@ export default function AdminOrdersPage() {
   const [orderToMarkPaid, setOrderToMarkPaid] = useState<string | null>(null)
   const [orderToConfirm, setOrderToConfirm] = useState<string | null>(null)
   const [orderToRefund, setOrderToRefund] = useState<string | null>(null)
+  const [orderToApprove, setOrderToApprove] = useState<string | null>(null)
+  const [approveNote, setApproveNote] = useState<string>('')
+  const [isApproving, setIsApproving] = useState(false)
+  const [proofImageUrl, setProofImageUrl] = useState<string | null>(null)
   const [editedOrderStatus, setEditedOrderStatus] = useState<string>('')
   const [editedShippingStatus, setEditedShippingStatus] = useState<string>('')
   const [editedTrackingNumber, setEditedTrackingNumber] = useState<string>('')
@@ -80,7 +86,7 @@ export default function AdminOrdersPage() {
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (selectedOrder || orderToMarkPaid || orderToConfirm || orderToRefund) {
+    if (selectedOrder || orderToMarkPaid || orderToConfirm || orderToRefund || orderToApprove || proofImageUrl) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'unset'
@@ -88,7 +94,7 @@ export default function AdminOrdersPage() {
     return () => {
       document.body.style.overflow = 'unset'
     }
-  }, [selectedOrder, orderToMarkPaid, orderToConfirm, orderToRefund])
+  }, [selectedOrder, orderToMarkPaid, orderToConfirm, orderToRefund, orderToApprove, proofImageUrl])
 
   const fetchOrders = async () => {
     try {
@@ -198,6 +204,28 @@ export default function AdminOrdersPage() {
     } catch (err: any) {
       alert(`Refund Error: ${err.message}`)
       setOrderToRefund(null)
+    }
+  }
+
+  const confirmApprovePayment = async () => {
+    if (!orderToApprove) return
+    setIsApproving(true)
+    try {
+      const res = await fetch(`/api/admin/orders/${orderToApprove}/confirm-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note: approveNote }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to confirm payment')
+      fetchOrders()
+      setOrderToApprove(null)
+      setApproveNote('')
+      alert('✓ Đã duyệt đơn và gửi email xác nhận cho khách!')
+    } catch (err: any) {
+      alert(`Lỗi: ${err.message}`)
+    } finally {
+      setIsApproving(false)
     }
   }
 
@@ -531,6 +559,42 @@ export default function AdminOrdersPage() {
                           </button>
                         )}
                       </div>
+
+                      {/* Payment Proof Image */}
+                      {selectedOrder.paymentProofUrl && (
+                        <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded">
+                          <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                            <ImageIcon className="w-3.5 h-3.5" /> Ảnh xác nhận chuyển khoản
+                          </p>
+                          <img
+                            src={selectedOrder.paymentProofUrl}
+                            alt="Payment proof"
+                            className="max-w-full max-h-48 object-contain rounded border border-green-300 cursor-pointer"
+                            onClick={() => setProofImageUrl(selectedOrder.paymentProofUrl!)}
+                          />
+                          {selectedOrder.paymentProofUploadedAt && (
+                            <p className="text-xs text-gray-500 mt-1">
+                              Uploaded: {new Date(selectedOrder.paymentProofUploadedAt).toLocaleString('en-GB')}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Duyệt đơn button */}
+                      {selectedOrder.paymentStatus === 'pending' && !selectedOrder.paymentMethod?.includes('stripe') && (
+                        <div className="mt-3">
+                          <button
+                            onClick={() => {
+                              setSelectedOrder(null)
+                              setOrderToApprove(selectedOrder.id)
+                            }}
+                            className="w-full px-4 py-2.5 bg-[#083121] text-white font-bold rounded hover:bg-[#083121]/90 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <CheckCircle className="w-4 h-4" />
+                            Duyệt đơn — Xác nhận đã nhận tiền
+                          </button>
+                        </div>
+                      )}
                     </div>
 
                     {/* Shipping Status */}
@@ -739,6 +803,71 @@ export default function AdminOrdersPage() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+        {/* Duyệt đơn Modal */}
+        {orderToApprove && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+            <div className="relative mx-auto p-6 border w-full max-w-md shadow-lg rounded-lg bg-white">
+              <div className="text-center">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                  <CheckCircle className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Duyệt đơn — Xác nhận đã nhận tiền
+                </h3>
+                <p className="text-sm text-gray-500 mb-4">
+                  Sau khi duyệt, hệ thống sẽ tự động gửi email xác nhận đến khách hàng.
+                </p>
+                <div className="mb-4 text-left">
+                  <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1 block">
+                    Ghi chú (tuỳ chọn)
+                  </label>
+                  <input
+                    type="text"
+                    value={approveNote}
+                    onChange={(e) => setApproveNote(e.target.value)}
+                    placeholder="VD: Đã nhận chuyển khoản lúc 14:30"
+                    className="w-full border-2 border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+                  />
+                </div>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => { setOrderToApprove(null); setApproveNote('') }}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 font-medium"
+                  >
+                    Huỷ
+                  </button>
+                  <button
+                    onClick={confirmApprovePayment}
+                    disabled={isApproving}
+                    className="px-6 py-2 bg-[#083121] text-white rounded-md hover:bg-[#083121]/90 font-bold disabled:opacity-50"
+                  >
+                    {isApproving ? 'Đang xử lý...' : 'Xác nhận duyệt đơn'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Proof Image Lightbox */}
+        {proofImageUrl && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4"
+            onClick={() => setProofImageUrl(null)}
+          >
+            <img
+              src={proofImageUrl}
+              alt="Payment proof"
+              className="max-w-full max-h-full object-contain rounded shadow-xl"
+            />
+            <button
+              className="absolute top-4 right-4 text-white text-2xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center"
+              onClick={() => setProofImageUrl(null)}
+            >
+              ×
+            </button>
           </div>
         )}
       </AdminSidebar>

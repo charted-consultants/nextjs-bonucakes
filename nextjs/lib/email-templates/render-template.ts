@@ -23,7 +23,7 @@ export function renderTemplate(html: string, vars: Record<string, string>): stri
   }, html);
 }
 
-export async function getOrderTemplate(name: 'order-customer' | 'order-admin'): Promise<{ subject: string; html: string } | null> {
+export async function getOrderTemplate(name: 'order-customer' | 'order-admin' | 'order-confirmed'): Promise<{ subject: string; html: string } | null> {
   try {
     const template = await prisma.emailTemplate.findFirst({
       where: { name, active: true, deletedAt: null },

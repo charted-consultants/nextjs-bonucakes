@@ -475,6 +475,9 @@ model Order {
   paidAt                DateTime?       @map("paid_at")
   cancelledAt           DateTime?       @map("cancelled_at")
   deletedAt             DateTime?       @map("deleted_at")
+  paymentProofUrl       String?         @map("payment_proof_url")
+  paymentProofUploadedAt DateTime?      @map("payment_proof_uploaded_at")
+  reminderSentAt        DateTime?       @map("reminder_sent_at")
   // Relations
   user                  User?           @relation(fields: [userId], references: [id])
   items                 OrderItem[]

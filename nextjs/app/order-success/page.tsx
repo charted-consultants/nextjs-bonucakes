@@ -8,8 +8,9 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Copy, Check } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageToggle';
+import QRCode from 'react-qr-code';
 
 function OrderSuccessContent() {
   const currentLang = useLanguage();
@@ -18,6 +19,11 @@ function OrderSuccessContent() {
   const [displayCode, setDisplayCode] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('bank_transfer');
   const [loading, setLoading] = useState(true);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofPreview, setProofPreview] = useState<string | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
+  const [uploadError, setUploadError] = useState<string>('');
 
   useEffect(() => {
     const id = searchParams.get('orderId');
@@ -63,6 +69,42 @@ function OrderSuccessContent() {
     return String(n).padStart(4, '0');
   };
 
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedField(field);
+      setTimeout(() => setCopiedField(null), 2000);
+    });
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setProofFile(file);
+    setProofPreview(URL.createObjectURL(file));
+    setUploadStatus('idle');
+    setUploadError('');
+  };
+
+  const handleProofUpload = async () => {
+    if (!proofFile || !orderId) return;
+    setUploadStatus('uploading');
+    setUploadError('');
+    try {
+      const formData = new FormData();
+      formData.append('file', proofFile);
+      const res = await fetch(`/api/orders/${orderId}/payment-proof`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
+      setUploadStatus('success');
+    } catch (err: any) {
+      setUploadStatus('error');
+      setUploadError(err.message || 'Upload thất bại, vui lòng thử lại.');
+    }
+  };
+
   const translations = {
     title: { vi: 'Đặt hàng thành công!', en: 'Order Placed Successfully!' },
     subtitle: {
@@ -91,10 +133,16 @@ function OrderSuccessContent() {
     accountNumber: { vi: 'Số tài khoản', en: 'Account Number' },
     transferNote: { vi: 'Nội dung chuyển khoản', en: 'Transfer Note' },
     amount: { vi: 'Số tiền', en: 'Amount' },
+    uploadTitle: { vi: 'Gửi ảnh xác nhận chuyển khoản', en: 'Upload Payment Confirmation' },
+    uploadDesc: { vi: 'Sau khi chuyển khoản thành công, vui lòng chụp màn hình và tải lên để Bếp xác nhận nhanh hơn.', en: 'After transferring, please upload a screenshot so we can confirm your payment faster.' },
+    uploadBtn: { vi: 'Chọn ảnh', en: 'Choose Image' },
+    uploadSend: { vi: 'Gửi ảnh cho Bếp', en: 'Send to Us' },
+    uploadSending: { vi: 'Đang gửi...', en: 'Sending...' },
+    uploadSuccess: { vi: 'Đã gửi! Bếp sẽ xác nhận đơn hàng sớm nhất.', en: 'Sent! We will confirm your order shortly.' },
     noteLabel: { vi: 'Lưu ý:', en: 'Note:' },
     noteText: {
-      vi: 'Vui lòng chuyển khoản đúng nội dung để Bếp xác nhận đơn hàng nhanh hơn.',
-      en: 'Please transfer with the correct note for faster order confirmation.',
+      vi: 'Quý khách vui lòng chuyển khoản đúng nội dung bằng cách copy từng mục thông tin vào nội dung chuyển khoản để Bếp nhà Bo xác nhận đơn hàng chính xác. Xin cám ơn.',
+      en: 'Please copy each field above and use it as your transfer reference so we can confirm your order accurately. Thank you.',
     },
     whatHappensNext: { vi: 'Tiếp theo sẽ như thế nào?', en: 'What Happens Next?' },
     step1Title: { vi: 'Thanh toán', en: 'Payment' },
@@ -198,39 +246,121 @@ function OrderSuccessContent() {
           {/* Payment Instructions (Bank Transfer) */}
           {paymentMethod === 'bank_transfer' && (
             <div className="bg-secondary/10 border-2 border-secondary/50 p-8 mb-8">
-            <h2 className="text-2xl font-bold text-primary mb-6 font-serif">
-              {translations.paymentInstructions[currentLang]}
-            </h2>
+              <h2 className="text-2xl font-bold text-primary mb-6 font-serif">
+                {translations.paymentInstructions[currentLang]}
+              </h2>
 
-            <div className="space-y-4 text-muted">
-              <div className="flex justify-between border-b border-secondary/30 pb-3">
-                <span className="font-semibold">{translations.bank[currentLang]}</span>
-                <span className="text-right">Tide (Business Account)</span>
-              </div>
-              <div className="flex justify-between border-b border-secondary/30 pb-3">
-                <span className="font-semibold">{translations.accountName[currentLang]}</span>
-                <span className="text-right">Bonu Cakes Ltd</span>
-              </div>
-              <div className="flex justify-between border-b border-secondary/30 pb-3">
-                <span className="font-semibold">{translations.sortCode[currentLang]}</span>
-                <span className="text-right font-mono">04-06-05</span>
-              </div>
-              <div className="flex justify-between border-b border-secondary/30 pb-3">
-                <span className="font-semibold">{translations.accountNumber[currentLang]}</span>
-                <span className="text-right font-mono">18828806</span>
-              </div>
-              <div className="flex justify-between border-b border-secondary/30 pb-3">
-                <span className="font-semibold">{translations.transferNote[currentLang]}</span>
-                <span className="text-right font-mono font-bold">{displayCode}</span>
-              </div>
-            </div>
+              <div className="flex flex-col md:flex-row gap-8">
+                {/* Bank details + copy buttons */}
+                <div className="flex-1 space-y-3 text-muted">
+                  {[
+                    { label: translations.bank[currentLang], value: 'Tide (Business Account)', field: 'bank' },
+                    { label: translations.accountName[currentLang], value: 'Bonu Cakes Ltd', field: 'accountName' },
+                    { label: translations.sortCode[currentLang], value: '04-06-05', field: 'sortCode', mono: true },
+                    { label: translations.accountNumber[currentLang], value: '18828806', field: 'accountNumber', mono: true },
+                    { label: translations.transferNote[currentLang], value: displayCode, field: 'transferNote', mono: true, bold: true },
+                  ].map(({ label, value, field, mono, bold }) => (
+                    <div key={field} className="flex items-center justify-between border-b border-secondary/30 pb-3 gap-2">
+                      <span className="font-semibold shrink-0">{label}</span>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-right${mono ? ' font-mono' : ''}${bold ? ' font-bold' : ''}`}>{value}</span>
+                        <button
+                          onClick={() => copyToClipboard(value, field)}
+                          title="Copy"
+                          className="p-1 rounded hover:bg-secondary/20 transition-colors text-primary/60 hover:text-primary"
+                        >
+                          {copiedField === field ? (
+                            <Check className="w-4 h-4 text-green-600" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-            <div className="mt-6 bg-white p-4 border border-secondary/30">
-              <p className="text-sm text-muted">
-                <strong>{translations.noteLabel[currentLang]}</strong>{' '}
-                {translations.noteText[currentLang]}
-              </p>
-            </div>
+                {/* QR code */}
+                <div className="flex flex-col items-center justify-start gap-3 shrink-0">
+                  <div className="bg-white p-3 border-2 border-secondary/50 rounded">
+                    <QRCode
+                      value={`Bank: Tide\nAccount: Bonu Cakes Ltd\nSort Code: 04-06-05\nAccount No: 18828806\nRef: ${displayCode}`}
+                      size={148}
+                    />
+                  </div>
+                  <p className="text-xs text-muted text-center max-w-[148px]">
+                    {currentLang === 'vi' ? 'Quét để xem thông tin ngân hàng' : 'Scan to view bank details'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 bg-white p-4 border border-secondary/30">
+                <p className="text-sm text-muted">
+                  <strong>{translations.noteLabel[currentLang]}</strong>{' '}
+                  {translations.noteText[currentLang]}
+                </p>
+              </div>
+
+              {/* Upload payment proof */}
+              {uploadStatus !== 'success' ? (
+                <div className="mt-6 border-2 border-dashed border-secondary/40 rounded p-5 bg-white">
+                  <h3 className="font-semibold text-primary mb-1">{translations.uploadTitle[currentLang]}</h3>
+                  <p className="text-sm text-muted mb-4">{translations.uploadDesc[currentLang]}</p>
+
+                  <div className="flex flex-col sm:flex-row gap-3 items-start">
+                    <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-secondary/20 hover:bg-secondary/30 text-primary font-semibold rounded transition-colors text-sm">
+                      <span>{translations.uploadBtn[currentLang]}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileSelect}
+                      />
+                    </label>
+
+                    {proofFile && (
+                      <button
+                        onClick={handleProofUpload}
+                        disabled={uploadStatus === 'uploading'}
+                        className="inline-flex items-center gap-2 px-5 py-2 bg-primary text-white font-semibold rounded hover:bg-primary/90 disabled:opacity-50 transition-colors text-sm"
+                      >
+                        {uploadStatus === 'uploading'
+                          ? translations.uploadSending[currentLang]
+                          : translations.uploadSend[currentLang]}
+                      </button>
+                    )}
+                  </div>
+
+                  {proofPreview && (
+                    <div className="mt-3">
+                      <img
+                        src={proofPreview}
+                        alt="Preview"
+                        className="max-h-40 rounded border border-secondary/30 object-contain"
+                      />
+                      <p className="text-xs text-muted mt-1">{proofFile?.name}</p>
+                    </div>
+                  )}
+
+                  {uploadStatus === 'error' && (
+                    <p className="mt-2 text-sm text-red-600">{uploadError}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-6 bg-green-50 border-2 border-green-400 rounded p-5 flex items-start gap-3">
+                  <Check className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-green-800">{translations.uploadSuccess[currentLang]}</p>
+                    {proofPreview && (
+                      <img
+                        src={proofPreview}
+                        alt="Uploaded proof"
+                        className="mt-2 max-h-32 rounded border border-green-300 object-contain"
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
