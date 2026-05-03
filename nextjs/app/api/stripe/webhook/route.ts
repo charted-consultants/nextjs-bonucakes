@@ -10,6 +10,7 @@ import {
   type OrderItem as EmailOrderItem,
   type BankDetails,
 } from '@/lib/email-templates/order-emails';
+import { getOrderTemplate, renderTemplate } from '@/lib/email-templates/render-template';
 
 // Email configuration
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bonu F&B <noreply@chartedconsultants.com>';
@@ -154,23 +155,90 @@ export async function POST(request: NextRequest) {
                 year: 'numeric',
               });
 
-              // Send admin notification
+              const fmt = (n: number) => emailData.pricing.currency === 'GBP' ? `£${n.toFixed(2)}` : `${n.toLocaleString('vi-VN')}đ`;
+
+              const orderItemsHtml = emailData.items.map(item => {
+                const uPrice = Number(item.unitPrice) || 0;
+                const lineTotal = uPrice * item.quantity;
+                const priceStr = fmt(uPrice);
+                const lineTotalStr = fmt(lineTotal);
+                return `<div style="background:#f8faf9;padding:12px;border:2px solid #fcc56c;border-radius:4px;margin:16px 0;">
+                  <p style="margin:0 0 6px 0;font-size:1.1em;"><strong>${item.quantity}x ${item.productName}</strong></p>
+                  ${uPrice > 0 ? `<p style="margin:0;color:#4a5c52;">${priceStr} × ${item.quantity} = <strong>${lineTotalStr}</strong></p>` : ''}
+                </div>`;
+              }).join('');
+
+              const stripePaymentHtml = `<div style="background:#E8F5E9;padding:15px;border-left:4px solid #4CAF50;margin:20px 0;border-radius:4px;">
+                <p style="margin:0 0 5px 0;color:#2E7D32;font-weight:bold;font-size:1.1em;">THANH TOAN THANH CONG</p>
+                <p style="margin:0;color:#4a5c52;">Thanh toan cua ban da duoc xu ly thanh cong. Don hang cua ban da duoc xac nhan va se som duoc chuan bi.</p>
+              </div>`;
+
+              const commonVars = {
+                orderCode: order.orderNumber,
+                customerName: order.customerName,
+                orderItemsHtml,
+                subtotal: fmt(emailData.pricing.subtotal),
+                shippingFee: fmt(emailData.pricing.shippingFee),
+                shippingLabel: emailData.pricing.shippingLabel,
+                total: fmt(emailData.pricing.total),
+                deliveryDate: '',
+              };
+
+              // --- Admin email ---
+              const adminTemplate = await getOrderTemplate('order-admin');
+              let adminHtml: string;
+              let adminSubject = `[Đơn hàng mới #${order.orderNumber}] ${order.items.length > 1 ? `${order.items.length} sản phẩm` : order.items[0]?.productName || 'Order'}`;
+              if (adminTemplate) {
+                adminHtml = renderTemplate(adminTemplate.html, {
+                  ...commonVars,
+                  customerEmail: order.customerEmail,
+                  customerPhone: order.customerPhone || '',
+                  deliveryAddress: typeof order.shippingAddress === 'string' ? order.shippingAddress : JSON.stringify(order.shippingAddress || ''),
+                  submissionDate,
+                  specialNotes: '',
+                  paymentSectionHtml: '',
+                });
+                if (adminTemplate.subject) adminSubject = renderTemplate(adminTemplate.subject, { orderCode: order.orderNumber, customerName: order.customerName });
+              } else {
+                adminHtml = generateAdminEmail(emailData, submissionDate);
+              }
+
+              // --- Customer email ---
+              const customerTemplate = await getOrderTemplate('order-customer');
+              let customerHtml: string;
+              let customerSubject = `Xác nhận đơn hàng #${order.orderNumber} - Bonu Cakes`;
+              if (customerTemplate) {
+                customerHtml = renderTemplate(customerTemplate.html, {
+                  ...commonVars,
+                  emailTitle: 'Xác nhận đơn hàng',
+                  emailIntro: 'Cảm ơn bạn đã đặt hàng tại Bonu Cakes! Đơn hàng của bạn đã được xác nhận.',
+                  paymentSectionHtml: stripePaymentHtml,
+                  customerEmail: '',
+                  customerPhone: '',
+                  deliveryAddress: '',
+                  submissionDate: '',
+                  specialNotes: '',
+                });
+                if (customerTemplate.subject) customerSubject = renderTemplate(customerTemplate.subject, { orderCode: order.orderNumber });
+              } else {
+                customerHtml = generateCustomerEmail(emailData);
+              }
+
               await resend.emails.send({
                 from: FROM_EMAIL,
                 to: [ADMIN_EMAIL],
                 replyTo: order.customerEmail,
-                subject: `[Đơn hàng mới #${order.orderNumber}] ${order.items.length > 1 ? `${order.items.length} sản phẩm` : order.items[0]?.productName || 'Order'}`,
-                html: generateAdminEmail(emailData, submissionDate),
+                subject: adminSubject,
+                html: adminHtml,
               });
 
               console.log(`[Webhook] Admin notification sent for order ${order.orderNumber}`);
 
-              // Send customer confirmation
               await resend.emails.send({
                 from: FROM_EMAIL,
                 to: [order.customerEmail, ADMIN_EMAIL],
-                subject: `Xác nhận đơn hàng #${order.orderNumber} - Bonu Cakes`,
-                html: generateCustomerEmail(emailData),
+                subject: customerSubject,
+                html: customerHtml,
               });
 
               console.log(`[Webhook] Customer confirmation sent for order ${order.orderNumber}`);
