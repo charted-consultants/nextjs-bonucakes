@@ -282,7 +282,7 @@ export async function POST(request: NextRequest) {
       customerName,
       customerEmail,
       customerPhone,
-      deliveryAddress,
+      deliveryAddress: [deliveryAddress, body.deliveryCity, body.deliveryPostcode].filter(Boolean).join(', '),
       deliveryDate: body.deliveryDate,
       specialNotes: body.specialNotes,
       paymentMethod: body.paymentMethod || 'bank_transfer',
