@@ -323,18 +323,18 @@ export async function POST(request: NextRequest) {
 
       // Bank transfer payment section HTML
       const paymentSectionHtml = `
-        <h2 style="color:#083121;margin-top:30px;">THANH TOAN</h2>
-        <p>Vui long chuyen khoan theo thong tin duoi day:</p>
+        <h2 style="color:#083121;margin-top:30px;">THANH TOÁN</h2>
+        <p>Vui lòng chuyển khoản theo thông tin dưới đây:</p>
         <div style="background:#f8faf9;padding:12px;border:2px solid #fcc56c;border-radius:4px;margin:16px 0;">
-          <p style="margin:0 0 8px 0;"><strong>Ngan hang:</strong> ${BANK_DETAILS.bankName}</p>
-          <p style="margin:0 0 8px 0;"><strong>Ten tai khoan:</strong> ${BANK_DETAILS.accountName}</p>
+          <p style="margin:0 0 8px 0;"><strong>Ngân hàng:</strong> ${BANK_DETAILS.bankName}</p>
+          <p style="margin:0 0 8px 0;"><strong>Tên tài khoản:</strong> ${BANK_DETAILS.accountName}</p>
           <p style="margin:0 0 8px 0;"><strong>Sort Code:</strong> ${BANK_DETAILS.sortCode}</p>
-          <p style="margin:0 0 8px 0;"><strong>So tai khoan:</strong> ${BANK_DETAILS.accountNumber}</p>
-          <p style="margin:0;padding-top:10px;border-top:1px solid #fcc56c;"><strong>Noi dung chuyen khoan:</strong> <span style="color:#083121;font-size:1.1em;">#${orderCode}</span></p>
+          <p style="margin:0 0 8px 0;"><strong>Số tài khoản:</strong> ${BANK_DETAILS.accountNumber}</p>
+          <p style="margin:0;padding-top:10px;border-top:1px solid #fcc56c;"><strong>Nội dung chuyển khoản:</strong> <span style="color:#083121;font-size:1.1em;font-weight:bold;">#${orderCode}</span></p>
         </div>
         <div style="background:#FFF3E0;padding:12px;border-left:4px solid #F57C00;margin:16px 0;border-radius:4px;">
-          <p style="margin:0;color:#F57C00;font-weight:bold;">DON HANG DANG CHO THANH TOAN</p>
-          <p style="margin:8px 0 0 0;color:#4a5c52;">Don hang se duoc xac nhan sau khi chung toi nhan duoc thanh toan.</p>
+          <p style="margin:0;color:#F57C00;font-weight:bold;">ĐƠN HÀNG ĐANG CHỜ THANH TOÁN</p>
+          <p style="margin:8px 0 0 0;color:#4a5c52;">Đơn hàng sẽ được xác nhận sau khi Bếp nhà Bo nhận được thanh toán.</p>
         </div>`;
 
       const commonVars = {
