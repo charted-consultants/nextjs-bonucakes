@@ -496,36 +496,6 @@ export default function ProductDetailPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-primary border-t border-secondary/20 py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <a href="/" className="text-2xl font-bold text-secondary font-serif">
-              Bonu F&B
-            </a>
-            <div className="flex gap-6 text-light/60 text-sm">
-              <a href="/story" className="hover:text-white transition-colors">
-                {currentLang === 'vi' ? 'Câu chuyện' : 'Story'}
-              </a>
-              <a href="/products" className="hover:text-white transition-colors">
-                {currentLang === 'vi' ? 'Sản phẩm' : 'Products'}
-              </a>
-              <a href="/culinary-consultation" className="hover:text-white transition-colors">
-                {currentLang === 'vi' ? 'Tư vấn' : 'Services'}
-              </a>
-              <a href="/blog" className="hover:text-white transition-colors">
-                Blog
-              </a>
-              <a href="/#contact" className="hover:text-white transition-colors">
-                {currentLang === 'vi' ? 'Liên hệ' : 'Contact'}
-              </a>
-            </div>
-          </div>
-          <div className="border-t border-light/10 mt-8 pt-8 text-center text-light/40 text-sm">
-            <p>&copy; 2026 Uyen Nguyen - F&B Business Design</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
