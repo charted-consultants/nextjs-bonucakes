@@ -310,29 +310,6 @@ export default function BlogPostPage() {
         <BlogContent post={post} />
       )}
 
-      {/* Footer */}
-      <footer className="bg-[#083121] border-t border-[#fcc56c]/20 py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div>
-              <span className="text-2xl font-bold text-[#fcc56c] font-serif">
-                Bonu F&B
-              </span>
-            </div>
-            <div className="flex gap-6 text-[#f8faf9]/60 text-sm">
-              <Link href="/" className="hover:text-white transition-colors">
-                {currentLang === 'vi' ? 'Trang chủ' : 'Home'}
-              </Link>
-              <Link href="/blog" className="hover:text-white transition-colors">
-                Blog
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-[#f8faf9]/10 mt-8 pt-8 text-center text-[#f8faf9]/40 text-sm">
-            <p>&copy; 2026 Uyen Nguyen - F&B Business Design</p>
-          </div>
-        </div>
-      </footer>
     </>
   );
 }
