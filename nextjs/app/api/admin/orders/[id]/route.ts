@@ -9,6 +9,75 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { Resend } from 'resend';
+
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bonu F&B <noreply@chartedconsultants.com>';
+
+function buildDpdTrackingUrl(trackingNumber: string): string {
+  return `https://track.dpd.co.uk/search?reference=${encodeURIComponent(trackingNumber)}`;
+}
+
+async function sendShippingEmail(order: any, trackingNumber: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  const resend = new Resend(apiKey);
+  const trackingUrl = buildDpdTrackingUrl(trackingNumber);
+
+  const itemsHtml = order.items
+    .map((i: any) => `<li style="margin:4px 0;">${i.quantity}x ${i.productName}</li>`)
+    .join('');
+
+  const html = `
+    <div style="font-family:sans-serif;max-width:650px;margin:0 auto;padding:8px;background:#f8faf9;">
+      <div style="background:linear-gradient(135deg,#083121,#4a5c52);color:#f8faf9;padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+        <h1 style="margin:0;font-size:2em;color:#fcc56c;">Bonu F&B</h1>
+        <p style="margin:10px 0 0 0;">Đơn hàng đang trên đường đến bạn!</p>
+      </div>
+      <div style="background:#fff;padding:20px;border:1px solid #fcc56c;border-top:none;border-radius:0 0 8px 8px;">
+        <p style="font-size:1.1em;">Xin chào <strong>${order.customerName}</strong>,</p>
+        <p>Đơn hàng của bạn đã được giao cho DPD và đang trên đường vận chuyển. Bạn có thể theo dõi hành trình giao hàng theo thông tin bên dưới.</p>
+
+        <div style="background:#f8faf9;padding:15px;border-left:4px solid #fcc56c;margin:20px 0;border-radius:4px;">
+          <p style="margin:0 0 5px 0;color:#083121;font-weight:bold;">MÃ ĐƠN HÀNG</p>
+          <p style="margin:0;font-size:1.3em;font-weight:bold;color:#083121;">#${order.orderNumber}</p>
+        </div>
+
+        <div style="background:#E8F5E9;padding:15px;border-left:4px solid #4CAF50;margin:20px 0;border-radius:4px;">
+          <p style="margin:0 0 8px 0;color:#2E7D32;font-weight:bold;font-size:1.1em;">MÃ VẬN ĐƠN DPD</p>
+          <p style="margin:0 0 12px 0;font-size:1.4em;font-weight:bold;color:#083121;letter-spacing:1px;">${trackingNumber}</p>
+          <a href="${trackingUrl}"
+             style="display:inline-block;background:#4CAF50;color:#fff;padding:12px 24px;text-decoration:none;font-weight:bold;border-radius:4px;font-size:1em;">
+            Theo dõi đơn hàng trên DPD
+          </a>
+        </div>
+
+        <h3 style="color:#083121;">Sản phẩm trong đơn:</h3>
+        <ul style="color:#4a5c52;padding-left:20px;margin:0 0 16px 0;">${itemsHtml}</ul>
+        <p style="color:#4a5c52;"><strong>Tổng tiền:</strong> £${Number(order.total).toFixed(2)}</p>
+
+        <div style="background:#E3F2FD;padding:15px;border-left:4px solid #2196F3;margin:20px 0;border-radius:4px;">
+          <p style="margin:0;color:#1565C0;font-weight:bold;">LƯU Ý QUAN TRỌNG</p>
+          <p style="margin:8px 0 0 0;color:#4a5c52;">Vui lòng cho vào tủ lạnh <strong>ngay khi nhận hàng</strong>. Nếu đơn hàng bị giao trễ hoặc có vấn đề, vui lòng liên hệ Bếp ngay nhé!</p>
+        </div>
+
+        <div style="margin-top:24px;padding-top:16px;border-top:1px solid #fcc56c;">
+          <p style="color:#4a5c52;margin:0;font-style:italic;">Trân trọng,</p>
+          <p style="color:#083121;margin:4px 0 0 0;font-weight:bold;">Uyen Nguyen — Bonu F&B</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to: [order.customerEmail],
+    subject: `Đơn hàng #${order.orderNumber} đang trên đường — Mã DPD: ${trackingNumber}`,
+    html,
+  });
+
+  console.log(`[shipping] Tracking email sent to ${order.customerEmail} — DPD ${trackingNumber}`);
+}
 
 // Validation schema for updating orders
 const orderUpdateSchema = z.object({
@@ -187,6 +256,27 @@ export async function PUT(
           createdBy: authCheck.session?.user?.email || 'admin',
         },
       });
+    }
+
+    // Send DPD tracking email when order is shipped with a tracking number
+    const trackingNum = validatedData.trackingNumber || existingOrder.trackingNumber;
+    const isNowShipped = validatedData.status === 'shipped' && existingOrder.status !== 'shipped';
+    const trackingJustAdded = validatedData.trackingNumber && !existingOrder.trackingNumber && existingOrder.status === 'shipped';
+
+    if ((isNowShipped || trackingJustAdded) && trackingNum) {
+      try {
+        await sendShippingEmail(order, trackingNum);
+        await prisma.orderHistory.create({
+          data: {
+            orderId: order.id,
+            status: 'shipped',
+            note: `Email tracking DPD đã gửi cho khách — mã: ${trackingNum}`,
+            createdBy: authCheck.session?.user?.email || 'admin',
+          },
+        });
+      } catch (emailErr) {
+        console.error('[shipping] Failed to send tracking email:', emailErr);
+      }
     }
 
     return NextResponse.json({

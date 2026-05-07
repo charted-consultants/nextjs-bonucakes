@@ -614,14 +614,30 @@ export default function AdminOrdersPage() {
                     {/* Tracking Number */}
                     {editedShippingStatus === 'shipped' && (
                       <div>
-                        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2 block">Tracking Number</label>
+                        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2 block">Tracking Number (DPD)</label>
                         <input
                           type="text"
                           value={editedTrackingNumber}
                           onChange={(e) => setEditedTrackingNumber(e.target.value)}
-                          placeholder="Enter tracking number"
+                          placeholder="Nhập mã vận đơn DPD"
                           className="w-full border-2 border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
                         />
+                        {editedTrackingNumber && (
+                          <a
+                            href={`https://track.dpd.co.uk/search?reference=${encodeURIComponent(editedTrackingNumber)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-1 inline-flex items-center gap-1 text-xs text-blue-600 hover:underline"
+                          >
+                            <Truck className="w-3 h-3" /> Xem tracking DPD
+                          </a>
+                        )}
+                        {editedTrackingNumber && selectedOrder?.status !== 'shipped' && (
+                          <p className="mt-1 text-xs text-amber-600">Email tracking DPD sẽ tự gửi cho khách khi bấm Save.</p>
+                        )}
+                        {editedTrackingNumber && selectedOrder?.status === 'shipped' && (
+                          <p className="mt-1 text-xs text-green-600">Email tracking DPD đã gửi cho khách.</p>
+                        )}
                       </div>
                     )}
                   </div>
