@@ -624,7 +624,7 @@ export default function AdminOrdersPage() {
                         />
                         {editedTrackingNumber && (
                           <a
-                            href={`https://track.dpd.co.uk/search?reference=${encodeURIComponent(editedTrackingNumber)}`}
+                            href={`https://track.dpd.co.uk/search?reference=${encodeURIComponent(editedTrackingNumber)}${selectedOrder?.shippingAddress?.postalCode ? `&postcode=${encodeURIComponent((selectedOrder.shippingAddress.postalCode as string).replace(/\s+/g,''))}` : ''}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="mt-1 inline-flex items-center gap-1 text-xs text-blue-600 hover:underline"

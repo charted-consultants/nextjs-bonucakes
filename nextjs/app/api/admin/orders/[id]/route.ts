@@ -13,8 +13,13 @@ import { Resend } from 'resend';
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bonu F&B <noreply@chartedconsultants.com>';
 
-function buildDpdTrackingUrl(trackingNumber: string): string {
-  return `https://track.dpd.co.uk/search?reference=${encodeURIComponent(trackingNumber)}`;
+function buildDpdTrackingUrl(trackingNumber: string, postcode?: string): string {
+  const base = `https://track.dpd.co.uk/search?reference=${encodeURIComponent(trackingNumber)}`;
+  if (postcode) {
+    const cleanPostcode = postcode.replace(/\s+/g, '');
+    return `${base}&postcode=${encodeURIComponent(cleanPostcode)}`;
+  }
+  return base;
 }
 
 async function sendShippingEmail(order: any, trackingNumber: string) {
@@ -22,7 +27,11 @@ async function sendShippingEmail(order: any, trackingNumber: string) {
   if (!apiKey) return;
 
   const resend = new Resend(apiKey);
-  const trackingUrl = buildDpdTrackingUrl(trackingNumber);
+
+  // Extract postcode from shipping address
+  const addr = order.shippingAddress as any;
+  const postcode = addr?.postalCode || addr?.postcode || '';
+  const trackingUrl = buildDpdTrackingUrl(trackingNumber, postcode);
 
   const itemsHtml = order.items
     .map((i: any) => `<li style="margin:4px 0;">${i.quantity}x ${i.productName}</li>`)
