@@ -258,12 +258,11 @@ export async function PUT(
       });
     }
 
-    // Send DPD tracking email when order is shipped with a tracking number
-    const trackingNum = validatedData.trackingNumber || existingOrder.trackingNumber;
-    const isNowShipped = validatedData.status === 'shipped' && existingOrder.status !== 'shipped';
-    const trackingJustAdded = validatedData.trackingNumber && !existingOrder.trackingNumber && existingOrder.status === 'shipped';
+    // Send DPD tracking email when tracking number is first added
+    const trackingNum = validatedData.trackingNumber;
+    const trackingJustAdded = trackingNum && !existingOrder.trackingNumber;
 
-    if ((isNowShipped || trackingJustAdded) && trackingNum) {
+    if (trackingJustAdded) {
       try {
         await sendShippingEmail(order, trackingNum);
         await prisma.orderHistory.create({
