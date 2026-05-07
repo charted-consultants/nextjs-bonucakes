@@ -10,7 +10,6 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, AlertTriangle, Copy, Check } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageToggle';
-import QRCode from 'react-qr-code';
 
 function OrderSuccessContent() {
   const currentLang = useLanguage();
@@ -280,18 +279,6 @@ function OrderSuccessContent() {
                   ))}
                 </div>
 
-                {/* QR code */}
-                <div className="flex flex-col items-center justify-start gap-3 shrink-0">
-                  <div className="bg-white p-3 border-2 border-secondary/50 rounded">
-                    <QRCode
-                      value={`Bank: Tide\nAccount: Bonu Cakes Ltd\nSort Code: 04-06-05\nAccount No: 18828806\nRef: ${displayCode}`}
-                      size={148}
-                    />
-                  </div>
-                  <p className="text-xs text-muted text-center max-w-[148px]">
-                    {currentLang === 'vi' ? 'Quét để xem thông tin ngân hàng' : 'Scan to view bank details'}
-                  </p>
-                </div>
               </div>
 
               <div className="mt-6 bg-white p-4 border border-secondary/30">
