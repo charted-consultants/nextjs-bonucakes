@@ -175,63 +175,63 @@ export function generateCustomerEmail(data: OrderEmailData, bankDetails?: BankDe
             <p>Cảm ơn bạn đã đặt hàng tại Bonu Cakes! ${paymentMethod === 'stripe' ? 'Đơn hàng của bạn đã được xác nhận.' : 'Chúng tôi đã nhận được đơn hàng và đang chờ thanh toán.'}</p>
 
             <div style="background: #f8faf9; padding: 15px; border-left: 4px solid #fcc56c; margin: 20px 0; border-radius: 4px;">
-              <p style="margin: 0 0 5px 0; color: #083121; font-weight: bold;">MA DON HANG</p>
+              <p style="margin: 0 0 5px 0; color: #083121; font-weight: bold;">MÃ ĐƠN HÀNG</p>
               <p style="margin: 0; font-size: 1.3em; font-weight: bold; color: #083121;">#${orderCode}</p>
             </div>
 
-            <h2 style="color: #083121; margin-top: 30px;">CHI TIET DON HANG</h2>
+            <h2 style="color: #083121; margin-top: 30px;">CHI TIẾT ĐƠN HÀNG</h2>
             ${orderItemsHtml}
-            ${deliveryDate ? `<p style="margin: 10px 0 0 0;"><strong>Ngay giao du kien:</strong> ${deliveryDate}</p>` : ''}
+            ${deliveryDate ? `<p style="margin: 10px 0 0 0;"><strong>Ngày giao dự kiến:</strong> ${deliveryDate}</p>` : ''}
 
-            <h2 style="color: #083121; margin-top: 30px;">TONG KET THANH TOAN</h2>
+            <h2 style="color: #083121; margin-top: 30px;">TỔNG KẾT THANH TOÁN</h2>
             <div class="order-box">
-              <p style="margin: 0 0 8px 0;">Tam tinh: <strong>${formatMoney(subtotal, currency)}</strong></p>
-              <p style="margin: 0 0 8px 0;">Phi giao hang (${shippingLabel}): <strong>${formatMoney(shippingFee, currency)}</strong></p>
-              <p style="margin: 8px 0 0 0; font-size: 1.1em;">Tong cong: <strong>${formatMoney(total, currency)}</strong></p>
+              <p style="margin: 0 0 8px 0;">Tạm tính: <strong>${formatMoney(subtotal, currency)}</strong></p>
+              <p style="margin: 0 0 8px 0;">Phí giao hàng (${shippingLabel}): <strong>${formatMoney(shippingFee, currency)}</strong></p>
+              <p style="margin: 8px 0 0 0; font-size: 1.1em;">Tổng cộng: <strong>${formatMoney(total, currency)}</strong></p>
             </div>
 
             ${paymentMethod === 'stripe' ? `
               <div style="background: #E8F5E9; padding: 15px; border-left: 4px solid #4CAF50; margin: 20px 0; border-radius: 4px;">
-                <p style="margin: 0 0 5px 0; color: #2E7D32; font-weight: bold; font-size: 1.1em;">THANH TOAN THANH CONG</p>
-                <p style="margin: 0; color: #4a5c52;">Thanh toan cua ban da duoc xu ly thanh cong. Don hang cua ban da duoc xac nhan va se som duoc chuan bi.</p>
+                <p style="margin: 0 0 5px 0; color: #2E7D32; font-weight: bold; font-size: 1.1em;">THANH TOÁN THÀNH CÔNG</p>
+                <p style="margin: 0; color: #4a5c52;">Thanh toán của bạn đã được xử lý thành công. Đơn hàng của bạn đã được xác nhận và sẽ sớm được chuẩn bị.</p>
               </div>
             ` : bankDetails ? `
-              <h2 style="color: #083121; margin-top: 30px;">THANH TOAN</h2>
-              <p>Vui long chuyen khoan theo thong tin duoi day:</p>
+              <h2 style="color: #083121; margin-top: 30px;">THANH TOÁN</h2>
+              <p>Vui lòng chuyển khoản theo thông tin dưới đây:</p>
               <div class="order-box">
-                <p style="margin: 0 0 8px 0;"><strong>Ngan hang:</strong> ${bankDetails.bankName}</p>
-                <p style="margin: 0 0 8px 0;"><strong>Ten tai khoan:</strong> ${bankDetails.accountName}</p>
+                <p style="margin: 0 0 8px 0;"><strong>Ngân hàng:</strong> ${bankDetails.bankName}</p>
+                <p style="margin: 0 0 8px 0;"><strong>Tên tài khoản:</strong> ${bankDetails.accountName}</p>
                 <p style="margin: 0 0 8px 0;"><strong>Sort Code:</strong> ${bankDetails.sortCode}</p>
-                <p style="margin: 0 0 8px 0;"><strong>So tai khoan:</strong> ${bankDetails.accountNumber}</p>
-                <p style="margin: 0; padding-top: 10px; border-top: 1px solid #fcc56c;"><strong>Noi dung chuyen khoan:</strong> <span style="color: #083121; font-size: 1.1em;">#${orderCode}</span></p>
+                <p style="margin: 0 0 8px 0;"><strong>Số tài khoản:</strong> ${bankDetails.accountNumber}</p>
+                <p style="margin: 0; padding-top: 10px; border-top: 1px solid #fcc56c;"><strong>Nội dung chuyển khoản:</strong> <span style="color: #083121; font-size: 1.1em;">#${orderCode}</span></p>
               </div>
               <div class="warning">
-                <p style="margin: 0; color: #F57C00; font-weight: bold;">DON HANG DANG CHO THANH TOAN</p>
-                <p style="margin: 8px 0 0 0; color: #4a5c52;">Don hang se duoc xac nhan sau khi chung toi nhan duoc thanh toan.</p>
+                <p style="margin: 0; color: #F57C00; font-weight: bold;">ĐƠN HÀNG ĐANG CHỜ THANH TOÁN</p>
+                <p style="margin: 8px 0 0 0; color: #4a5c52;">Đơn hàng sẽ được xác nhận sau khi chúng tôi nhận được thanh toán.</p>
               </div>
             ` : ''}
 
             <div class="warning">
-              <p style="margin: 0 0 10px 0; font-weight: bold; color: #F57C00;">LUU Y QUAN TRONG</p>
+              <p style="margin: 0 0 10px 0; font-weight: bold; color: #F57C00;">LƯU Ý QUAN TRỌNG</p>
               <ul style="margin: 0; padding-left: 20px; color: #4a5c52;">
-                <li>Phai cho vao tu lanh ngay khi nhan hang</li>
-                <li>Thit va nhan se nhanh hu neu khong bao quan lanh</li>
-                <li>Khong ham nong do chua</li>
+                <li>Phải cho vào tủ lạnh ngay khi nhận hàng</li>
+                <li>Thịt và nhân sẽ nhanh hư nếu không bảo quản lạnh</li>
+                <li>Không hâm nóng đồ chua</li>
               </ul>
             </div>
 
-            <h2 style="color: #083121; margin-top: 30px;">HUONG DAN SU DUNG</h2>
-            <p><strong>1. Nuong lai banh:</strong> Lo 180-200C trong 5-7 phut hoac dung chao chong dinh</p>
-            <p><strong>2. Lam am nhan:</strong> De nhiet do phong 5-10 phut (co the microwave pate/thit 30s)</p>
-            <p><strong>3. Rap banh:</strong> Rach banh - sot bo - pate - thit - cha bong - do chua - cha lua</p>
-            <p><strong>4. Ngon nhat khi an nong!</strong></p>
+            <h2 style="color: #083121; margin-top: 30px;">HƯỚNG DẪN SỬ DỤNG</h2>
+            <p><strong>1. Nướng lại bánh:</strong> Lò 180-200°C trong 5-7 phút hoặc dùng chảo chống dính</p>
+            <p><strong>2. Làm ấm nhân:</strong> Để nhiệt độ phòng 5-10 phút (có thể microwave pate/thịt 30s)</p>
+            <p><strong>3. Ráp bánh:</strong> Rạch bánh - sốt bơ - pate - thịt - chả bông - đồ chua - chả lụa</p>
+            <p><strong>4. Ngon nhất khi ăn nóng!</strong></p>
 
-            <p style="margin-top: 30px;">Chung toi se lien he voi ban de xac nhan chi tiet don hang.</p>
+            <p style="margin-top: 30px;">Chúng tôi sẽ liên hệ với bạn để xác nhận chi tiết đơn hàng.</p>
 
-            <p style="margin-top: 20px;">Neu co thac mac, vui long tra loi email nay hoac lien he qua Facebook.</p>
+            <p style="margin-top: 20px;">Nếu có thắc mắc, vui lòng trả lời email này hoặc liên hệ qua Facebook.</p>
 
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #fcc56c;">
-              <p style="color: #4a5c52; margin: 0; font-style: italic;">Tran trong,</p>
+              <p style="color: #4a5c52; margin: 0; font-style: italic;">Trân trọng,</p>
               <p style="color: #083121; margin: 4px 0 0 0; font-weight: bold; font-family: 'Playfair Display', serif; font-size: 1.1em;">Uyen Nguyen</p>
               <p style="color: #4a5c52; margin: 4px 0 0 0; font-size: 0.9em;">Bonu F&B</p>
             </div>
