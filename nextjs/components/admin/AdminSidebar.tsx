@@ -20,6 +20,7 @@ import {
   Calendar,
   Mail,
   Send,
+  ChefHat,
 } from "lucide-react"
 
 interface AdminSidebarProps {
@@ -30,6 +31,7 @@ const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Products", href: "/admin/products", icon: Package },
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
+  { name: "Kitchen", href: "/admin/kitchen", icon: ChefHat },
   { name: "Customers", href: "/admin/customers", icon: User },
   { name: "Email Marketing", href: "/admin/email-marketing/campaigns", icon: Send },
   { name: "Email Templates", href: "/admin/email-templates", icon: Mail },
