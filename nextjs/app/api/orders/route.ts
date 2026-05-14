@@ -35,7 +35,7 @@ const BANK_DETAILS: BankDetails = {
 // Email configuration
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bonu F&B <noreply@chartedconsultants.com>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'bonucakes6@gmail.com';
-const INFO_EMAIL = 'info@bonucakes.com';
+const INFO_EMAIL = process.env.INFO_EMAIL || 'info@bonucakes.com';
 
 // Order item interface for request
 interface OrderItemRequest {
