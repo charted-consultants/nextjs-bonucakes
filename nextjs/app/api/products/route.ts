@@ -29,8 +29,13 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
     const usePagination = searchParams.has('page') || searchParams.has('limit');
 
-    // Build where clause
-    const where: any = { available: true };
+    // Build where clause — show available products + coming-soon (featured but unavailable)
+    const where: any = {
+      OR: [
+        { available: true },
+        { available: false, featured: true },
+      ],
+    };
 
     if (category) {
       where.category = category;

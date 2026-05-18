@@ -148,7 +148,13 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           </div>
         )}
 
-        {!product.available && (
+        {!product.available && product.promotion && (
+          <div className="absolute bottom-4 right-4">
+            <ProductBadge type="coming-soon" />
+          </div>
+        )}
+
+        {!product.available && !product.promotion && (
           <div className="absolute bottom-4 right-4">
             <ProductBadge type="out-of-stock" />
           </div>
@@ -189,6 +195,13 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
                 <span>{currentLang === 'vi' ? 'Thêm vào giỏ hàng' : 'Add to Cart'}</span>
               </>
             )}
+          </button>
+        ) : product.promotion ? (
+          <button
+            disabled
+            className="w-full bg-amber-600 text-white px-6 py-3 font-semibold opacity-80 cursor-not-allowed mb-2"
+          >
+            {currentLang === 'vi' ? 'Sắp ra mắt' : 'Coming Soon'}
           </button>
         ) : (
           <button

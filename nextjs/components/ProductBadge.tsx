@@ -3,7 +3,7 @@
 import { useLanguage } from './LanguageToggle';
 
 interface ProductBadgeProps {
-  type: 'featured' | 'promotion' | 'out-of-stock';
+  type: 'featured' | 'promotion' | 'out-of-stock' | 'coming-soon';
   text?: {
     vi: string;
     en: string;
@@ -30,6 +30,11 @@ export default function ProductBadge({ type, text, className = '' }: ProductBadg
         return {
           text: currentLang === 'vi' ? 'Hết hàng' : 'Out of stock',
           className: 'bg-gray-800 text-white',
+        };
+      case 'coming-soon':
+        return {
+          text: currentLang === 'vi' ? 'Sắp ra mắt' : 'Coming Soon',
+          className: 'bg-amber-600 text-white',
         };
       default:
         return {
