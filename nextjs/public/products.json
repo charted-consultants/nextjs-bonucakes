@@ -1,6 +1,38 @@
 {
   "products": [
     {
+      "id": "banh-bong-lan-trung-muoi",
+      "slug": "banh-bong-lan-trung-muoi",
+      "name": {
+        "vi": "Bánh Bông Lan Trứng Muối",
+        "en": "Salted Egg Sponge Cake"
+      },
+      "shortDescription": {
+        "vi": "Cốt bánh mềm mịn, trứng muối nướng bùi thơm, chà bông chuẩn, 4 loại sốt đặc biệt",
+        "en": "Soft sponge cake, roasted salted egg, premium pork floss, 4 special sauces"
+      },
+      "description": {
+        "vi": "Cốt bánh mềm mịn tan trong miệng, để qua đêm vẫn ngon, để tủ 1 tuần vẫn ổn (không chất bảo quản). Trứng muối nướng bùi thơm. Chà bông chuẩn. 4 loại sốt đặc biệt. Học xong bán được ngay.",
+        "en": "Soft sponge melts in mouth, stays delicious overnight, lasts 1 week in fridge (no preservatives). Roasted salted egg with rich aroma. Premium pork floss. 4 special sauces. Ready to sell after learning."
+      },
+      "images": [
+        "/placeholder-product.webp"
+      ],
+      "price": {
+        "amount": 20,
+        "currency": "GBP",
+        "displayPrice": "£20",
+        "displayPriceVi": "£20"
+      },
+      "promotion": {
+        "vi": "Sắp ra mắt",
+        "en": "Coming Soon"
+      },
+      "available": false,
+      "featured": true,
+      "sortOrder": 0
+    },
+    {
       "id": "banh-mi-saigon",
       "slug": "banh-mi-sai-gon-half-baked",
       "name": {
@@ -716,8 +748,12 @@
         "vi": "Đóng gói cẩn thận, giao nhanh qua DPD/DHL.",
         "en": "Carefully packed, fast delivery via DPD/DHL."
       },
+      "promotion": {
+        "vi": "Sắp ra mắt",
+        "en": "Coming Soon"
+      },
       "available": false,
-      "featured": false,
+      "featured": true,
       "sortOrder": 10
     }
   ]
