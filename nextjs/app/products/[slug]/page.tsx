@@ -27,6 +27,9 @@ interface ProductData {
   featured: boolean;
   available: boolean;
   promoTitle?: string;
+  promoButtonText?: string;
+  promoButtonTextEn?: string;
+  promoButtonLink?: string;
   stock: number;
   stockStatus: string;
   ingredientsVi?: string;
@@ -42,6 +45,13 @@ interface ProductData {
     averageRating: number;
     totalReviews: number;
   };
+  productFaqs: Array<{
+    id: number;
+    questionVi: string;
+    questionEn: string;
+    answerVi: string;
+    answerEn: string;
+  }>;
   complementaryProducts: Array<{
     id: number;
     nameVi: string;
@@ -371,6 +381,18 @@ export default function ProductDetailPage() {
                 </button>
               )}
 
+              {/* Pre-Order CTA for unavailable products */}
+              {!product.available && product.promoButtonLink && (
+                <a
+                  href={product.promoButtonLink}
+                  className="w-full bg-amber-600 text-white py-4 rounded-lg font-medium hover:bg-amber-700 transition-colors flex items-center justify-center gap-2 text-center"
+                >
+                  {currentLang === 'vi'
+                    ? (product.promoButtonText || 'Đặt trước ngay')
+                    : (product.promoButtonTextEn || 'Pre-Order Now')}
+                </a>
+              )}
+
               {/* Product Tags */}
               {product.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
@@ -417,6 +439,27 @@ export default function ProductDetailPage() {
                     {currentLang === 'vi' ? 'Cách sử dụng' : 'How to Use'}
                   </h2>
                   <p className="text-muted whitespace-pre-line">{howToUse}</p>
+                </div>
+              )}
+
+              {/* FAQs */}
+              {product.productFaqs && product.productFaqs.length > 0 && (
+                <div>
+                  <h2 className="text-2xl font-bold text-primary mb-4 font-serif">
+                    {currentLang === 'vi' ? 'Câu hỏi thường gặp' : 'FAQ'}
+                  </h2>
+                  <div className="space-y-4">
+                    {product.productFaqs.map((faq) => (
+                      <div key={faq.id} className="border border-primary/10 rounded-lg p-5">
+                        <p className="font-semibold text-primary mb-2">
+                          {currentLang === 'vi' ? faq.questionVi : faq.questionEn}
+                        </p>
+                        <p className="text-muted text-sm leading-relaxed">
+                          {currentLang === 'vi' ? faq.answerVi : faq.answerEn}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

@@ -31,11 +31,12 @@ export async function GET(
     const hardcoded = HARDCODED_PRODUCTS.find((p) => p.slug === slug);
     if (hardcoded) {
       return NextResponse.json({
-        ...hardcoded,
-        reviewStats: { averageRating: 0, totalReviews: 0 },
-        complementaryProducts: [],
-        productFaqs: [],
-        reviews: [],
+        product: {
+          ...hardcoded,
+          reviewStats: { averageRating: 0, totalReviews: 0 },
+          complementaryProducts: [],
+          reviews: [],
+        },
       });
     }
 
