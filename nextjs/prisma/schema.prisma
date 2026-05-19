@@ -920,6 +920,7 @@ model WorkshopRegistration {
   availability        String?   @db.Text // Time preference for workshop
   referralSource      String?   @map("referral_source") // How they heard about workshop
   otherNotes          String?   @db.Text @map("other_notes")
+  preorderQuantity    Int?      @map("preorder_quantity")
   // Attendance tracking
   attended            Boolean   @default(false)
   attendanceDate      DateTime? @map("attendance_date")

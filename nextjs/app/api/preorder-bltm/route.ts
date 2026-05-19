@@ -15,7 +15,11 @@ const schema = z.object({
   note: z.string().optional(),
 });
 
-function adminEmail(data: z.infer<typeof schema>, date: string) {
+function adminEmail(
+  data: z.infer<typeof schema>,
+  date: string,
+  stats: { totalOrders: number; totalCakes: number; totalRevenue: number; todayOrders: number; todayCakes: number }
+) {
   return `
 <!DOCTYPE html><html><head><meta charset="utf-8"></head>
 <body style="font-family:Arial,sans-serif;background:#f8faf9;margin:0;padding:0;">
@@ -25,6 +29,7 @@ function adminEmail(data: z.infer<typeof schema>, date: string) {
     <p style="margin:8px 0 0;color:#f8faf9;font-size:13px;">${date}</p>
   </div>
   <div style="padding:32px 30px;">
+
     <div style="background:#f8faf9;border-left:4px solid #fcc56c;padding:20px;border-radius:4px;margin-bottom:20px;">
       <div style="margin-bottom:10px;"><strong style="color:#4a5c52;">Họ tên:</strong> <span style="color:#083121;">${data.name}</span></div>
       <div style="margin-bottom:10px;"><strong style="color:#4a5c52;">Địa chỉ:</strong> <span style="color:#083121;">${data.location}</span></div>
@@ -36,11 +41,36 @@ function adminEmail(data: z.infer<typeof schema>, date: string) {
         <span style="color:#4a5c52;font-size:14px;"> (£${data.quantity * 40} tổng)</span>
       </div>
     </div>
+
     ${data.note ? `
     <div style="border:1px solid #fcc56c;border-radius:4px;padding:20px;margin-bottom:24px;">
       <p style="margin:0 0 8px;font-size:14px;font-weight:bold;color:#083121;">Ghi chú:</p>
       <p style="margin:0;color:#4a5c52;white-space:pre-wrap;">${data.note}</p>
     </div>` : ''}
+
+    <div style="background:#083121;border-radius:6px;padding:20px 24px;margin-bottom:24px;">
+      <p style="margin:0 0 14px;font-size:13px;font-weight:bold;color:#fcc56c;text-transform:uppercase;letter-spacing:0.05em;">📊 Tổng cộng đến nay</p>
+      <table style="width:100%;font-size:14px;color:#f8faf9;border-collapse:collapse;">
+        <tr>
+          <td style="padding:4px 0;color:#a3b8a8;">Tổng đơn:</td>
+          <td style="padding:4px 0;font-weight:bold;text-align:right;">${stats.totalOrders} đơn</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 0;color:#a3b8a8;">Tổng số bánh:</td>
+          <td style="padding:4px 0;font-weight:bold;text-align:right;">${stats.totalCakes} cái</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 0;color:#a3b8a8;">Doanh thu dự kiến:</td>
+          <td style="padding:4px 0;font-weight:bold;color:#fcc56c;text-align:right;">£${stats.totalRevenue}</td>
+        </tr>
+        <tr><td colspan="2" style="padding:10px 0 6px;"><hr style="border:none;border-top:1px solid #4a5c52;margin:0;"></td></tr>
+        <tr>
+          <td style="padding:4px 0;color:#a3b8a8;">Hôm nay:</td>
+          <td style="padding:4px 0;font-weight:bold;text-align:right;">${stats.todayOrders} đơn — ${stats.todayCakes} cái</td>
+        </tr>
+      </table>
+    </div>
+
     <div style="text-align:center;">
       <a href="mailto:${data.email}?subject=Pre-Order Bánh Bông Lan Trứng Muối"
          style="display:inline-block;background:#fcc56c;color:#083121;padding:12px 28px;text-decoration:none;border-radius:4px;font-weight:bold;">
@@ -87,6 +117,38 @@ function guestEmail(name: string, quantity: number) {
 </body></html>`.trim();
 }
 
+async function getBltmStats() {
+  const allOrders = await prisma.workshopRegistration.findMany({
+    where: { workshopName: 'Pre-Order BLTM', deletedAt: null },
+    select: { preorderQuantity: true, createdAt: true },
+  });
+
+  const todayVN = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
+  todayVN.setHours(0, 0, 0, 0);
+
+  let totalCakes = 0;
+  let todayOrders = 0;
+  let todayCakes = 0;
+
+  for (const o of allOrders) {
+    const qty = o.preorderQuantity ?? 1;
+    totalCakes += qty;
+    const orderDateVN = new Date(o.createdAt.toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
+    if (orderDateVN >= todayVN) {
+      todayOrders++;
+      todayCakes += qty;
+    }
+  }
+
+  return {
+    totalOrders: allOrders.length,
+    totalCakes,
+    totalRevenue: totalCakes * 40,
+    todayOrders,
+    todayCakes,
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -116,7 +178,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Save as workshop registration reusing existing table
+    // Save preorder
     await prisma.workshopRegistration.create({
       data: {
         customerId: customer.id,
@@ -125,9 +187,13 @@ export async function POST(req: NextRequest) {
         phone: data.phone,
         specificQuestions: data.note || null,
         otherNotes: `Số lượng: ${data.quantity} cái`,
+        preorderQuantity: data.quantity,
         registrationDate: now,
       },
     });
+
+    // Query cumulative stats (includes the order just saved)
+    const stats = await getBltmStats();
 
     // Send emails
     await Promise.all([
@@ -135,8 +201,8 @@ export async function POST(req: NextRequest) {
         from: FROM_EMAIL,
         to: ADMIN_EMAIL,
         replyTo: data.email,
-        subject: `[Pre-Order BLTM] ${data.name} — ${data.quantity} cái`,
-        html: adminEmail(data, dateStr),
+        subject: `[Pre-Order BLTM] ${data.name} — ${data.quantity} cái | Tổng: ${stats.totalOrders} đơn / ${stats.totalCakes} cái`,
+        html: adminEmail(data, dateStr, stats),
       }),
       resend.emails.send({
         from: FROM_EMAIL,
