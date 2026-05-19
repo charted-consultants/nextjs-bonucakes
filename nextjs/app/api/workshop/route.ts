@@ -3,7 +3,6 @@ import { Resend } from 'resend';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bếp Bà Bo <noreply@chartedconsultants.com>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'info@bonucakes.com';
 
@@ -84,6 +83,7 @@ function guestEmail(name: string) {
 
 export async function POST(req: NextRequest) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const body = await req.json();
     const result = schema.safeParse(body);
     if (!result.success) {
