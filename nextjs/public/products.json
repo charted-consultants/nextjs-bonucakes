@@ -16,17 +16,17 @@
         "en": "Soft sponge melts in mouth, stays delicious overnight, lasts 1 week in fridge (no preservatives). Roasted salted egg with rich aroma. Premium pork floss. 4 special sauces. Ready to sell after learning."
       },
       "images": [
-        "/placeholder-product.webp"
+        "https://static.bonucakes.com/products/banh-bong-lan-trung-muoi.jpg"
       ],
       "price": {
-        "amount": 20,
+        "amount": 40,
         "currency": "GBP",
-        "displayPrice": "£20",
-        "displayPriceVi": "£20"
+        "displayPrice": "£40 / cái",
+        "displayPriceVi": "£40 / cái"
       },
       "promotion": {
-        "vi": "Sắp ra mắt",
-        "en": "Coming Soon"
+        "vi": "Pre-Order",
+        "en": "Pre-Order"
       },
       "available": false,
       "featured": true,
@@ -748,11 +748,7 @@
         "vi": "Đóng gói cẩn thận, giao nhanh qua DPD/DHL.",
         "en": "Carefully packed, fast delivery via DPD/DHL."
       },
-      "promotion": {
-        "vi": "Sắp ra mắt",
-        "en": "Coming Soon"
-      },
-      "available": false,
+      "available": true,
       "featured": true,
       "sortOrder": 10
     }

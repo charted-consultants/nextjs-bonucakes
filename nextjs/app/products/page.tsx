@@ -26,8 +26,8 @@ function mapApiProduct(p: any, index: number): Product {
     price: {
       amount: parseFloat(p.price),
       currency: 'GBP',
-      displayPrice: parseFloat(p.price) > 0 ? `£${p.price}` : (p.promoTitle || 'Coming Soon'),
-      displayPriceVi: parseFloat(p.price) > 0 ? `£${p.price}` : (p.promoTitle ? 'Sắp ra mắt' : 'Coming Soon'),
+      displayPrice: p.displayPrice || (parseFloat(p.price) > 0 ? `£${p.price}` : (p.promoTitle || 'Coming Soon')),
+      displayPriceVi: p.displayPriceVi || p.displayPrice || (parseFloat(p.price) > 0 ? `£${p.price}` : (p.promoTitle ? 'Sắp ra mắt' : 'Coming Soon')),
     },
     promotion: p.promoTitleVi || p.promoTitleEn || p.promoTitle
       ? { vi: p.promoTitleVi || p.promoTitle || '', en: p.promoTitleEn || p.promoTitle || '' }

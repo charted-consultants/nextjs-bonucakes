@@ -7,6 +7,7 @@ import {
   sanitizeProductForPublic,
   withCacheHeaders
 } from '@/lib/api-helpers';
+import { HARDCODED_PRODUCTS } from '@/lib/hardcoded-products';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,10 +27,21 @@ export async function GET(
       return errorResponse('Product slug is required', 400);
     }
 
+    // Hardcoded products always served from code, never from DB
+    const hardcoded = HARDCODED_PRODUCTS.find((p) => p.slug === slug);
+    if (hardcoded) {
+      return NextResponse.json({
+        ...hardcoded,
+        reviewStats: { averageRating: 0, totalReviews: 0 },
+        complementaryProducts: [],
+        productFaqs: [],
+        reviews: [],
+      });
+    }
+
     const product = await prisma.product.findUnique({
       where: {
         slug,
-        available: true,
       },
       include: {
         productVariants: {

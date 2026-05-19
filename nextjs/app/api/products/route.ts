@@ -8,6 +8,7 @@ import {
   paginatedResponse,
   withCacheHeaders
 } from '@/lib/api-helpers';
+import { HARDCODED_PRODUCTS } from '@/lib/hardcoded-products';
 
 export const dynamic = 'force-dynamic';
 
@@ -85,10 +86,15 @@ export async function GET(request: NextRequest) {
         prisma.product.count({ where })
       ]);
 
-      // Sanitize products for public API
-      const sanitizedProducts = products.map(sanitizeProductForPublic);
+      // Sanitize products for public API, excluding hardcoded slugs
+      const hardcodedSlugs = new Set(HARDCODED_PRODUCTS.map((p) => p.slug));
+      const sanitizedProducts = products
+        .map(sanitizeProductForPublic)
+        .filter((p: any) => !hardcodedSlugs.has(p.slug));
 
-      return paginatedResponse(sanitizedProducts, total, page, limit);
+      const allProducts = [...HARDCODED_PRODUCTS, ...sanitizedProducts];
+
+      return paginatedResponse(allProducts, total + HARDCODED_PRODUCTS.length, page, limit);
     }
 
     // Return all products without pagination
@@ -114,10 +120,16 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    // Sanitize products for public API
-    const sanitizedProducts = products.map(sanitizeProductForPublic);
+    // Sanitize products for public API, excluding hardcoded slugs (always served from code)
+    const hardcodedSlugs = new Set(HARDCODED_PRODUCTS.map((p) => p.slug));
+    const sanitizedProducts = products
+      .map(sanitizeProductForPublic)
+      .filter((p: any) => !hardcodedSlugs.has(p.slug));
 
-    const response = NextResponse.json({ products: sanitizedProducts });
+    // Hardcoded products always appear, regardless of DB state
+    const allProducts = [...HARDCODED_PRODUCTS, ...sanitizedProducts];
+
+    const response = NextResponse.json({ products: allProducts });
 
     // Add cache headers for better performance
     return withCacheHeaders(response, 60); // Cache for 60 seconds
