@@ -23,14 +23,16 @@ export const dynamic = 'force-dynamic';
  * - search: search in product names
  */
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-    const featured = searchParams.get('featured');
-    const search = searchParams.get('search');
-    const usePagination = searchParams.has('page') || searchParams.has('limit');
+  const { searchParams } = new URL(request.url);
+  const category = searchParams.get('category');
+  const featured = searchParams.get('featured');
+  const search = searchParams.get('search');
+  const usePagination = searchParams.has('page') || searchParams.has('limit');
+  const hardcodedSlugs = new Set(HARDCODED_PRODUCTS.map((p) => p.slug));
 
-    // Build where clause — show available products + coming-soon (featured but unavailable)
+  // Query DB — if it fails, fall back to empty array so hardcoded always show
+  let dbProducts: any[] = [];
+  try {
     const where: any = {
       OR: [
         { available: true },
@@ -38,14 +40,8 @@ export async function GET(request: NextRequest) {
       ],
     };
 
-    if (category) {
-      where.category = category;
-    }
-
-    if (featured === 'true') {
-      where.featured = true;
-    }
-
+    if (category) where.category = category;
+    if (featured === 'true') where.featured = true;
     if (search) {
       where.OR = [
         { nameVi: { contains: search, mode: 'insensitive' } },
@@ -55,85 +51,36 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    // Handle pagination if requested
-    if (usePagination) {
-      const { page, limit, skip } = parsePaginationParams(searchParams);
-
-      const [products, total] = await Promise.all([
-        prisma.product.findMany({
-          where,
-          skip,
-          take: limit,
-          orderBy: [
-            { featured: 'desc' },
-            { createdAt: 'desc' }
-          ],
-          include: {
-            productVariants: {
-              where: { available: true },
-              select: {
-                id: true,
-                nameVi: true,
-                nameEn: true,
-                price: true,
-                stock: true,
-                options: true,
-              }
-            },
-            nutritionInfo: true,
-          }
-        }),
-        prisma.product.count({ where })
-      ]);
-
-      // Sanitize products for public API, excluding hardcoded slugs
-      const hardcodedSlugs = new Set(HARDCODED_PRODUCTS.map((p) => p.slug));
-      const sanitizedProducts = products
-        .map(sanitizeProductForPublic)
-        .filter((p: any) => !hardcodedSlugs.has(p.slug));
-
-      const allProducts = [...HARDCODED_PRODUCTS, ...sanitizedProducts];
-
-      return paginatedResponse(allProducts, total + HARDCODED_PRODUCTS.length, page, limit);
-    }
-
-    // Return all products without pagination
     const products = await prisma.product.findMany({
       where,
-      orderBy: [
-        { featured: 'desc' },
-        { createdAt: 'desc' }
-      ],
+      orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
       include: {
         productVariants: {
           where: { available: true },
-          select: {
-            id: true,
-            nameVi: true,
-            nameEn: true,
-            price: true,
-            stock: true,
-            options: true,
-          }
+          select: { id: true, nameVi: true, nameEn: true, price: true, stock: true, options: true }
         },
         nutritionInfo: true,
       }
     });
 
-    // Sanitize products for public API, excluding hardcoded slugs (always served from code)
-    const hardcodedSlugs = new Set(HARDCODED_PRODUCTS.map((p) => p.slug));
-    const sanitizedProducts = products
+    dbProducts = products
       .map(sanitizeProductForPublic)
       .filter((p: any) => !hardcodedSlugs.has(p.slug));
-
-    // Hardcoded products always appear, regardless of DB state
-    const allProducts = [...HARDCODED_PRODUCTS, ...sanitizedProducts];
-
-    const response = NextResponse.json({ products: allProducts });
-
-    // Add cache headers for better performance
-    return withCacheHeaders(response, 60); // Cache for 60 seconds
-  } catch (error) {
-    return handleApiError(error, 'fetch products');
+  } catch (err) {
+    console.error('[products] DB query failed, serving hardcoded only:', err);
   }
+
+  // Hardcoded products always appear first, regardless of DB state
+  const allProducts = [...HARDCODED_PRODUCTS, ...dbProducts];
+
+  if (usePagination) {
+    const { page, limit, skip } = parsePaginationParams(searchParams);
+    const paginated = allProducts.slice(skip, skip + limit);
+    return paginatedResponse(paginated, allProducts.length, page, limit);
+  }
+
+  return withCacheHeaders(
+    NextResponse.json({ products: allProducts }),
+    60
+  );
 }
