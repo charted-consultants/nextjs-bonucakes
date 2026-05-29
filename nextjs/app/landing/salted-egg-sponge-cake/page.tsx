@@ -469,7 +469,7 @@ export default function SaltedEggSpongeCakePage() {
                 {currentLang === 'vi' ? 'Liên hệ tư vấn' : 'Contact for consultation'}
               </Link>
               <Link
-                href="/workshop-register?course=salted-egg-sponge-cake"
+                href="/workshop_booking1-1"
                 className="inline-flex items-center justify-center gap-3 border-2 border-[#f8faf9] text-[#f8faf9] px-6 py-3 font-semibold hover:bg-[#f8faf9]/10 transition-colors"
               >
                 {currentLang === 'vi' ? 'Đăng ký nhanh' : 'Quick register'}

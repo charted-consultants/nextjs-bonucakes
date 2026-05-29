@@ -35,6 +35,15 @@ function mapApiProduct(p: any, index: number): Product {
     available: p.available,
     featured: p.featured,
     sortOrder: index,
+    variants: p.productVariants?.length
+      ? p.productVariants.map((v: any) => ({
+          id: v.id,
+          nameVi: v.nameVi,
+          nameEn: v.nameEn,
+          price: v.price,
+          available: v.available ?? true,
+        }))
+      : undefined,
   };
 }
 

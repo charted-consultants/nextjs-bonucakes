@@ -8,6 +8,14 @@ import { useLanguage } from './LanguageToggle';
 import { useCartStore } from '@/lib/stores/cart-store';
 import ProductBadge from './ProductBadge';
 
+export interface ProductVariant {
+  id: number;
+  nameVi: string;
+  nameEn: string;
+  price: string;
+  available: boolean;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -37,6 +45,7 @@ export interface Product {
   available: boolean;
   featured: boolean;
   sortOrder: number;
+  variants?: ProductVariant[];
 }
 
 interface ProductCardProps {
@@ -49,6 +58,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   const [imageError, setImageError] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [showVariantPicker, setShowVariantPicker] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
 
   const name = product.name[currentLang] || product.name.vi;
@@ -77,42 +87,41 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
     return '';
   };
 
-  const handleAddToCart = async () => {
-    if (!product.available || isAdding) {
+  const handleAddToCartClick = () => {
+    if (!product.available || isAdding) return;
+    if (product.variants && product.variants.length > 0) {
+      setShowVariantPicker(true);
       return;
     }
+    addToCartDirect();
+  };
 
+  const addToCartDirect = async (variant?: ProductVariant) => {
     try {
       setIsAdding(true);
+      const priceAmount = variant ? parseFloat(variant.price) : product.price.amount;
+      const displayPrice = `£${priceAmount}`;
 
-      // Add to cart using Zustand store
       addItem({
-        id: product.id,
+        id: variant ? `${product.id}-variant-${variant.id}` : product.id,
         slug: product.slug,
-        name: product.name,
+        name: variant
+          ? { vi: `${product.name.vi} - ${variant.nameVi}`, en: `${product.name.en} - ${variant.nameEn}` }
+          : product.name,
         price: {
-          amount: product.price.amount,
+          amount: priceAmount,
           currency: product.price.currency,
-          displayPrice: product.price.displayPrice || '',
-          displayPriceVi: product.price.displayPriceVi,
-          unit: product.price.unit,
+          displayPrice,
+          displayPriceVi: displayPrice,
         },
         images: product.images.length > 0 ? [{ url: product.images[0], alt: product.name.en }] : undefined,
         hasPromo: !!(product.promotion),
       }, 1);
 
-      // Show success state
+      setShowVariantPicker(false);
       setJustAdded(true);
-
-      // Call optional callback
-      if (onAddToCart) {
-        onAddToCart(product.id);
-      }
-
-      // Reset success state after 2 seconds
-      setTimeout(() => {
-        setJustAdded(false);
-      }, 2000);
+      if (onAddToCart) onAddToCart(product.id);
+      setTimeout(() => setJustAdded(false), 2000);
     } catch (error) {
       console.error('Error adding to cart:', error);
     } finally {
@@ -121,7 +130,44 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   };
 
   return (
-    <div className="flex flex-col bg-white border border-primary/10 overflow-hidden transition-transform duration-200 ease-in-out hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
+    <div className="relative flex flex-col bg-white border border-primary/10 overflow-hidden transition-transform duration-200 ease-in-out hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
+      {/* Variant Picker Modal */}
+      {showVariantPicker && product.variants && (
+        <div
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm p-6"
+          onClick={() => setShowVariantPicker(false)}
+        >
+          <div
+            className="w-full max-w-xs"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-center font-semibold text-primary mb-4 text-lg">
+              {currentLang === 'vi' ? 'Chọn khối lượng' : 'Select weight'}
+            </p>
+            <div className="flex flex-col gap-3">
+              {product.variants.map((v) => (
+                <button
+                  key={v.id}
+                  disabled={!v.available}
+                  onClick={() => addToCartDirect(v)}
+                  className="flex items-center justify-between w-full border-2 border-primary/20 hover:border-secondary hover:bg-secondary/5 rounded-lg px-4 py-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span className="font-medium text-primary">
+                    {currentLang === 'vi' ? v.nameVi : v.nameEn}
+                  </span>
+                  <span className="font-bold text-secondary">£{v.price}</span>
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowVariantPicker(false)}
+              className="mt-4 w-full text-sm text-muted hover:text-primary transition-colors"
+            >
+              {currentLang === 'vi' ? 'Huỷ' : 'Cancel'}
+            </button>
+          </div>
+        </div>
+      )}
       {/* Product Image */}
       <Link href={`/products/${product.slug}`} className="relative">
         <div className="relative w-full h-64 bg-light">
@@ -180,7 +226,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         {/* Add to Cart Button */}
         {product.available ? (
           <button
-            onClick={handleAddToCart}
+            onClick={handleAddToCartClick}
             disabled={isAdding}
             className="w-full bg-primary text-white px-6 py-3 font-semibold hover:bg-primary/90 transition-all mb-2 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >

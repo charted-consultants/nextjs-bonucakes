@@ -65,8 +65,8 @@ export const HARDCODED_PRODUCTS = [
     shortDescriptionEn: 'Homemade pork floss with a traditional recipe — light and fluffy, perfectly seasoned, no preservatives',
     descriptionVi: 'Chà bông heo làm thủ công hoàn toàn theo công thức truyền thống của Bonu. Thịt heo tươi chọn lọc, được rim với gia vị tự nhiên — không màu, không chất bảo quản. Sợi bông tơi xốp, vị đậm vừa ăn, phù hợp cho cả trẻ em và người lớn.\n\nDùng kèm cơm trắng, cháo, xôi, hay nhân bánh mì — đều ngon.',
     descriptionEn: 'Fully handmade pork floss following Bonu\'s traditional recipe. Fresh selected pork, slow-cooked with natural seasonings — no colouring, no preservatives. Light and fluffy strands, perfectly balanced flavour for all ages.\n\nGreat with steamed rice, congee, sticky rice, or as a banh mi filling.',
-    price: '35',
-    displayPrice: '£35 / 500g | £70 / 1kg',
+    price: '70',
+    displayPrice: '£70 / 1kg',
     images: ['/images/products/cha-bong-1.webp', '/images/products/cha-bong-2.webp'],
     available: true,
     featured: true,
@@ -80,7 +80,6 @@ export const HARDCODED_PRODUCTS = [
     howToUseVi: 'DÙNG KÈM:\n- Cơm trắng, cháo trắng, xôi\n- Nhân bánh mì Sài Gòn\n- Rắc lên trứng chiên, mì, bún\n- Cuộn cùng cơm nắm cho trẻ em\n\nBẢO QUẢN:\n- Chưa mở: để nơi khô mát, tránh ánh nắng — dùng trong 3 tháng\n- Đã mở: đóng kín nắp, bảo quản tủ lạnh — dùng trong 4 tuần',
     howToUseEn: 'SERVING SUGGESTIONS:\n- Steamed rice, plain congee, sticky rice\n- Saigon banh mi filling\n- Sprinkle on fried eggs, noodles, or vermicelli\n- Roll with rice balls for kids\n\nSTORAGE:\n- Unopened: store in a cool dry place away from sunlight — use within 3 months\n- Opened: seal tightly and refrigerate — use within 4 weeks',
     productVariants: [
-      { id: -21, nameVi: 'Nửa ký (500g)', nameEn: '500g (Half kg)', price: '35', stock: 99, available: true },
       { id: -22, nameVi: 'Một ký (1kg)', nameEn: '1kg', price: '70', stock: 99, available: true },
     ],
     productFaqs: [

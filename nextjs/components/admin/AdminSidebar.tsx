@@ -21,6 +21,8 @@ import {
   Mail,
   Send,
   ChefHat,
+  GraduationCap,
+  Cake,
 } from "lucide-react"
 
 interface AdminSidebarProps {
@@ -33,6 +35,8 @@ const navigation = [
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { name: "Kitchen", href: "/admin/kitchen", icon: ChefHat },
   { name: "Customers", href: "/admin/customers", icon: User },
+  { name: "Workshop", href: "/admin/workshops", icon: GraduationCap },
+  { name: "Pre-Order BLTM", href: "/admin/preorder-bltm", icon: Cake },
   { name: "Email Marketing", href: "/admin/email-marketing/campaigns", icon: Send },
   { name: "Email Templates", href: "/admin/email-templates", icon: Mail },
   { name: "Courses", href: "/admin/courses", icon: BookOpen },

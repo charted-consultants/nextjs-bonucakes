@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { WORKSHOP_NAME_PREORDER_BLTM } from '@/lib/registration-types';
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bếp Bà Bo <noreply@chartedconsultants.com>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'info@bonucakes.com';
@@ -88,38 +89,65 @@ function adminEmail(
 function guestEmail(name: string, quantity: number) {
   return `
 <!DOCTYPE html><html><head><meta charset="utf-8"></head>
-<body style="font-family:Arial,sans-serif;background:#f8faf9;margin:0;padding:0;">
-<div style="max-width:600px;margin:40px auto;background:#fff;border:2px solid #fcc56c;border-radius:8px;overflow:hidden;">
-  <div style="background:#083121;padding:28px 30px;text-align:center;">
-    <h1 style="margin:0;font-size:22px;font-family:Georgia,serif;color:#fcc56c;">Bếp Bà Bo 🌿</h1>
-    <p style="margin:8px 0 0;color:#f8faf9;font-size:13px;">Bánh Bông Lan Trứng Muối — Pre-Order</p>
+<body style="font-family:Arial,sans-serif;background:#f0f4f1;margin:0;padding:0;">
+<div style="max-width:560px;margin:40px auto;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(8,49,33,0.08);">
+
+  <div style="background:#083121;padding:32px 36px;text-align:center;">
+    <p style="margin:0 0 4px;font-size:12px;letter-spacing:0.12em;color:#a3b8a8;text-transform:uppercase;">Bếp Bà Bo</p>
+    <h1 style="margin:0;font-size:24px;font-family:Georgia,serif;color:#fcc56c;font-weight:normal;">Xác nhận Waiting List</h1>
   </div>
-  <div style="padding:36px 30px;">
-    <p style="font-size:17px;color:#083121;margin:0 0 16px;">Xin chào <strong>${name}</strong>,</p>
-    <p style="color:#4a5c52;line-height:1.7;margin:0 0 16px;">
-      Bonu đã nhận được yêu cầu pre-order <strong>${quantity} cái Bánh Bông Lan Trứng Muối</strong> của bạn rồi!
+
+  <div style="padding:36px 36px 28px;">
+    <p style="font-size:16px;color:#083121;margin:0 0 20px;">Xin chào <strong>${name}</strong>,</p>
+
+    <p style="color:#4a5c52;line-height:1.75;margin:0 0 28px;">
+      Thông tin đăng ký của bạn đã được Bonu ghi nhận. Khi bánh được mở bán chính thức, Bonu sẽ chủ động liên hệ để xác nhận ngày giao và hướng dẫn thanh toán.
     </p>
-    <p style="color:#4a5c52;line-height:1.7;margin:0 0 24px;">
-      Bonu sẽ liên hệ với bạn trong vòng <strong>1–2 ngày</strong> để xác nhận ngày giao và thanh toán nhé.
-    </p>
-    <div style="background:#f8faf9;border-left:4px solid #fcc56c;padding:16px 20px;border-radius:4px;margin-bottom:24px;">
-      <p style="margin:0;color:#083121;font-size:14px;">
-        Bánh Bông Lan Trứng Muối — £40/cái<br>
-        Cốt bánh mềm mịn, trứng muối nướng bùi thơm, chà bông chuẩn, 4 loại sốt đặc biệt.
-      </p>
+
+    <div style="border:1px solid #e2ebe4;border-radius:8px;overflow:hidden;margin-bottom:28px;">
+      <div style="background:#f8faf9;padding:12px 20px;border-bottom:1px solid #e2ebe4;">
+        <p style="margin:0;font-size:11px;color:#4a5c52;letter-spacing:0.08em;text-transform:uppercase;font-weight:bold;">Chi tiết đăng ký</p>
+      </div>
+      <div style="padding:20px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <tr>
+            <td style="padding:6px 0;color:#4a5c52;width:50%;">Sản phẩm</td>
+            <td style="padding:6px 0;color:#083121;font-weight:bold;">Bánh Bông Lan Trứng Muối</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;color:#4a5c52;">Số lượng</td>
+            <td style="padding:6px 0;color:#083121;font-weight:bold;">${quantity} cái</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;color:#4a5c52;">Giá dự kiến</td>
+            <td style="padding:6px 0;color:#083121;font-weight:bold;">£${quantity * 40}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;color:#4a5c52;">Trạng thái</td>
+            <td style="padding:6px 0;"><span style="display:inline-block;background:#e8f5ec;color:#1a6635;font-size:12px;font-weight:bold;padding:3px 10px;border-radius:20px;">Đã vào waiting list</span></td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <p style="color:#4a5c52;margin:0;">Hẹn gặp bạn sớm,<br><strong>Bà Bo</strong> 🌿</p>
+
+    <p style="color:#4a5c52;font-size:13px;line-height:1.7;margin:0 0 28px;padding:14px 16px;background:#fffbf0;border-left:3px solid #fcc56c;border-radius:4px;">
+      Nếu có thắc mắc, bạn có thể liên hệ Bonu qua Facebook hoặc reply thẳng email này nhé.
+    </p>
+
+    <p style="color:#4a5c52;margin:0;font-size:14px;">Trân trọng,<br><strong style="color:#083121;">Bếp Bà Bo</strong></p>
   </div>
-  <div style="background:#f8faf9;padding:16px 30px;text-align:center;border-top:1px solid #fcc56c;">
-    <p style="margin:0;color:#4a5c52;font-size:12px;">Bếp Bà Bo — Đồ ăn Việt Nam tự làm từ công thức truyền thống</p>
+
+  <div style="background:#f8faf9;padding:16px 36px;text-align:center;border-top:1px solid #e2ebe4;">
+    <p style="margin:0;color:#4a5c52;font-size:11px;letter-spacing:0.04em;">Bếp Bà Bo · Đồ ăn Việt Nam tự làm · bonucakes.com</p>
   </div>
+
 </div>
 </body></html>`.trim();
 }
 
 async function getBltmStats() {
   const allOrders = await prisma.workshopRegistration.findMany({
-    where: { workshopName: 'Pre-Order BLTM', deletedAt: null },
+    where: { workshopName: WORKSHOP_NAME_PREORDER_BLTM, deletedAt: null },
     select: { preorderQuantity: true, createdAt: true },
   });
 
@@ -182,7 +210,7 @@ export async function POST(req: NextRequest) {
     await prisma.workshopRegistration.create({
       data: {
         customerId: customer.id,
-        workshopName: 'Pre-Order BLTM',
+        workshopName: WORKSHOP_NAME_PREORDER_BLTM,
         location: data.location,
         phone: data.phone,
         specificQuestions: data.note || null,
@@ -195,22 +223,26 @@ export async function POST(req: NextRequest) {
     // Query cumulative stats (includes the order just saved)
     const stats = await getBltmStats();
 
-    // Send emails
-    await Promise.all([
-      resend.emails.send({
-        from: FROM_EMAIL,
-        to: ADMIN_EMAIL,
-        replyTo: data.email,
-        subject: `[Pre-Order BLTM] ${data.name} — ${data.quantity} cái | Tổng: ${stats.totalOrders} đơn / ${stats.totalCakes} cái`,
-        html: adminEmail(data, dateStr, stats),
-      }),
-      resend.emails.send({
-        from: FROM_EMAIL,
-        to: data.email,
-        subject: 'Bonu đã nhận pre-order của bạn rồi! 🌿',
-        html: guestEmail(data.name, data.quantity),
-      }),
-    ]);
+    // Send emails — không để email lỗi kéo request thành 500.
+    try {
+      await Promise.all([
+        resend.emails.send({
+          from: FROM_EMAIL,
+          to: ADMIN_EMAIL,
+          replyTo: data.email,
+          subject: `[Pre-Order BLTM] ${data.name} — ${data.quantity} cái | Tổng: ${stats.totalOrders} đơn / ${stats.totalCakes} cái`,
+          html: adminEmail(data, dateStr, stats),
+        }),
+        resend.emails.send({
+          from: FROM_EMAIL,
+          to: data.email,
+          subject: 'Bonu đã nhận pre-order của bạn rồi! 🌿',
+          html: guestEmail(data.name, data.quantity),
+        }),
+      ]);
+    } catch (mailErr) {
+      console.error('[preorder-bltm] email send failed (DB row was saved):', mailErr);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
