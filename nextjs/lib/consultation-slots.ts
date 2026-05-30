@@ -1,7 +1,7 @@
 // ============================================================================
-// ⚙️  KHUNG GIỜ TƯ VẤN 1-1 VỚI CHỊ BO — CHỈNH Ở ĐÂY
+// ⚙️  KHUNG GIỜ TƯ VẤN 1-1 CÙNG BONU — CHỈNH Ở ĐÂY
 // ----------------------------------------------------------------------------
-// Khung giờ lặp lại hàng tuần. Khách chọn khung phù hợp; chị Bo sẽ liên hệ
+// Khung giờ lặp lại hàng tuần. Khách chọn khung phù hợp; Bonu sẽ liên hệ
 // xác nhận NGÀY cụ thể khi gọi lại. Muốn đổi giờ/ngày → sửa mảng bên dưới.
 // ============================================================================
 

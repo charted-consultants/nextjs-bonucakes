@@ -12,11 +12,11 @@ export default function ConsultationBooking() {
 
   const t = {
     label: lang === 'vi' ? 'Tư vấn 1-1' : '1-on-1 Consultation',
-    title: lang === 'vi' ? 'Đặt lịch tư vấn 1-1 với chị Bo' : 'Book a 1-on-1 with Bo',
+    title: lang === 'vi' ? 'Đặt lịch tư vấn 1-1 cùng Bonu' : 'Book a 1-on-1 with Bonu',
     subtitle:
       lang === 'vi'
-        ? 'Chọn khung giờ phù hợp để trao đổi trực tiếp về định hướng kinh doanh của bạn. Chị Bo sẽ liên hệ xác nhận ngày cụ thể.'
-        : 'Pick a time that works for you to talk directly about your business. Bo will reach out to confirm the exact date.',
+        ? 'Chọn khung giờ phù hợp để trao đổi trực tiếp về định hướng kinh doanh của bạn. Bonu sẽ liên hệ xác nhận ngày cụ thể.'
+        : 'Pick a time that works for you to talk directly about your business. Bonu will reach out to confirm the exact date.',
     name: lang === 'vi' ? 'Họ và tên' : 'Full name',
     phone: lang === 'vi' ? 'Số điện thoại' : 'Phone number',
     email: 'Email',
@@ -25,7 +25,7 @@ export default function ConsultationBooking() {
     businessInfo: lang === 'vi' ? 'Thông tin kinh doanh (nếu có)' : 'Business info (optional)',
     businessInfoPlaceholder:
       lang === 'vi' ? 'Bạn đang/định kinh doanh gì? Quy mô ra sao?' : 'What do you sell or plan to sell?',
-    message: lang === 'vi' ? 'Nhu cầu / câu hỏi cho chị Bo' : 'What would you like to discuss?',
+    message: lang === 'vi' ? 'Nhu cầu / câu hỏi cho Bonu' : 'What would you like to discuss?',
     messagePlaceholder:
       lang === 'vi' ? 'Bạn muốn được tư vấn điều gì?' : 'What do you want advice on?',
     submit: lang === 'vi' ? 'Đặt lịch tư vấn' : 'Book consultation',
@@ -33,8 +33,8 @@ export default function ConsultationBooking() {
     successTitle: lang === 'vi' ? 'Đã nhận lịch của bạn! 🌿' : 'Booking received! 🌿',
     successMsg:
       lang === 'vi'
-        ? 'Chị Bo sẽ liên hệ để xác nhận ngày cụ thể với bạn nhé.'
-        : 'Bo will contact you to confirm the exact date.',
+        ? 'Bonu sẽ liên hệ để xác nhận ngày cụ thể với bạn nhé.'
+        : 'Bonu will contact you to confirm the exact date.',
     errorDefault: lang === 'vi' ? 'Có lỗi xảy ra, vui lòng thử lại.' : 'Something went wrong, please try again.',
   };
 

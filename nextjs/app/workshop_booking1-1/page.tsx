@@ -325,7 +325,7 @@ export default function WorkshopPage() {
         </div>
       </section>
 
-      {/* Đặt lịch tư vấn 1-1 với chị Bo */}
+      {/* Đặt lịch tư vấn 1-1 cùng Bonu */}
       <ConsultationBooking />
     </div>
   );
