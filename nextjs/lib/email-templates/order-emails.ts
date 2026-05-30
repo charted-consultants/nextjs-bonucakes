@@ -232,8 +232,7 @@ export function generateCustomerEmail(data: OrderEmailData, bankDetails?: BankDe
 
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #fcc56c;">
               <p style="color: #4a5c52; margin: 0; font-style: italic;">Trân trọng,</p>
-              <p style="color: #083121; margin: 4px 0 0 0; font-weight: bold; font-family: 'Playfair Display', serif; font-size: 1.1em;">Uyen Nguyen</p>
-              <p style="color: #4a5c52; margin: 4px 0 0 0; font-size: 0.9em;">Bonu F&B</p>
+              <p style="color: #083121; margin: 4px 0 0 0; font-weight: bold; font-family: 'Playfair Display', serif; font-size: 1.1em;">Bonu</p>
             </div>
           </div>
         </div>

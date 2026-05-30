@@ -134,7 +134,7 @@ function guestEmail(name: string, quantity: number) {
       Nếu có thắc mắc, bạn có thể liên hệ Bonu qua Facebook hoặc reply thẳng email này nhé.
     </p>
 
-    <p style="color:#4a5c52;margin:0;font-size:14px;">Trân trọng,<br><strong style="color:#083121;">Bếp Bà Bo</strong></p>
+    <p style="color:#4a5c52;margin:0;font-size:14px;">Trân trọng,<br><strong style="color:#083121;">Bonu</strong></p>
   </div>
 
   <div style="background:#f8faf9;padding:16px 36px;text-align:center;border-top:1px solid #e2ebe4;">
