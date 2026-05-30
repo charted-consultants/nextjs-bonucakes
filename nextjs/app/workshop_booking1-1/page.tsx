@@ -10,7 +10,7 @@ const OPT_LOCATION = ['UK', 'Việt Nam'];
 const OPT_STAGE = [
   'Chỉ thích hoặc mới có ý tưởng mở quán',
   'Đang tìm hiểu ngành F&B',
-  'Đã từng bán online / takeaway / quán nhỏ',
+  'Đang kinh doanh nhỏ',
   'Đang làm trong ngành F&B',
 ];
 const OPT_MODEL = [

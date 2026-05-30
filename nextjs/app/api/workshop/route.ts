@@ -97,7 +97,7 @@ function guestEmail(name: string) {
         Xem sản phẩm của Bonu
       </a>
     </div>
-    <p style="color:#4a5c52;margin:0;">Hẹn gặp bạn sớm,<br><strong>Bà Bo</strong> 🌿</p>
+    <p style="color:#4a5c52;margin:0;">Hẹn gặp bạn sớm,<br><strong>Bonu</strong> 🌿</p>
   </div>
   <div style="background:#f8faf9;padding:16px 30px;text-align:center;border-top:1px solid #fcc56c;">
     <p style="margin:0;color:#4a5c52;font-size:12px;">Bếp Bà Bo — Đồ ăn Việt Nam tự làm từ công thức truyền thống</p>

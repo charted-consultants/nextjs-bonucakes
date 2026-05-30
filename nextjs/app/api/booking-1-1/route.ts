@@ -77,17 +77,17 @@ function guestEmail(name: string, slot: string) {
   <div style="padding:36px 30px;">
     <p style="font-size:17px;color:#083121;margin:0 0 16px;">Xin chào <strong>${name}</strong>,</p>
     <p style="color:#4a5c52;line-height:1.7;margin:0 0 16px;">
-      Cảm ơn bạn đã đặt lịch <strong>tư vấn 1-1</strong> cùng chị Bo!
+      Cảm ơn bạn đã đặt lịch <strong>tư vấn 1-1</strong> cùng Bonu!
     </p>
     <div style="background:#083121;border-radius:6px;padding:18px 20px;margin:0 0 20px;text-align:center;">
       <p style="margin:0 0 4px;color:#f8faf9;font-size:13px;">Khung giờ bạn chọn</p>
       <p style="margin:0;color:#fcc56c;font-size:20px;font-weight:bold;">${slot}</p>
     </div>
     <p style="color:#4a5c52;line-height:1.7;margin:0 0 24px;">
-      Chị Bo sẽ liên hệ với bạn để <strong>xác nhận ngày cụ thể</strong> và trao đổi
+      Bonu sẽ liên hệ với bạn để <strong>xác nhận ngày cụ thể</strong> và trao đổi
       trực tiếp về định hướng kinh doanh của bạn nhé.
     </p>
-    <p style="color:#4a5c52;margin:0;">Hẹn gặp bạn sớm,<br><strong>Bà Bo</strong> 🌿</p>
+    <p style="color:#4a5c52;margin:0;">Hẹn gặp bạn sớm,<br><strong>Bonu</strong> 🌿</p>
   </div>
   <div style="background:#f8faf9;padding:16px 30px;text-align:center;border-top:1px solid #fcc56c;">
     <p style="margin:0;color:#4a5c52;font-size:12px;">Bếp Bà Bo — Đồ ăn Việt Nam tự làm từ công thức truyền thống</p>
