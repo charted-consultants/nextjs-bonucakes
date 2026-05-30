@@ -190,7 +190,10 @@ export async function POST(req: NextRequest) {
     const now = new Date();
     const dateStr = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
 
-    // Upsert customer
+    // Upsert customer. Đối với khách cũ (đã có trong DB qua flow order/workshop),
+    // bổ sung tag 'preorder_bltm' + bật marketing_consent vì pre-order là hành
+    // động chủ động → implicit consent. Tránh bug cũ: 2/4 customer pre-order
+    // bị mất tag và 1 khách có marketingConsent=false dù đã pre-order 3 lần.
     let customer = await prisma.customer.findUnique({ where: { email: data.email } });
     if (!customer) {
       customer = await prisma.customer.create({
@@ -204,6 +207,25 @@ export async function POST(req: NextRequest) {
           tags: ['preorder_bltm'],
         },
       });
+    } else {
+      const updates: {
+        tags?: { push: string };
+        marketingConsent?: boolean;
+        consentedAt?: Date;
+      } = {};
+      if (!customer.tags.includes('preorder_bltm')) {
+        updates.tags = { push: 'preorder_bltm' };
+      }
+      if (!customer.marketingConsent) {
+        updates.marketingConsent = true;
+        updates.consentedAt = customer.consentedAt ?? now;
+      }
+      if (Object.keys(updates).length > 0) {
+        customer = await prisma.customer.update({
+          where: { id: customer.id },
+          data: updates,
+        });
+      }
     }
 
     // Save preorder
