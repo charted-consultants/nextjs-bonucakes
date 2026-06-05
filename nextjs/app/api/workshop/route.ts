@@ -6,6 +6,8 @@ import { WORKSHOP_NAME_REGISTRATION } from '@/lib/registration-types';
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Bếp Bà Bo <noreply@chartedconsultants.com>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'info@bonucakes.com';
+const SITE_URL = process.env.NEXTAUTH_URL || 'https://bonucakes.com';
+const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/DdjyY3ZPExaKPLFXFP6ZoG';
 
 const schema = z.object({
   name: z.string().min(2),
@@ -91,6 +93,26 @@ function guestEmail(name: string) {
       Bonu đã nhận được thông tin và sẽ liên hệ với bạn để gửi <strong>link tham gia</strong>
       cùng các thông tin cần thiết trước buổi workshop nhé.
     </p>
+
+    <!-- ===== WHATSAPP INVITE BLOCK ===== -->
+    <div style="background:#f8faf9;border:2px solid #25D366;border-radius:8px;padding:26px 24px;margin:0 0 28px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:18px;color:#083121;font-weight:bold;">📲 Tham gia nhóm WhatsApp của Workshop</p>
+      <p style="margin:0 0 20px;color:#4a5c52;line-height:1.6;font-size:14px;">
+        Đây là nơi Bonu gửi <strong>link buổi học, tài liệu và thông báo quan trọng</strong>.
+        Bạn nhớ vào nhóm sớm để không bỏ lỡ thông tin nào nhé!
+      </p>
+      <img src="${SITE_URL}/whatsapp-qr.png"
+           alt="Quét mã QR để vào nhóm WhatsApp"
+           width="200" height="200"
+           style="display:block;margin:0 auto 18px;border:8px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+      <p style="margin:0 0 18px;color:#4a5c52;font-size:13px;">Quét mã QR bằng camera điện thoại — hoặc bấm nút bên dưới:</p>
+      <a href="${WHATSAPP_GROUP_URL}"
+         style="display:inline-block;background:#25D366;color:#fff;padding:14px 32px;text-decoration:none;border-radius:6px;font-weight:bold;font-size:15px;">
+        Vào nhóm WhatsApp ngay
+      </a>
+    </div>
+    <!-- ===== /WHATSAPP INVITE BLOCK ===== -->
+
     <div style="text-align:center;margin-bottom:32px;">
       <a href="https://bonucakes.com/products"
          style="display:inline-block;background:#fcc56c;color:#083121;padding:12px 28px;text-decoration:none;border-radius:4px;font-weight:bold;">
