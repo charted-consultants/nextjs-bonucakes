@@ -181,6 +181,24 @@ npx prisma studio       # GUI quản lý DB
 - `workshop_registrations` — dùng cho cả workshop lẫn pre-order BLTM
 - `reviews`
 
+### 🧪 Email tester — chỉ là nhãn nội bộ để DỌN DẸP, KHÔNG đụng logic web
+
+Đây là các tài khoản chủ dự án dùng để **test logic web**. Quy ước:
+- ⚠️ **"Tester" KHÔNG phải khái niệm trong code/logic web.** Web app phải xử lý **chuẩn cho TẤT CẢ email như nhau** (gửi email xác nhận, lưu đơn/đăng ký, v.v.) — TUYỆT ĐỐI không hardcode kiểu "nếu email tester thì bỏ qua".
+- Nhãn tester chỉ để **anh + Claude** biết đơn nào là test khi cần **scan & dọn dẹp DB**.
+- Khi anh hỏi thống kê đơn/khách: báo đủ data, nhưng **tách 2 bảng** "Khách thật" vs "Tester" cho dễ nhìn.
+- Chỉ **xoá đơn test** khi anh yêu cầu rõ ràng — luôn giữ nguyên data khách thật.
+
+| Email | Ghi chú |
+|-------|---------|
+| `test@test.com` | Check Test |
+| `truongsanhcuong246@gmail.com` | Cường Trương – DavidC (chủ dự án) |
+| `tramanhng.mba@gmail.com` | "Candy Nguyễn" – tester |
+| `nhanulaw0209@gmail.com` | "Phan Nhan" – tester |
+| `tpminhngan0122@gmail.com` | "Taylor Swift" – tester |
+
+Tính tới 2026-06-05 (`workshop_registrations`, chưa xoá): tổng 41 dòng = **23 dòng khách thật / 22 người** (đều thuộc workshop *"Triển khai và thiết lập mục tiêu"* 04/03/2026) + **18 dòng tester**. Pre-order BLTM và 2 đợt workshop/tư vấn tháng 5 hiện toàn bộ là tester.
+
 ---
 
 ## Lưu ý kỹ thuật
