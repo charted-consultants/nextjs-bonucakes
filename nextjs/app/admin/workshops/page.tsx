@@ -13,6 +13,10 @@ import {
   Trash2,
   Eye,
   CheckCircle,
+  Mail,
+  Clock,
+  Send,
+  Loader2,
 } from "lucide-react"
 import {
   WORKSHOP_NAME_BOOKING_1ON1 as BOOKING_NAME,
@@ -33,6 +37,14 @@ export default function WorkshopsAdminPage() {
   const [tab, setTab] = useState<Tab>("workshop")
   const [search, setSearch] = useState("")
   const [detail, setDetail] = useState<Registration | null>(null)
+
+  // Chọn người nhận + gửi mail nhắc workshop
+  const [selected, setSelected] = useState<Set<number>>(new Set())
+  const [sendOpen, setSendOpen] = useState(false)
+  const [sendMode, setSendMode] = useState<"now" | "schedule">("now")
+  const [scheduleAt, setScheduleAt] = useState("")
+  const [sending, setSending] = useState(false)
+  const [sendResult, setSendResult] = useState<string | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -79,6 +91,84 @@ export default function WorkshopsAdminPage() {
   }, [list, search])
 
   const attendedCount = workshops.filter((r) => r.attended).length
+
+  // ── Chọn người nhận ──────────────────────────────────────────────
+  const toggleOne = (id: number) =>
+    setSelected((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+
+  const filteredIds = useMemo(() => filtered.map((r) => r.id), [filtered])
+  const allFilteredSelected = filteredIds.length > 0 && filteredIds.every((id) => selected.has(id))
+
+  const toggleAllFiltered = () =>
+    setSelected((prev) => {
+      const next = new Set(prev)
+      if (allFilteredSelected) filteredIds.forEach((id) => next.delete(id))
+      else filteredIds.forEach((id) => next.add(id))
+      return next
+    })
+
+  // Danh sách email duy nhất từ các bản ghi đã chọn (gửi đúng người, không trùng email)
+  const selectedRecipients = useMemo(() => {
+    const map = new Map<string, { email: string; name: string }>()
+    for (const r of registrations) {
+      if (!selected.has(r.id)) continue
+      const email = (r.customer?.email || "").trim().toLowerCase()
+      if (!email) continue
+      if (!map.has(email)) map.set(email, { email, name: r.customer?.name || "" })
+    }
+    return Array.from(map.values())
+  }, [registrations, selected])
+
+  const openSend = () => {
+    setSendResult(null)
+    setSendMode("now")
+    setScheduleAt("")
+    setSendOpen(true)
+  }
+
+  const sendReminder = async () => {
+    if (selectedRecipients.length === 0) return
+    let scheduledAt: string | null = null
+    if (sendMode === "schedule") {
+      if (!scheduleAt) {
+        setSendResult("Vui lòng chọn thời gian hẹn gửi.")
+        return
+      }
+      // input datetime-local là giờ địa phương trình duyệt → đổi sang ISO (UTC)
+      const t = new Date(scheduleAt)
+      if (Number.isNaN(t.getTime()) || t.getTime() <= Date.now()) {
+        setSendResult("Thời gian hẹn phải ở tương lai.")
+        return
+      }
+      scheduledAt = t.toISOString()
+    }
+    try {
+      setSending(true)
+      setSendResult(null)
+      const res = await fetch("/api/admin/workshops/send-reminder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recipients: selectedRecipients, scheduledAt }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Gửi thất bại")
+      const when = data.scheduled ? "đã được hẹn lịch" : "đã gửi"
+      let msg = `✅ ${data.sent}/${data.total} email ${when} thành công.`
+      if (data.errors?.length) msg += `\n❌ Lỗi: ${data.errors.join("; ")}`
+      setSendResult(msg)
+      if (data.sent > 0 && !data.errors?.length) {
+        setSelected(new Set()) // xong thì bỏ chọn
+      }
+    } catch (err: any) {
+      setSendResult("❌ " + err.message)
+    } finally {
+      setSending(false)
+    }
+  }
 
   const formatDateTime = (s: string | null) => {
     if (!s) return "—"
@@ -249,14 +339,25 @@ export default function WorkshopsAdminPage() {
               <TabButton value="workshop" label="Đăng ký Workshop" count={workshops.length} />
               <TabButton value="booking" label="Tư vấn 1-1" count={bookings.length} />
             </div>
-            <button
-              onClick={exportCSV}
-              disabled={filtered.length === 0}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Xuất CSV
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={openSend}
+                disabled={selected.size === 0}
+                className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-[#083121] hover:bg-[#0a3d29] disabled:opacity-40 disabled:cursor-not-allowed"
+                title={selected.size === 0 ? "Tick chọn người nhận trước" : "Gửi mail nhắc 1 ngày nữa workshop"}
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                Gửi mail nhắc workshop{selected.size > 0 ? ` (${selectedRecipients.length})` : ""}
+              </button>
+              <button
+                onClick={exportCSV}
+                disabled={filtered.length === 0}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Xuất CSV
+              </button>
+            </div>
           </div>
 
           <div className="bg-white shadow rounded-lg p-4">
@@ -285,6 +386,15 @@ export default function WorkshopsAdminPage() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
+                      <th className="px-4 py-3 text-left">
+                        <input
+                          type="checkbox"
+                          checked={allFilteredSelected}
+                          onChange={toggleAllFiltered}
+                          title="Chọn tất cả (theo bộ lọc hiện tại)"
+                          className="h-4 w-4 rounded border-gray-300 text-[#083121] focus:ring-[#083121]"
+                        />
+                      </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khách</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Liên hệ</th>
                       {tab === "workshop" ? (
@@ -303,7 +413,15 @@ export default function WorkshopsAdminPage() {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filtered.map((r) => (
-                      <tr key={r.id} className="hover:bg-gray-50">
+                      <tr key={r.id} className={`hover:bg-gray-50 ${selected.has(r.id) ? "bg-[#083121]/5" : ""}`}>
+                        <td className="px-4 py-4">
+                          <input
+                            type="checkbox"
+                            checked={selected.has(r.id)}
+                            onChange={() => toggleOne(r.id)}
+                            className="h-4 w-4 rounded border-gray-300 text-[#083121] focus:ring-[#083121]"
+                          />
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">{r.customer?.name || "—"}</div>
                           {r.age && <div className="text-xs text-gray-500">{r.age}</div>}
@@ -343,6 +461,89 @@ export default function WorkshopsAdminPage() {
             )}
           </div>
         </div>
+
+        {/* Send reminder modal */}
+        {sendOpen && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" onClick={() => !sending && setSendOpen(false)}>
+            <div
+              className="relative top-10 mx-auto p-0 border w-full max-w-lg shadow-lg rounded-lg bg-white mb-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-[#083121] rounded-t-lg">
+                <h3 className="text-lg font-medium text-white flex items-center gap-2">
+                  <Mail className="h-5 w-5" /> Gửi mail nhắc "1 ngày nữa workshop"
+                </h3>
+                <button onClick={() => !sending && setSendOpen(false)} className="text-white/80 hover:text-white">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-5">
+                <div>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Gửi tới <strong className="text-[#083121]">{selectedRecipients.length}</strong> người nhận (email duy nhất):
+                  </p>
+                  <div className="max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2 bg-gray-50 text-sm">
+                    {selectedRecipients.map((r) => (
+                      <div key={r.email} className="py-0.5 text-gray-700">
+                        {r.name ? `${r.name} — ` : ""}<span className="text-gray-500">{r.email}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Chọn gửi ngay / hẹn giờ */}
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 p-3 rounded-md border cursor-pointer ${sendMode === "now" ? "border-[#083121] bg-[#083121]/5" : "border-gray-200"}`}>
+                    <input type="radio" name="sendMode" checked={sendMode === "now"} onChange={() => setSendMode("now")} className="text-[#083121] focus:ring-[#083121]" />
+                    <Send className="h-4 w-4 text-[#083121]" />
+                    <span className="text-sm font-medium text-gray-800">Gửi ngay bây giờ</span>
+                  </label>
+                  <label className={`flex items-center gap-2 p-3 rounded-md border cursor-pointer ${sendMode === "schedule" ? "border-[#083121] bg-[#083121]/5" : "border-gray-200"}`}>
+                    <input type="radio" name="sendMode" checked={sendMode === "schedule"} onChange={() => setSendMode("schedule")} className="text-[#083121] focus:ring-[#083121]" />
+                    <Clock className="h-4 w-4 text-[#083121]" />
+                    <span className="text-sm font-medium text-gray-800">Hẹn giờ gửi</span>
+                  </label>
+                  {sendMode === "schedule" && (
+                    <div className="pl-3">
+                      <input
+                        type="datetime-local"
+                        value={scheduleAt}
+                        onChange={(e) => setScheduleAt(e.target.value)}
+                        className="w-full rounded-md border-gray-300 shadow-sm focus:ring-[#083121] focus:border-[#083121] text-sm"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Theo giờ máy của bạn. Resend hỗ trợ hẹn tối đa 72 giờ.</p>
+                    </div>
+                  )}
+                </div>
+
+                {sendResult && (
+                  <div className="text-sm whitespace-pre-wrap rounded-md bg-gray-50 border border-gray-200 p-3 text-gray-800">
+                    {sendResult}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                <button
+                  onClick={() => setSendOpen(false)}
+                  disabled={sending}
+                  className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50"
+                >
+                  Đóng
+                </button>
+                <button
+                  onClick={sendReminder}
+                  disabled={sending || selectedRecipients.length === 0}
+                  className="inline-flex items-center px-5 py-2 rounded-md text-sm font-medium text-white bg-[#083121] hover:bg-[#0a3d29] disabled:opacity-50"
+                >
+                  {sending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
+                  {sending ? "Đang gửi..." : sendMode === "schedule" ? "Đặt lịch gửi" : "Gửi ngay"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Detail modal */}
         {detail && (
