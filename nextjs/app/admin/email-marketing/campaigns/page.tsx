@@ -1,9 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import AdminSidebar from "@/components/admin/AdminSidebar"
 import AdminAuth from "@/components/admin/AdminAuth"
-import { Mail, Send, Users, Filter, Eye, X } from "lucide-react"
+import { Mail, Send, Users, Filter, Eye, X, Save, Edit, Trash2, FilePlus } from "lucide-react"
+
+interface DraftCampaign {
+  id: number
+  name: string
+  subject: string | null
+  filters: any
+  createdAt: string
+}
 
 interface EmailTemplate {
   id: number
@@ -55,16 +63,107 @@ export default function EmailCampaignsPage() {
   const [availableTags, setAvailableTags] = useState<string[]>([])
   const [availableLocations, setAvailableLocations] = useState<string[]>([])
 
+  // Chiến dịch nháp
+  const [drafts, setDrafts] = useState<DraftCampaign[]>([])
+  const [editingDraftId, setEditingDraftId] = useState<number | null>(null)
+  const [savingDraft, setSavingDraft] = useState(false)
+  // Bỏ qua 1 lần auto-fill subject khi nạp nháp (giữ subject riêng của nháp)
+  const skipSubjectSync = useRef(false)
+
   useEffect(() => {
     fetchTemplates()
     fetchFilterOptions()
+    fetchDrafts()
   }, [])
 
   useEffect(() => {
     if (selectedTemplate) {
+      if (skipSubjectSync.current) {
+        skipSubjectSync.current = false
+        return
+      }
       setCustomSubject(selectedTemplate.subject)
     }
   }, [selectedTemplate])
+
+  const fetchDrafts = async () => {
+    try {
+      const res = await fetch("/api/admin/campaigns?status=draft")
+      const data = await res.json()
+      if (res.ok) setDrafts(data.campaigns || [])
+    } catch (err) {
+      console.error("Error fetching drafts:", err)
+    }
+  }
+
+  const saveDraft = async () => {
+    if (!selectedTemplate) { alert("Vui lòng chọn mẫu email"); return }
+    if (!campaignName) { alert("Vui lòng nhập tên chiến dịch"); return }
+    try {
+      setSavingDraft(true)
+      const payload = {
+        name: campaignName,
+        templateId: selectedTemplate.id,
+        subject: customSubject || selectedTemplate.subject,
+        filters,
+      }
+      const url = editingDraftId ? `/api/admin/campaigns/${editingDraftId}` : "/api/admin/campaigns"
+      const method = editingDraftId ? "PUT" : "POST"
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Lưu nháp thất bại")
+      if (!editingDraftId && data.campaign?.id) setEditingDraftId(data.campaign.id)
+      await fetchDrafts()
+      alert("Đã lưu nháp")
+    } catch (err: any) {
+      alert("Lỗi lưu nháp: " + err.message)
+    } finally {
+      setSavingDraft(false)
+    }
+  }
+
+  const loadDraft = (d: DraftCampaign) => {
+    const f = d.filters || {}
+    const tpl = templates.find((t) => t.id === f.templateId) || null
+    skipSubjectSync.current = !!tpl
+    setSelectedTemplate(tpl)
+    setCampaignName(d.name)
+    setCustomSubject(d.subject || (tpl ? tpl.subject : ""))
+    setFilters({
+      tags: f.tags || [],
+      location: f.location || "",
+      hasOrders: f.hasOrders ?? null,
+      marketingConsent: f.marketingConsent ?? true,
+    })
+    setEditingDraftId(d.id)
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const deleteDraft = async (id: number) => {
+    if (!confirm("Xoá bản nháp này?")) return
+    try {
+      const res = await fetch(`/api/admin/campaigns/${id}`, { method: "DELETE" })
+      if (!res.ok) throw new Error((await res.json()).error || "Delete failed")
+      if (editingDraftId === id) newCampaign()
+      await fetchDrafts()
+    } catch (err: any) {
+      alert("Lỗi xoá nháp: " + err.message)
+    }
+  }
+
+  const newCampaign = () => {
+    setEditingDraftId(null)
+    setSelectedTemplate(null)
+    setCampaignName("")
+    setCustomSubject("")
+    setFilters({ tags: [], location: "", hasOrders: null, marketingConsent: true })
+    setMatchedCustomers([])
+    setRecipientCount(0)
+  }
 
   useEffect(() => {
     // Auto-update recipient count when filters change
@@ -206,6 +305,17 @@ export default function EmailCampaignsPage() {
         alert(`Test email sent successfully to ${testEmail}!`)
       } else {
         alert(`Campaign sent successfully!\nSent: ${data.sent}\nFailed: ${data.failed || 0}\nTotal: ${data.total}`)
+      }
+
+      // Gửi thật từ 1 nháp → xoá nháp (route send đã tạo bản ghi "đã gửi"), tránh trùng
+      if (!testMode && editingDraftId) {
+        try {
+          await fetch(`/api/admin/campaigns/${editingDraftId}`, { method: "DELETE" })
+        } catch (e) {
+          console.error("Không xoá được nháp sau khi gửi:", e)
+        }
+        setEditingDraftId(null)
+        fetchDrafts()
       }
 
       // Reset form
@@ -472,6 +582,25 @@ export default function EmailCampaignsPage() {
                   <Send className="h-4 w-4 mr-2" />
                   {sending ? "Sending..." : testMode ? "Send Test Email" : "Send Campaign"}
                 </button>
+
+                <button
+                  onClick={saveDraft}
+                  disabled={!selectedTemplate || !campaignName || savingDraft}
+                  className="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Save className="h-4 w-4 mr-2" />
+                  {savingDraft ? "Đang lưu..." : editingDraftId ? "Cập nhật nháp" : "Lưu nháp"}
+                </button>
+
+                {editingDraftId && (
+                  <button
+                    onClick={newCampaign}
+                    className="w-full inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
+                  >
+                    <FilePlus className="h-4 w-4 mr-2" />
+                    Soạn mới (bỏ nháp đang sửa)
+                  </button>
+                )}
               </div>
 
               {/* Selected Filters Summary */}
@@ -493,6 +622,50 @@ export default function EmailCampaignsPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Bản nháp */}
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
+              Chiến dịch nháp ({drafts.length})
+            </h2>
+            {drafts.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                Chưa có nháp nào. Soạn chiến dịch rồi bấm "Lưu nháp" để lưu lại, sửa hoặc gửi sau.
+              </p>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {drafts.map((d) => (
+                  <div key={d.id} className="flex items-center justify-between gap-4 py-3">
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium text-gray-900 truncate">
+                        {d.name}
+                        {editingDraftId === d.id && (
+                          <span className="ml-2 text-xs font-medium text-[#083121] bg-[#fcc56c]/30 px-2 py-0.5 rounded-full">
+                            đang sửa
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-sm text-gray-500 truncate">{d.subject || "—"}</div>
+                    </div>
+                    <div className="flex items-center gap-4 shrink-0">
+                      <button
+                        onClick={() => loadDraft(d)}
+                        className="inline-flex items-center gap-1 text-sm font-medium text-[#083121] hover:underline"
+                      >
+                        <Edit className="h-4 w-4" /> Sửa
+                      </button>
+                      <button
+                        onClick={() => deleteDraft(d.id)}
+                        className="inline-flex items-center gap-1 text-sm font-medium text-red-600 hover:underline"
+                      >
+                        <Trash2 className="h-4 w-4" /> Xoá
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

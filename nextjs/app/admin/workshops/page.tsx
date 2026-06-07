@@ -46,9 +46,29 @@ export default function WorkshopsAdminPage() {
   const [sending, setSending] = useState(false)
   const [sendResult, setSendResult] = useState<string | null>(null)
 
+  // Mẫu email workshop (lọc từ DB theo category="workshop")
+  const [templates, setTemplates] = useState<{ id: number; displayName: string }[]>([])
+  const [templateId, setTemplateId] = useState<number | null>(null)
+
   useEffect(() => {
     fetchData()
+    fetchTemplates()
   }, [])
+
+  const fetchTemplates = async () => {
+    try {
+      const res = await fetch("/api/admin/email-templates")
+      const data = await res.json()
+      if (!res.ok) return
+      const list = (data.templates || [])
+        .filter((t: any) => t.category === "workshop" && t.active && !t.deletedAt)
+        .map((t: any) => ({ id: t.id, displayName: t.displayName }))
+      setTemplates(list)
+      if (list.length > 0) setTemplateId((prev) => prev ?? list[0].id)
+    } catch (err) {
+      console.error("Error fetching workshop templates:", err)
+    }
+  }
 
   const fetchData = async () => {
     try {
@@ -113,12 +133,17 @@ export default function WorkshopsAdminPage() {
 
   // Danh sách email duy nhất từ các bản ghi đã chọn (gửi đúng người, không trùng email)
   const selectedRecipients = useMemo(() => {
-    const map = new Map<string, { email: string; name: string }>()
+    const map = new Map<string, { email: string; name: string; customerId: number | null }>()
     for (const r of registrations) {
       if (!selected.has(r.id)) continue
       const email = (r.customer?.email || "").trim().toLowerCase()
       if (!email) continue
-      if (!map.has(email)) map.set(email, { email, name: r.customer?.name || "" })
+      if (!map.has(email))
+        map.set(email, {
+          email,
+          name: r.customer?.name || "",
+          customerId: r.customerId ?? r.customer?.id ?? null,
+        })
     }
     return Array.from(map.values())
   }, [registrations, selected])
@@ -132,6 +157,10 @@ export default function WorkshopsAdminPage() {
 
   const sendReminder = async () => {
     if (selectedRecipients.length === 0) return
+    if (!templateId) {
+      setSendResult("Vui lòng chọn mẫu email.")
+      return
+    }
     let scheduledAt: string | null = null
     if (sendMode === "schedule") {
       if (!scheduleAt) {
@@ -146,13 +175,19 @@ export default function WorkshopsAdminPage() {
       }
       scheduledAt = t.toISOString()
     }
+    const tplName = templates.find((t) => t.id === templateId)?.displayName || "Email"
     try {
       setSending(true)
       setSendResult(null)
-      const res = await fetch("/api/admin/workshops/send-reminder", {
+      const res = await fetch("/api/admin/send-template-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recipients: selectedRecipients, scheduledAt }),
+        body: JSON.stringify({
+          recipients: selectedRecipients,
+          templateId,
+          scheduledAt,
+          sourceLabel: `Workshop — ${tplName}`,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Gửi thất bại")
@@ -344,10 +379,10 @@ export default function WorkshopsAdminPage() {
                 onClick={openSend}
                 disabled={selected.size === 0}
                 className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-[#083121] hover:bg-[#0a3d29] disabled:opacity-40 disabled:cursor-not-allowed"
-                title={selected.size === 0 ? "Tick chọn người nhận trước" : "Gửi mail nhắc 1 ngày nữa workshop"}
+                title={selected.size === 0 ? "Tick chọn người nhận trước" : "Gửi email cho người đã chọn"}
               >
                 <Mail className="h-4 w-4 mr-2" />
-                Gửi mail nhắc workshop{selected.size > 0 ? ` (${selectedRecipients.length})` : ""}
+                Gửi email{selected.size > 0 ? ` (${selectedRecipients.length})` : ""}
               </button>
               <button
                 onClick={exportCSV}
@@ -471,7 +506,7 @@ export default function WorkshopsAdminPage() {
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-[#083121] rounded-t-lg">
                 <h3 className="text-lg font-medium text-white flex items-center gap-2">
-                  <Mail className="h-5 w-5" /> Gửi mail nhắc "1 ngày nữa workshop"
+                  <Mail className="h-5 w-5" /> Gửi email cho người nhận
                 </h3>
                 <button onClick={() => !sending && setSendOpen(false)} className="text-white/80 hover:text-white">
                   <X className="h-5 w-5" />
@@ -490,6 +525,26 @@ export default function WorkshopsAdminPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Chọn mẫu email */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Mẫu email gửi</label>
+                  {templates.length === 0 ? (
+                    <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md p-3">
+                      Chưa có mẫu email workshop. Vào <strong>Email Templates</strong> để tạo (phân loại "workshop").
+                    </p>
+                  ) : (
+                    <select
+                      value={templateId ?? ""}
+                      onChange={(e) => setTemplateId(Number(e.target.value))}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:ring-[#083121] focus:border-[#083121] text-sm"
+                    >
+                      {templates.map((t) => (
+                        <option key={t.id} value={t.id}>{t.displayName}</option>
+                      ))}
+                    </select>
+                  )}
                 </div>
 
                 {/* Chọn gửi ngay / hẹn giờ */}
@@ -534,7 +589,7 @@ export default function WorkshopsAdminPage() {
                 </button>
                 <button
                   onClick={sendReminder}
-                  disabled={sending || selectedRecipients.length === 0}
+                  disabled={sending || selectedRecipients.length === 0 || !templateId}
                   className="inline-flex items-center px-5 py-2 rounded-md text-sm font-medium text-white bg-[#083121] hover:bg-[#0a3d29] disabled:opacity-50"
                 >
                   {sending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}

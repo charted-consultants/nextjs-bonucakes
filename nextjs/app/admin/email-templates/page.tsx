@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import AdminSidebar from "@/components/admin/AdminSidebar"
 import AdminAuth from "@/components/admin/AdminAuth"
-import { Mail, Plus, Edit, Trash2, Eye, Code } from "lucide-react"
+import { Mail, Plus, Edit, Trash2, Eye, Code, Search, X } from "lucide-react"
 
 interface EmailTemplate {
   id: number
@@ -28,6 +28,10 @@ export default function EmailTemplatesPage() {
   const [saving, setSaving] = useState(false)
   const [previewHtml, setPreviewHtml] = useState<string | null>(null)
   const [showLivePreview, setShowLivePreview] = useState(false)
+
+  // Tìm kiếm + lọc theo category
+  const [search, setSearch] = useState("")
+  const [categoryFilter, setCategoryFilter] = useState<string>("all")
 
   const [formData, setFormData] = useState({
     name: "",
@@ -171,6 +175,31 @@ export default function EmailTemplatesPage() {
       .replace(/{content}/g, "This is sample content for the preview.")
   }
 
+  // Danh sách category (tự sinh từ data) + đếm số lượng cho từng nhóm
+  const categories = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const t of templates) {
+      const c = t.category || "uncategorized"
+      counts.set(c, (counts.get(c) || 0) + 1)
+    }
+    return Array.from(counts.entries()).sort((a, b) => a[0].localeCompare(b[0]))
+  }, [templates])
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return templates.filter((t) => {
+      const cat = t.category || "uncategorized"
+      if (categoryFilter !== "all" && cat !== categoryFilter) return false
+      if (!q) return true
+      return (
+        t.displayName.toLowerCase().includes(q) ||
+        t.name.toLowerCase().includes(q) ||
+        (t.description || "").toLowerCase().includes(q) ||
+        (t.subject || "").toLowerCase().includes(q)
+      )
+    })
+  }, [templates, search, categoryFilter])
+
   return (
     <AdminAuth>
       <AdminSidebar>
@@ -191,106 +220,141 @@ export default function EmailTemplatesPage() {
             </button>
           </div>
 
-          {/* Templates Grid */}
-          <div className="bg-white shadow rounded-lg">
-            {loading ? (
-              <div className="p-6 text-center text-gray-500">Loading templates...</div>
-            ) : templates.length === 0 ? (
-              <div className="p-6 text-center text-gray-500">
-                No templates yet. Create your first template to get started.
+          {/* Thanh tìm kiếm + lọc category */}
+          {!loading && templates.length > 0 && (
+            <div className="space-y-3">
+              <div className="relative max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Tìm theo tên, mô tả, tiêu đề..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 pr-9 w-full rounded-md border-gray-300 shadow-sm text-sm focus:ring-[#083121] focus:border-[#083121]"
+                />
+                {search && (
+                  <button
+                    onClick={() => setSearch("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    title="Xoá tìm kiếm"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Template
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Variables
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {templates.map((template) => (
-                      <tr key={template.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center">
-                            <Mail className="h-5 w-5 text-gray-400 mr-3" />
-                            <div>
-                              <div className="text-sm font-medium text-gray-900">
-                                {template.displayName}
-                              </div>
-                              <div className="text-sm text-gray-500">{template.name}</div>
-                              {template.description && (
-                                <div className="text-xs text-gray-400 mt-1">
-                                  {template.description}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 capitalize">
-                            {template.category || "uncategorized"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {template.variables.map(v => `{${v}}`).join(", ")}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {template.active ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              Active
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                              Inactive
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <div className="flex gap-3">
-                            <button
-                              onClick={() => previewTemplate(template)}
-                              className="text-blue-600 hover:text-blue-900"
-                              title="Preview template"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => openEditModal(template)}
-                              className="text-[#083121] hover:text-[#4a5c52]"
-                              title="Edit template"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => deleteTemplate(template.id)}
-                              className="text-red-600 hover:text-red-900"
-                              title="Delete template"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setCategoryFilter("all")}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
+                    categoryFilter === "all"
+                      ? "bg-[#083121] text-white"
+                      : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                  }`}
+                >
+                  Tất cả ({templates.length})
+                </button>
+                {categories.map(([cat, count]) => (
+                  <button
+                    key={cat}
+                    onClick={() => setCategoryFilter(cat)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition ${
+                      categoryFilter === cat
+                        ? "bg-[#083121] text-white"
+                        : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                    }`}
+                  >
+                    {cat} ({count})
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* Templates Grid — dạng thẻ, tự xuống dòng, không kéo ngang */}
+          {loading ? (
+            <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">Loading templates...</div>
+          ) : templates.length === 0 ? (
+            <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">
+              No templates yet. Create your first template to get started.
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">
+              Không tìm thấy template phù hợp.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              {filtered.map((template) => (
+                <div
+                  key={template.id}
+                  className="bg-white shadow rounded-lg p-4 flex flex-col hover:shadow-md transition"
+                >
+                  {/* Header: icon + tên */}
+                  <div className="flex items-start gap-3">
+                    <Mail className="h-5 w-5 text-gray-400 mt-0.5 shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-medium text-gray-900 break-words">
+                        {template.displayName}
+                      </div>
+                      <div className="text-xs text-gray-500 break-words">{template.name}</div>
+                    </div>
+                  </div>
+
+                  {template.description && (
+                    <p className="text-xs text-gray-400 mt-2 line-clamp-2">{template.description}</p>
+                  )}
+
+                  {/* Badges */}
+                  <div className="flex flex-wrap items-center gap-2 mt-3">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 capitalize">
+                      {template.category || "uncategorized"}
+                    </span>
+                    {template.active ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Active
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        Inactive
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Variables */}
+                  {template.variables.length > 0 && (
+                    <div className="text-xs text-gray-500 mt-3 break-words">
+                      <span className="text-gray-400">Biến: </span>
+                      {template.variables.map((v) => `{${v}}`).join(", ")}
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100">
+                    <button
+                      onClick={() => previewTemplate(template)}
+                      className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-900"
+                      title="Preview template"
+                    >
+                      <Eye className="h-4 w-4" /> Xem
+                    </button>
+                    <button
+                      onClick={() => openEditModal(template)}
+                      className="inline-flex items-center gap-1 text-xs text-[#083121] hover:text-[#4a5c52]"
+                      title="Edit template"
+                    >
+                      <Edit className="h-4 w-4" /> Sửa
+                    </button>
+                    <button
+                      onClick={() => deleteTemplate(template.id)}
+                      className="inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-900 ml-auto"
+                      title="Delete template"
+                    >
+                      <Trash2 className="h-4 w-4" /> Xoá
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Template Modal */}
@@ -370,6 +434,8 @@ export default function EmailTemplatesPage() {
                         <option value="marketing">Marketing</option>
                         <option value="transactional">Transactional</option>
                         <option value="notification">Notification</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="course">Khoá học (Course)</option>
                       </select>
                     </div>
 

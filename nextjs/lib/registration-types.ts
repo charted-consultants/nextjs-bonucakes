@@ -15,6 +15,34 @@ export const WORKSHOP_NAME_BOOKING_1ON1 = 'Tư vấn 1-1 với chị Bo';
 export const WORKSHOP_NAME_PREORDER_BLTM = 'Pre-Order BLTM';
 
 // ============================================================================
+// Khoá học (lead lưu vào bảng RIÊNG `course_enrollments`, KHÔNG dùng
+// workshop_registrations). Nối landing public ↔ admin qua `slug` dưới đây.
+// ============================================================================
+
+/** Khoá học Bánh Mì Sài Gòn — landing `/khoa-hoc-banh-mi-sai-gon` */
+export const COURSE_SLUG_BANH_MI_SAI_GON = 'khoa-hoc-banh-mi-sai-gon';
+export const COURSE_NAME_BANH_MI_SAI_GON = 'Khoá học Bánh Mì Sài Gòn';
+
+export interface AdminCourseEnrollment {
+  id: number;
+  courseSlug: string;
+  courseName: string;
+  customerId: number | null;
+  name: string;
+  email: string;
+  phone: string | null;
+  location: string | null;
+  format: string | null;
+  goal: string | null;
+  status: string; // new, contacted, enrolled, declined
+  notes: string | null;
+  registrationDate: string;
+  createdAt: string;
+  deletedAt: string | null;
+  customer: AdminCustomer | null;
+}
+
+// ============================================================================
 // Shared TypeScript types cho các trang admin.
 // ============================================================================
 

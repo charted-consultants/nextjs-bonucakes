@@ -142,7 +142,43 @@ Logic API:
 Các luồng email:
 - **Pre-order BLTM** (`/api/preorder-bltm`): email xác nhận → khách + admin
 - **Workshop** (`/api/workshop`): email xác nhận → khách + admin
+- **Khoá học** (`/api/courses/[slug]/enroll`): email xác nhận → khách + admin, lưu lead vào `course_enrollments`
 - **Order emails**: `lib/email-templates/order-emails.ts`
+- **Gửi email thủ công từ admin** (`/api/admin/send-template-email`): chọn mẫu trong DB, gửi cho khách tick chọn (workshop / khoá học), hỗ trợ hẹn giờ; mỗi lần gửi ghi log vào `email_campaigns`
+
+---
+
+## Khoá học & Email mẫu (admin)
+
+### Khoá học (lead)
+- Landing: `app/khoa-hoc-banh-mi-sai-gon/page.tsx` → form POST `/api/courses/[slug]/enroll`
+- Lead lưu vào bảng RIÊNG `course_enrollments` (KHÔNG lẫn `workshop_registrations`)
+- Slug + tên khoá khai báo ở `lib/registration-types.ts` (`COURSE_SLUG_BANH_MI_SAI_GON`)
+- Điều kiện nhận đăng ký: phải có record `courses` đúng slug, `published=true` + `enrollment_open=true`
+- Admin xem lead: `/admin/courses/enrollments` (sidebar "Đăng ký Khoá học")
+
+### Email mẫu trong DB (`email_templates`)
+- Quản lý ở `/admin/email-templates`: thêm / sửa / xoá (xoá mềm `deletedAt`) / preview
+- Lọc theo `category`: `marketing`, `transactional`, `notification`, **`workshop`**, **`course`**
+- Trang Workshop chỉ hiện mẫu `category=workshop`; trang Khoá học chỉ hiện `category=course`
+- Biến cá nhân hoá: `{name}`, `{email}` (render qua `lib/email-templates/render-template.ts`)
+- ⚠️ GET `/api/admin/email-templates` đã lọc `deletedAt=null`; client còn lọc thêm `active`
+
+### Gửi email thủ công + lịch sử
+- Trang Workshop (`/admin/workshops`) & Khoá học (`/admin/courses/enrollments`): tick chọn khách →
+  chọn mẫu → gửi ngay hoặc hẹn giờ (Resend ~72h)
+- API chung: `POST /api/admin/send-template-email` (`{recipients, templateId, scheduledAt?, sourceLabel}`)
+- Mỗi lần gửi ghi 1 dòng `email_campaigns` (recipient chỉ log khi có `customerId`)
+- Xem lại: `/admin/email-marketing/history` (sidebar "Lịch sử Email"), API `GET /api/admin/campaigns`
+
+### Seed mẫu email (idempotent — upsert theo `name`)
+```bash
+# cần tunnel DB + .env.local
+set -a && source .env.local && set +a
+npx tsx prisma/seed-templates.ts
+```
+Đã seed 8 mẫu: 4 workshop (`workshop-reminder-1day`, `-registered-confirm`, `-thankyou`, `-reschedule`) +
+4 course (`course-received-confirm`, `-payment-invite`, `-start-reminder`, `-followup-thankyou`).
 
 ---
 
@@ -180,6 +216,10 @@ npx prisma studio       # GUI quản lý DB
 - `orders` + `order_items`
 - `workshop_registrations` — dùng cho cả workshop lẫn pre-order BLTM
 - `reviews`
+- `courses` + `course_faqs` — dữ liệu khoá học (vd Bánh Mì Sài Gòn)
+- `course_enrollments` — lead đăng ký khoá học (bảng RIÊNG, không lẫn workshop)
+- `email_templates` — mẫu email lưu DB, lọc theo `category`
+- `email_campaigns` + `email_campaign_recipients` — log các email đã gửi (cho trang Lịch sử Email)
 
 ### 🧪 Email tester — chỉ là nhãn nội bộ để DỌN DẸP, KHÔNG đụng logic web
 
@@ -203,7 +243,7 @@ Tính tới 2026-06-05 (`workshop_registrations`, chưa xoá): tổng 41 dòng =
 
 ## Lưu ý kỹ thuật
 
-- **Build cache lỗi** (`MODULE_NOT_FOUND`): xoá `.next/` rồi restart dev server
+- **Build cache lỗi** (`Cannot find module './xxxx.js'`, `MODULE_NOT_FOUND`, "missing required error components"): xoá `.next/` rồi restart dev server. ⚠️ KHÔNG chạy `npm run build` trong lúc `npm run dev` đang chạy — `build` ghi đè `.next/` làm dev server hỏng chunk. Muốn build kiểm tra: dừng dev trước, hoặc `rm -rf .next` rồi `npm run dev` lại sau khi build.
 - **Nginx staging**: các block `location /api/` đã bị xoá vĩnh viễn để tránh routing nhầm
 - **`products.json`** trong `public/`: dữ liệu tĩnh dự phòng, không phải source chính
 - **Bilingual**: tất cả text UI hỗ trợ VI/EN qua `useLanguage()` hook

@@ -1,4 +1,4 @@
-// Email "1 ngày nữa workshop diễn ra" — gửi manual từ trang admin.
+// Email "1 ngày nữa workshop diễn ra" - gửi manual từ trang admin.
 // Nội dung do chủ dự án duyệt; QR dùng URL public đã host trong public/whatsapp-qr.png.
 
 const QR_URL = "https://bonucakes.com/whatsapp-qr.png";
@@ -15,7 +15,7 @@ export function workshopReminderHtml(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workshop Bonucakes — Lời mời tham gia</title>
+<title>Workshop Bonucakes - Lời mời tham gia</title>
 </head>
 <body style="margin:0;padding:0;background:#f8faf9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#083121;">
   <div style="max-width:600px;margin:0 auto;padding:24px 16px;">

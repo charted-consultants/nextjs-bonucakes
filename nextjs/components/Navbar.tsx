@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
   { href: '/story', label: { vi: 'Câu chuyện', en: 'Story' } },
   { href: '/products', label: { vi: 'Sản phẩm', en: 'Products' } },
   { href: '/culinary-consultation', label: { vi: 'Tư vấn', en: 'Services' } },
+  { href: '/khoa-hoc-banh-mi-sai-gon', label: { vi: 'Khoá học', en: 'Course' } },
   { href: '/workshop_booking1-1', label: { vi: 'Workshop', en: 'Workshop' } },
   { href: '/blog', label: { vi: 'Blog', en: 'Blog' } },
   { href: '#contact', label: { vi: 'Liên hệ', en: 'Contact' } },

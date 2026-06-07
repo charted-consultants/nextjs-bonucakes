@@ -335,6 +335,42 @@ model CourseFaq {
 }
 
 // ============================================================================
+// Course Enrollment / Lead Model
+// Bảng RIÊNG cho lead đăng ký khoá học (vd: Khoá học Bánh Mì Sài Gòn).
+// Tách khỏi `workshop_registrations` để admin xuất CSV data khách của
+// riêng khoá học — sạch, không lẫn workshop / booking 1-1 / pre-order.
+// Nối landing public + admin qua `courseSlug` (hằng số ở lib/registration-types.ts).
+// ============================================================================
+
+model CourseEnrollment {
+  id               Int       @id @default(autoincrement())
+  courseSlug       String    @map("course_slug")
+  courseName       String    @map("course_name")
+  customerId       Int?      @map("customer_id")
+  // Thông tin khách điền trên form đăng ký
+  name             String
+  email            String
+  phone            String?
+  location         String?
+  format           String? // "Trực tiếp tại bếp (UK)", "Online", "Hybrid, cả hai"
+  goal             String?   @db.Text // Mục tiêu của khách
+  // Quản lý phía admin
+  status           String    @default("new") // new, contacted, enrolled, declined
+  notes            String?   @db.Text @map("admin_notes")
+  registrationDate DateTime  @default(now()) @map("registration_date")
+  // Timestamps
+  createdAt        DateTime  @default(now()) @map("created_at")
+  deletedAt        DateTime? @map("deleted_at")
+  customer         Customer? @relation(fields: [customerId], references: [id])
+
+  @@index([courseSlug])
+  @@index([customerId])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("course_enrollments")
+}
+
+// ============================================================================
 // Review Model (Unified for Products & Courses)
 // ============================================================================
 
@@ -864,6 +900,7 @@ model Customer {
   // Relations
   workshopRegistrations   WorkshopRegistration[]
   eventRegistrations      EventRegistration[]
+  courseEnrollments       CourseEnrollment[]
   emailCampaignRecipients EmailCampaignRecipient[]
 
   @@index([email])

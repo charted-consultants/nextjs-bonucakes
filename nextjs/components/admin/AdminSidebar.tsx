@@ -23,6 +23,8 @@ import {
   ChefHat,
   GraduationCap,
   Cake,
+  ClipboardList,
+  History,
 } from "lucide-react"
 
 interface AdminSidebarProps {
@@ -38,8 +40,10 @@ const navigation = [
   { name: "Workshop", href: "/admin/workshops", icon: GraduationCap },
   { name: "Pre-Order BLTM", href: "/admin/preorder-bltm", icon: Cake },
   { name: "Email Marketing", href: "/admin/email-marketing/campaigns", icon: Send },
+  { name: "Lịch sử Email", href: "/admin/email-marketing/history", icon: History },
   { name: "Email Templates", href: "/admin/email-templates", icon: Mail },
   { name: "Courses", href: "/admin/courses", icon: BookOpen },
+  { name: "Đăng ký Khoá học", href: "/admin/courses/enrollments", icon: ClipboardList },
   { name: "Events", href: "/admin/events", icon: Calendar },
   { name: "Blog Posts", href: "/admin/blog", icon: FileText },
   { name: "Reviews", href: "/admin/reviews", icon: MessageSquare },
@@ -51,6 +55,15 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
   const { data: session } = useSession()
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // href khớp cụ thể nhất (dài nhất) với path hiện tại, để khi ở
+  // /admin/courses/enrollments thì chỉ mục đó sáng, không sáng lây "Courses".
+  const activeHref = navigation.reduce((best, item) => {
+    if (item.href === '/admin' ? pathname === '/admin' : pathname?.startsWith(item.href)) {
+      return item.href.length > best.length ? item.href : best
+    }
+    return best
+  }, '')
 
   useEffect(() => {
     setSidebarOpen(false)
@@ -84,7 +97,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
               </div>
               <nav className="mt-5 px-2 space-y-1">
                 {navigation.map((item) => {
-                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname?.startsWith(item.href))
+                  const isActive = item.href === activeHref
                   const Icon = item.icon
                   return (
                     <Link
@@ -138,7 +151,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
                 {navigation.map((item) => {
-                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname?.startsWith(item.href))
+                  const isActive = item.href === activeHref
                   const Icon = item.icon
                   return (
                     <Link

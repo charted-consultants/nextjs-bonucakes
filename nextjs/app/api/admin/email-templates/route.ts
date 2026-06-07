@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     }
 
     const templates = await prisma.emailTemplate.findMany({
+      where: { deletedAt: null },
       orderBy: {
         createdAt: 'desc'
       }
