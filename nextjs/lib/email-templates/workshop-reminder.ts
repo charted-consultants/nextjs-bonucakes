@@ -1,13 +1,13 @@
-// Email "1 ngày nữa workshop diễn ra" - gửi manual từ trang admin.
+// Email "30 phút nữa workshop diễn ra" - gửi manual từ trang admin.
 // Nội dung do chủ dự án duyệt; QR dùng URL public đã host trong public/whatsapp-qr.png.
 
 const QR_URL = "https://bonucakes.com/whatsapp-qr.png";
 const WHATSAPP_LINK = "https://chat.whatsapp.com/DdjyY3ZPExaKPLFXFP6ZoG?mode=gi_t";
 const ZOOM_LINK =
-  "https://us06web.zoom.us/j/6590272116?pwd=tuUDQ7vIQNdLmcbzak7r2QXE8uBYw8.1";
+  "https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09";
 
 export const WORKSHOP_REMINDER_SUBJECT =
-  '[1 NGÀY NỮA] WORKSHOP "GHÉT AI THÌ XÚI NGƯỜI ĐÓ MỞ QUÁN" CHÍNH THỨC DIỄN RA';
+  '[30 PHÚT NỮA] WORKSHOP "GHÉT AI THÌ XÚI NGƯỜI ĐÓ MỞ QUÁN" CHÍNH THỨC DIỄN RA';
 
 export function workshopReminderHtml(): string {
   return `<!DOCTYPE html>
@@ -22,7 +22,7 @@ export function workshopReminderHtml(): string {
     <div style="background:#ffffff;border-radius:16px;padding:32px 28px;font-size:15px;line-height:1.75;color:#083121;box-shadow:0 2px 12px rgba(8,49,33,.06);">
 
       <h1 style="font-weight:800;font-size:20px;line-height:1.45;margin:0 0 22px;color:#083121;">
-        [1 NGÀY NỮA] WORKSHOP "GHÉT AI THÌ XÚI NGƯỜI ĐÓ MỞ QUÁN" CHÍNH THỨC DIỄN RA
+        [30 PHÚT NỮA] WORKSHOP "GHÉT AI THÌ XÚI NGƯỜI ĐÓ MỞ QUÁN" CHÍNH THỨC DIỄN RA
       </h1>
 
       <p style="margin:0 0 24px;">
@@ -43,8 +43,8 @@ export function workshopReminderHtml(): string {
         <p style="margin:0 0 16px;word-break:break-all;">
           <a href="${ZOOM_LINK}" style="color:#1a73e8;">${ZOOM_LINK}</a>
         </p>
-        <p style="margin:0 0 4px;">Meeting ID: <strong>659 027 2116</strong></p>
-        <p style="margin:0;">Passcode: <strong>Yt9cYT</strong></p>
+        <p style="margin:0 0 4px;">Meeting ID: <strong>551 477 0716</strong></p>
+        <p style="margin:0;">Passcode: <strong>smartbee</strong></p>
       </div>
 
       <div style="margin:0 0 24px;">
@@ -56,7 +56,7 @@ export function workshopReminderHtml(): string {
       </div>
 
       <p style="margin:0 0 28px;">
-        Hẹn gặp Anh/ chị sau 1 ngày nữa để cùng bắt đầu hành trình tìm hiểu về việc mở quán cafe trà sữa, bánh mì tại Anh (UK)
+        Hẹn gặp Anh/ chị sau 30 phút nữa để cùng bắt đầu hành trình tìm hiểu về việc mở quán cafe trà sữa, bánh mì tại Anh (UK)
       </p>
 
       <div style="border-top:1px solid #eef2f0;padding-top:24px;text-align:center;">
