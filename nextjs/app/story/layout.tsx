@@ -1,33 +1,21 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Hành trình 10+ năm - Câu chuyện Bonu F&B | Từ thất bại đến Best Bánh Mì",
-  description: "Từ bán bánh online đến nhà hàng ở trung tâm London, Manchester, và giờ là Memoire Saigon tại Wales. Hành trình 10+ năm xây dựng thương hiệu F&B với những thăng trầm và bài học quý giá.",
-  keywords: "câu chuyện F&B, Uyen Nguyen, Memoire Saigon, Best Bánh Mì Manchester, hành trình kinh doanh, kinh nghiệm F&B",
-  authors: [{ name: "Uyen Nguyen - Bonu F&B" }],
-  openGraph: {
-    type: "article",
-    url: "https://bonucakes.com/story",
-    title: "Hành trình 10+ năm - Câu chuyện Bonu F&B",
-    description: "Từ bán bánh online đến nhà hàng ở trung tâm London, Manchester, và giờ là Memoire Saigon tại Wales. Hành trình 10+ năm xây dựng thương hiệu F&B.",
-    images: [
-      {
-        url: "https://bonucakes.com/images/community-mindmap.webp",
-        width: 1200,
-        height: 630,
-        alt: "Bonu F&B Journey",
-      },
-    ],
-    siteName: "Bonu F&B",
-    locale: "vi_VN",
-  },
-  alternates: {
-    languages: {
-      'vi': 'https://bonucakes.com/story',
-      'en': 'https://bonucakes.com/story',
-      'x-default': 'https://bonucakes.com/story',
+  ...pageMetadata({
+    path: "/story",
+    title: "Our Story — 10+ Years Building Bonu F&B",
+    description:
+      "From selling cakes online to restaurants in central London and Manchester, and now Memoire Saigon in Wales — 10+ years building a Vietnamese F&B brand. Hành trình 10+ năm xây dựng thương hiệu F&B của Bonu.",
+    ogType: "article",
+    image: {
+      url: "https://bonucakes.com/images/community-mindmap.webp",
+      width: 1200,
+      height: 630,
+      alt: "Bonu F&B Journey",
     },
-  },
+  }),
+  authors: [{ name: "Uyen Nguyen - Bonu Cakes" }],
 };
 
 export default function StoryLayout({

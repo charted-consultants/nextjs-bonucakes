@@ -1,9 +1,0 @@
-# robots.txt for bonucakes.com
-
-User-agent: *
-Allow: /
-Disallow: /admin.html
-Disallow: /workshop-register.html
-
-# Sitemaps
-Sitemap: https://bonucakes.com/sitemap.xml
