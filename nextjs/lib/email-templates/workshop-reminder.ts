@@ -7,7 +7,7 @@ const ZOOM_LINK =
   "https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09";
 
 export const WORKSHOP_REMINDER_SUBJECT =
-  '[30 PHÚT NỮA] WORKSHOP "GHÉT AI THÌ XÚI NGƯỜI ĐÓ MỞ QUÁN" CHÍNH THỨC DIỄN RA';
+  '[30 PHÚT NỮA] WORKSHOP "CÀNG BÁN CÀNG MỆT" CHÍNH THỨC DIỄN RA';
 
 export function workshopReminderHtml(): string {
   return `<!DOCTYPE html>
@@ -22,7 +22,7 @@ export function workshopReminderHtml(): string {
     <div style="background:#ffffff;border-radius:16px;padding:32px 28px;font-size:15px;line-height:1.75;color:#083121;box-shadow:0 2px 12px rgba(8,49,33,.06);">
 
       <h1 style="font-weight:800;font-size:20px;line-height:1.45;margin:0 0 22px;color:#083121;">
-        [30 PHÚT NỮA] WORKSHOP "GHÉT AI THÌ XÚI NGƯỜI ĐÓ MỞ QUÁN" CHÍNH THỨC DIỄN RA
+        [30 PHÚT NỮA] WORKSHOP "CÀNG BÁN CÀNG MỆT" CHÍNH THỨC DIỄN RA
       </h1>
 
       <p style="margin:0 0 24px;">
@@ -30,8 +30,8 @@ export function workshopReminderHtml(): string {
       </p>
 
       <div style="background:#f8faf9;border-left:4px solid #fcc56c;border-radius:8px;padding:16px 20px;margin:0 0 24px;">
-        <p style="margin:0 0 8px;"><strong>Thời gian:</strong> 9:00 PM | giờ UK | Chủ Nhật - Ngày 07/06/2026</p>
-        <p style="margin:0 0 8px;padding-left:78px;">3:00 AM | giờ VN | Thứ Hai - Ngày 08/06/2026</p>
+        <p style="margin:0 0 8px;"><strong>Thời gian:</strong> 9:00 PM | giờ UK | Thứ Ba - Ngày 21/07/2026</p>
+        <p style="margin:0 0 8px;padding-left:78px;">3:00 AM | giờ VN | Thứ Tư - Ngày 22/07/2026</p>
         <p style="margin:0;"><strong>Hình thức:</strong> Online qua Zoom</p>
       </div>
 

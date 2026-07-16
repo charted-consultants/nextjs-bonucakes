@@ -211,14 +211,14 @@ export default function WorkshopPage() {
         <div className="max-w-2xl mx-auto px-6 text-center">
           <p className="text-secondary uppercase tracking-widest text-sm mb-4 font-medium">Workshop miễn phí</p>
           <h1 className="text-3xl md:text-4xl font-bold text-primary mb-5 font-serif">
-            “Ghét Ai Thì Xúi Người Đó Mở Quán?”
+            “Càng Bán Càng Mệt”
           </h1>
           <p className="text-muted leading-relaxed">
             Workshop chia sẻ góc nhìn thực tế về mở quán cafe, bubble tea &amp; bán đồ ăn Việt Nam tại UK cùng Ms. Bo.
           </p>
           <div className="mt-5 text-sm text-primary/80 space-y-1">
             <p>💻 Hình thức: Online Zoom</p>
-            <p>📅 Dự kiến: 07/06/2026</p>
+            <p>📅 Dự kiến: 21/07/2026</p>
             <p>🕒 Thời gian: 21:00 (UK) – 3:00 sáng (VN)</p>
           </div>
           <p className="mt-6 text-muted text-sm">
