@@ -16,9 +16,10 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    // Build where clause - only show published posts
+    // Build where clause - only show published, non-deleted posts
     const where: any = {
       published: true,
+      deletedAt: null,
     };
 
     if (category) {

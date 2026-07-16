@@ -31,11 +31,11 @@ const getPost = cache(async (slug: string): Promise<PostSeo | null> => {
 
   try {
     const p: any = await prisma.blogPost.findUnique({ where: { slug } });
-    if (!p) return null;
+    if (!p || !p.published || p.deletedAt) return null;
     return {
       slug,
-      title: p.titleEn || p.titleVi || slug,
-      description: p.excerptEn || p.excerptVi || "",
+      title: p.metaTitle || p.titleEn || p.titleVi || slug,
+      description: p.metaDescription || p.excerptEn || p.excerptVi || "",
       image: p.image ? absoluteUrl(p.image) : DEFAULT_OG_IMAGE.url,
       author: p.author || BRAND.name,
       publishedAt: (p.publishedAt ?? p.createdAt)?.toISOString?.() ?? undefined,

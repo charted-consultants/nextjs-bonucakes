@@ -37,8 +37,16 @@ export default function BlogContent({ post }: BlogContentProps) {
     });
   };
 
+  // Posts written with the admin rich text editor are already HTML
+  // (e.g. "<p>...</p>"). Older posts (mock launch content, or posts
+  // created before the RTE existed) are plain markdown-ish text and
+  // still need the legacy conversion below.
+  const isHtml = (text: string) => /^\s*<[a-z][\s\S]*>/i.test(text);
+
   // Process markdown-like content to HTML
   const renderContent = (text: string) => {
+    if (isHtml(text)) return text;
+
     // Split by double newlines for paragraphs
     const blocks = text.split('\n\n').filter(block => block.trim());
 

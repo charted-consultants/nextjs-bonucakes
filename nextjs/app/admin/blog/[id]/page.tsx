@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 import AdminSidebar from "@/components/admin/AdminSidebar"
 import AdminAuth from "@/components/admin/AdminAuth"
+import RichTextEditor from "@/components/admin/RichTextEditor"
+import FeaturedImageField from "@/components/admin/FeaturedImageField"
 import { ArrowLeft, Save, Trash2 } from "lucide-react"
 import Link from "next/link"
 
@@ -87,8 +89,16 @@ export default function EditBlogPostPage() {
     }))
   }
 
+  const isContentEmpty = (html: string) => !html.replace(/<[^>]*>/g, "").trim()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (isContentEmpty(formData.contentVi) || isContentEmpty(formData.contentEn)) {
+      setError("Content (Vietnamese/English) is required")
+      return
+    }
+
     setSaving(true)
     setError(null)
 
@@ -285,32 +295,24 @@ export default function EditBlogPostPage() {
               <h2 className="text-lg font-medium text-gray-900">Content</h2>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Content (Vietnamese) *
                 </label>
-                <textarea
-                  name="contentVi"
-                  value={formData.contentVi}
-                  onChange={handleChange}
-                  required
-                  rows={12}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#083121] focus:border-[#083121] font-mono text-sm"
-                  placeholder="Markdown or HTML content..."
+                <RichTextEditor
+                  content={formData.contentVi}
+                  onChange={(html) => setFormData((prev) => ({ ...prev, contentVi: html }))}
+                  placeholder="Viết nội dung bài viết…"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Content (English) *
                 </label>
-                <textarea
-                  name="contentEn"
-                  value={formData.contentEn}
-                  onChange={handleChange}
-                  required
-                  rows={12}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#083121] focus:border-[#083121] font-mono text-sm"
-                  placeholder="Markdown or HTML content..."
+                <RichTextEditor
+                  content={formData.contentEn}
+                  onChange={(html) => setFormData((prev) => ({ ...prev, contentEn: html }))}
+                  placeholder="Write the post content…"
                 />
               </div>
             </div>
@@ -319,19 +321,10 @@ export default function EditBlogPostPage() {
             <div className="bg-white shadow rounded-lg p-6 space-y-6">
               <h2 className="text-lg font-medium text-gray-900">Media & Metadata</h2>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Featured Image URL
-                </label>
-                <input
-                  type="url"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#083121] focus:border-[#083121]"
-                  placeholder="https://..."
-                />
-              </div>
+              <FeaturedImageField
+                value={formData.image}
+                onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
+              />
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>

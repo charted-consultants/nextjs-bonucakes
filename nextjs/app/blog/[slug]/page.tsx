@@ -20,17 +20,36 @@ export default function BlogPostPage() {
   const currentLang = useLanguage();
 
   useEffect(() => {
-    // In production, this would fetch from an API or CMS
-    // For now, we use mock data
-    setTimeout(() => {
-      const foundPost = mockPostsData[slug];
-      if (foundPost) {
-        setPost(foundPost);
-      } else {
-        setNotFound(true);
-      }
+    const mockPost = mockPostsData[slug];
+    if (mockPost) {
+      setPost(mockPost);
       setLoading(false);
-    }, 300);
+      return;
+    }
+
+    // Legacy launch posts live in lib/blog-posts.ts; everything created via
+    // the admin CMS is stored in the DB and served through /api/posts/[slug].
+    fetch(`/api/posts/${slug}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Post not found');
+        return res.json();
+      })
+      .then((data) => {
+        const p = data.post;
+        setPost({
+          title: p.titleVi,
+          titleEn: p.titleEn,
+          excerpt: p.excerptVi,
+          excerptEn: p.excerptEn,
+          content: p.contentVi,
+          contentEn: p.contentEn,
+          image: p.image,
+          date: p.publishedAt || p.createdAt,
+          author: p.author,
+        });
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
   }, [slug]);
 
   return (

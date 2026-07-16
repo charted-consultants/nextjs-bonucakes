@@ -22,8 +22,8 @@ export async function GET(
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    // Only show published posts to the public
-    if (!post.published) {
+    // Only show published, non-deleted posts to the public
+    if (!post.published || post.deletedAt) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
