@@ -23,7 +23,10 @@ services:
     env_file:
       - .env
     ports:
-      - "0.0.0.0:${PORT:-3019}:3000"
+      # 3019 collides with an unrelated "wara-staging" container on this
+      # shared VPS (that project claimed it while bonucakes-staging was
+      # stopped) — moved to 3060 to avoid a silent port conflict.
+      - "0.0.0.0:${PORT:-3060}:3000"
 
   bonucakes_admin_bot:
     image: bonucakes_admin_bot:staging
