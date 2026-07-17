@@ -228,7 +228,7 @@ export default function WorkshopPage() {
             “Càng Bán Càng Mệt”
           </h1>
           <p className="text-muted leading-relaxed">
-            Xây dựng quy trình vận hành nhà hàng, thiết lập hệ thống để quán vận hành ổn định, tối ưu chi phí, nhân sự và lợi nhuận — cùng Ms. Bo.
+            Xây dựng quy trình vận hành nhà hàng, thiết lập hệ thống để quán vận hành ổn định, tối ưu chi phí, nhân sự và lợi nhuận, cùng Ms. Bo.
           </p>
           <div className="mt-5 text-sm text-primary/80 space-y-1">
             <p>💻 Hình thức: Online Zoom</p>
