@@ -5,7 +5,7 @@
 // ============================================================================
 
 /** Form đăng ký workshop chính (`/workshop_booking1-1`) */
-export const WORKSHOP_NAME_REGISTRATION = 'Workshop Bếp Bà Bo';
+export const WORKSHOP_NAME_REGISTRATION = 'Càng bán càng mệt';
 
 /** Form booking 1-1 cùng Bonu. Lưu ý: chuỗi giá trị giữ "với chị Bo" để khớp
  *  record cũ trong DB (filter `r.workshopName === BOOKING_NAME` ở admin). */
