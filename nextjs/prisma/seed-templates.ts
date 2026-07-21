@@ -483,6 +483,28 @@ async function main() {
         cta: { label: 'Tham gia Zoom ngay', url: 'https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09' },
       }),
     },
+    {
+      name: 'workshop-live-now',
+      displayName: 'Workshop - Đang diễn ra',
+      description: 'Gửi ngay khi workshop "Càng Bán Càng Mệt" đã bắt đầu, giục khách vào Zoom ngay.',
+      subject: '🔴 ĐANG DIỄN RA: Workshop "Càng Bán Càng Mệt" - Vào Zoom ngay!',
+      category: 'workshop',
+      variables: ['name'],
+      htmlContent: wrap({
+        heading: '🔴 Workshop "Càng Bán Càng Mệt" đang diễn ra',
+        bodyHtml: `
+          <p style="margin:0 0 18px;">Xin chào <strong>{name}</strong>,</p>
+          <p style="margin:0 0 18px;">Workshop <strong>"Càng Bán Càng Mệt"</strong> của Bonucakes đã chính thức bắt đầu ngay lúc này. Đừng bỏ lỡ, bấm vào link bên dưới để tham gia ngay!</p>
+          <div style="background:#f8faf9;border-radius:8px;padding:16px 20px;margin:0 0 18px;">
+            <p style="margin:0 0 6px;">Join Zoom Meeting</p>
+            <p style="margin:0 0 12px;word-break:break-all;"><a href="https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09" style="color:#1a73e8;">https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09</a></p>
+            <p style="margin:0 0 4px;">Meeting ID: <strong>551 477 0716</strong></p>
+            <p style="margin:0;">Passcode: <strong>smartbee</strong></p>
+          </div>
+          <p style="margin:0;">Vào ngay để không bỏ lỡ phần chia sẻ quan trọng nhé! 🌿</p>`,
+        cta: { label: 'Vào Zoom ngay', url: 'https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09' },
+      }),
+    },
     // ===== KHOÁ HỌC =====
     {
       name: 'course-received-confirm',
