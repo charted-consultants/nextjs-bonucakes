@@ -472,6 +472,8 @@ async function main() {
             <p style="margin:0;"><strong>Hình thức:</strong> Online qua Zoom</p>
           </div>
           <div style="background:#f8faf9;border-radius:8px;padding:16px 20px;margin:0 0 18px;">
+            <p style="margin:0 0 6px;">Join Zoom Meeting</p>
+            <p style="margin:0 0 12px;word-break:break-all;"><a href="https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09" style="color:#1a73e8;">https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09</a></p>
             <p style="margin:0 0 4px;">Meeting ID: <strong>551 477 0716</strong></p>
             <p style="margin:0;">Passcode: <strong>smartbee</strong></p>
           </div>
