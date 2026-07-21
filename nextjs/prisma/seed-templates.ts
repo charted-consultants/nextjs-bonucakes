@@ -454,6 +454,33 @@ async function main() {
           <p style="margin:0;">Cảm ơn bạn rất nhiều! 🌿</p>`,
       }),
     },
+    {
+      name: 'workshop-announcement-today',
+      displayName: 'Workshop - Thông báo diễn ra hôm nay',
+      description: 'Thông báo workshop "Càng Bán Càng Mệt" chính thức diễn ra hôm nay, kèm link Zoom + nhóm WhatsApp.',
+      subject: '📢 Workshop "Càng Bán Càng Mệt" chính thức diễn ra hôm nay - Bonu Cakes',
+      category: 'workshop',
+      variables: ['name'],
+      htmlContent: wrap({
+        heading: '📢 Workshop "Càng Bán Càng Mệt" diễn ra hôm nay',
+        bodyHtml: `
+          <p style="margin:0 0 18px;">Xin chào <strong>{name}</strong>,</p>
+          <p style="margin:0 0 18px;">Bonucakes xin thông báo Workshop <strong>"Càng Bán Càng Mệt"</strong> sẽ chính thức diễn ra <strong>hôm nay</strong>. Đây là hành trình giúp bạn hiểu rõ bí quyết để không trở thành một trong số 80% quán phải đóng cửa chỉ sau 6 tháng hoạt động.</p>
+          <div style="background:#f8faf9;border-left:4px solid #fcc56c;border-radius:8px;padding:16px 20px;margin:0 0 18px;">
+            <p style="margin:0 0 8px;"><strong>Thời gian:</strong> 9:00 PM | giờ UK | Thứ Ba - Ngày 21/07/2026</p>
+            <p style="margin:0 0 8px;padding-left:78px;">3:00 AM | giờ VN | Thứ Tư - Ngày 22/07/2026</p>
+            <p style="margin:0;"><strong>Hình thức:</strong> Online qua Zoom</p>
+          </div>
+          <div style="background:#f8faf9;border-radius:8px;padding:16px 20px;margin:0 0 18px;">
+            <p style="margin:0 0 4px;">Meeting ID: <strong>551 477 0716</strong></p>
+            <p style="margin:0;">Passcode: <strong>smartbee</strong></p>
+          </div>
+          <p style="margin:0 0 10px;font-weight:700;">LƯU Ý:</p>
+          <p style="margin:0 0 8px;">Khuyến khích bạn vào trước 15 phút để chuẩn bị và ổn định đường truyền. Tải App Zoom để dùng tốt nhất (hoặc copy link mở bằng trình duyệt Chrome).</p>
+          <p style="margin:0;">Hẹn gặp bạn hôm nay để cùng bắt đầu hành trình tìm hiểu về việc mở quán cafe, trà sữa, bánh mì tại Anh (UK). 🌿</p>`,
+        cta: { label: 'Tham gia Zoom ngay', url: 'https://us06web.zoom.us/j/5514770716?pwd=ejVvZVdEdzVBQnh5TFpDQVBqRzFYUT09' },
+      }),
+    },
     // ===== KHOÁ HỌC =====
     {
       name: 'course-received-confirm',
